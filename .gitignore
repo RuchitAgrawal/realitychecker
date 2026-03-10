@@ -1,7 +1,12 @@
 .DS_Store
 .env
+.env.local
+.env.*.local
 /node_modules/
 
 # React Router
 /.react-router/
 /build/
+
+# Vercel
+.vercel
