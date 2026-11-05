@@ -22,10 +22,13 @@ const FileUploader = ({ file = null, onFileSelect, onError }: FileUploaderProps)
         maxSize: maxFileSize,
         onDropRejected: (rejections) => {
             const first = rejections[0];
-            if (first?.errors[0]?.code === 'file-too-large') {
-                onError?.('File size exceeds the 20MB limit.');
+            const code = first?.errors[0]?.code;
+            if (code === 'file-too-large') {
+                onError?.(`File size exceeds the 20MB limit (${formatSize(first.file.size)}). Please upload a smaller file.`);
+            } else if (code === 'file-invalid-type') {
+                onError?.('Only PDF files are supported. Please select a .pdf file.');
             } else {
-                onError?.(first?.errors[0]?.message || 'Invalid file format.');
+                onError?.(first?.errors[0]?.message || 'Could not accept file. Please try again.');
             }
         },
     });
