@@ -1,4 +1,5 @@
 import { Link, useLocation } from "react-router";
+import UserMenu from "./UserMenu";
 
 interface NavbarProps {
     showBack?: boolean;
@@ -8,6 +9,7 @@ const Navbar = ({ showBack = false }: NavbarProps) => {
     const location = useLocation();
     const isUpload = location.pathname === '/upload';
     const isHome = location.pathname === '/';
+    const isCompare = location.pathname === '/compare';
 
     return (
         <div className="navbar-wrap">
@@ -46,6 +48,16 @@ const Navbar = ({ showBack = false }: NavbarProps) => {
                         </>
                     )}
 
+                    {/* Compare page */}
+                    {isCompare && (
+                        <Link to="/" className="back-button">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                <polyline points="15 18 9 12 15 6"/>
+                            </svg>
+                            Back to Dashboard
+                        </Link>
+                    )}
+
                     {/* Upload page — just a back button */}
                     {isUpload && (
                         <Link to="/" className="back-button">
@@ -56,7 +68,7 @@ const Navbar = ({ showBack = false }: NavbarProps) => {
                         </Link>
                     )}
 
-                    {/* Other pages (resume detail, etc.) — nothing extra */}
+                    <UserMenu />
                 </div>
             </nav>
         </div>
