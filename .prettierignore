@@ -1,0 +1,5 @@
+node_modules/
+build/
+.react-router/
+public/pdf.worker.min.mjs
+package-lock.json
