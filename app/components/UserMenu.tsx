@@ -24,9 +24,14 @@ const UserMenu: React.FC = () => {
   const initial = email[0]?.toUpperCase() || "U";
 
   const handleSignOut = async () => {
-    setOpen(false);
-    await auth.signOut();
-    navigate("/auth");
+    try {
+      setOpen(false);
+      await auth.signOut();
+    } catch (err) {
+      console.error("Sign out error:", err);
+    } finally {
+      navigate("/auth");
+    }
   };
 
   return (
