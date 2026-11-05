@@ -13,7 +13,7 @@ const Navbar = ({ showBack = false }: NavbarProps) => {
         <div className="navbar-wrap">
             <nav className="navbar">
                 <Link to="/" className="navbar-brand">
-                    Resume Guide
+                    RealityChecker
                 </Link>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
