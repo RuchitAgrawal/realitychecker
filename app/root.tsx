@@ -11,6 +11,8 @@ import { useEffect } from "react";
 import type { Route } from "./+types/root";
 import "./app.css";
 import { initAuthListener } from "./lib/store";
+import { isSupabaseConfigured } from "./lib/supabase";
+import SetupBanner from "./components/SetupBanner";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -45,10 +47,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   useEffect(() => {
-    initAuthListener();
+    if (isSupabaseConfigured) {
+      initAuthListener();
+    }
   }, []);
 
-  return <Outlet />;
+  return (
+    <>
+      {!isSupabaseConfigured && <SetupBanner />}
+      <Outlet />
+    </>
+  );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
