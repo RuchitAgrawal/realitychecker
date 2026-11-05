@@ -61,6 +61,10 @@ const Upload = () => {
 
     const handleAnalyze = async () => {
         if (!file) { setFileError('Please upload a resume PDF file first.'); return; }
+        if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
+            setFileError('Invalid file type. Please upload a valid PDF document.');
+            return;
+        }
         setStatus('processing'); setErrorMessage(''); setFileError(''); setCurrentStep(1); setDoneSteps([]);
 
         const fail = (msg: string) => { setErrorMessage(msg); setStatus('error'); addToast(msg, 'error'); };
