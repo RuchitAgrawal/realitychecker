@@ -3,24 +3,32 @@ import { useDropzone } from 'react-dropzone';
 import { formatSize } from '../lib/utils';
 
 interface FileUploaderProps {
+    file?: File | null;
     onFileSelect?: (file: File | null) => void;
+    onError?: (msg: string) => void;
 }
 
-const FileUploader = ({ onFileSelect }: FileUploaderProps) => {
+const FileUploader = ({ file = null, onFileSelect, onError }: FileUploaderProps) => {
     const maxFileSize = 20 * 1024 * 1024;
 
     const onDrop = useCallback((acceptedFiles: File[]) => {
         onFileSelect?.(acceptedFiles[0] ?? null);
     }, [onFileSelect]);
 
-    const { getRootProps, getInputProps, isDragActive, acceptedFiles } = useDropzone({
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop,
         multiple: false,
         accept: { 'application/pdf': ['.pdf'] },
         maxSize: maxFileSize,
+        onDropRejected: (rejections) => {
+            const first = rejections[0];
+            if (first?.errors[0]?.code === 'file-too-large') {
+                onError?.('File size exceeds the 20MB limit.');
+            } else {
+                onError?.(first?.errors[0]?.message || 'Invalid file format.');
+            }
+        },
     });
-
-    const file = acceptedFiles[0] ?? null;
 
     return (
         <div {...getRootProps()} className={`upload-zone ${isDragActive ? 'drag-active' : ''}`}>

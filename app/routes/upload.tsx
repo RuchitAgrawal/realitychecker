@@ -220,7 +220,11 @@ const Upload = () => {
                             </p>
 
                             <div style={{ width: '100%' }}>
-                                <FileUploader onFileSelect={handleFileSelect} />
+                                <FileUploader
+                                    file={file}
+                                    onFileSelect={handleFileSelect}
+                                    onError={(msg) => setFileError(msg)}
+                                />
                                 {fileError && (
                                     <p style={{ color: '#fca5a5', fontSize: '0.8125rem', marginTop: '0.5rem', textAlign: 'center' }}>
                                         {fileError}
