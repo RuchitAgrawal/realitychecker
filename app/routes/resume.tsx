@@ -37,21 +37,20 @@ const ResumeDetail = () => {
     const [sharing, setSharing] = useState(false);
 
     useEffect(() => {
-        if (!isLoading && !isAuthenticated) navigate(`/auth`);
-    }, [isLoading, isAuthenticated]);
-
-    useEffect(() => {
-        if (!id) return;
+        if (!id || isLoading) return;
         const loadResume = async () => {
             const resume = await resumeStore.get(id);
-            if (!resume) { navigate('/'); return; }
+            if (!resume) {
+                if (!isAuthenticated) navigate('/auth');
+                else navigate('/');
+                return;
+            }
 
             setCompanyName(resume.companyName ?? '');
             setJobTitle(resume.jobTitle ?? '');
             setFeedback(resume.feedback ?? null);
             setIsPublic(Boolean(resume.isPublic));
 
-            // Load signed URLs for the files
             if (resume.resumePath) {
                 try {
                     const url = await storage.getSignedUrl('resume-files', resume.resumePath, 3600);
@@ -66,7 +65,7 @@ const ResumeDetail = () => {
             }
         };
         loadResume();
-    }, [id]);
+    }, [id, isLoading, isAuthenticated, navigate]);
 
     const handleExportPDF = () => window.print();
 
