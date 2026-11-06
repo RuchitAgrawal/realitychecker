@@ -1,0 +1,57 @@
+import { buildSystemPrompt, buildUserPrompt } from "./prompt";
+
+export interface AnalyzeParams {
+  resumeText: string;
+  jobTitle?: string;
+  jobDescription?: string;
+}
+
+export async function runGroqAnalysis(
+  params: AnalyzeParams,
+  apiKey: string
+): Promise<Feedback> {
+  if (!apiKey) {
+    throw new Error("GROQ_API_KEY is not configured.");
+  }
+
+  const { resumeText, jobTitle, jobDescription } = params;
+
+  const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({
+      model: "llama-3.3-70b-versatile",
+      messages: [
+        { role: "system", content: buildSystemPrompt() },
+        {
+          role: "user",
+          content: buildUserPrompt(resumeText, jobTitle, jobDescription),
+        },
+      ],
+      temperature: 0.1,
+      max_tokens: 4096,
+      response_format: { type: "json_object" },
+    }),
+  });
+
+  if (!res.ok) {
+    const errorText = await res.text();
+    throw new Error(`Groq API error ${res.status}: ${errorText}`);
+  }
+
+  const data = (await res.json()) as {
+    choices: Array<{ message: { content: string } }>;
+  };
+
+  const raw = data.choices?.[0]?.message?.content ?? "";
+  const cleaned = raw
+    .replace(/^```json\s*/i, "")
+    .replace(/^```\s*/i, "")
+    .replace(/\s*```$/i, "")
+    .trim();
+
+  return JSON.parse(cleaned) as Feedback;
+}
