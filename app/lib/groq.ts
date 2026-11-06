@@ -17,30 +17,47 @@ export async function runGroqAnalysis(
 
   const { resumeText, jobTitle, jobDescription } = params;
 
-  const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify({
-      model: "llama-3.3-70b-versatile",
-      messages: [
-        { role: "system", content: buildSystemPrompt() },
-        {
-          role: "user",
-          content: buildUserPrompt(resumeText, jobTitle, jobDescription),
-        },
-      ],
-      temperature: 0.1,
-      max_tokens: 4096,
-      response_format: { type: "json_object" },
-    }),
-  });
+  let res: Response | null = null;
+  let attempts = 0;
+  const maxAttempts = 3;
 
-  if (!res.ok) {
+  while (attempts < maxAttempts) {
+    attempts++;
+    res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: "llama-3.3-70b-versatile",
+        messages: [
+          { role: "system", content: buildSystemPrompt() },
+          {
+            role: "user",
+            content: buildUserPrompt(resumeText, jobTitle, jobDescription),
+          },
+        ],
+        temperature: 0.1,
+        max_tokens: 4096,
+        response_format: { type: "json_object" },
+      }),
+    });
+
+    if (res.ok) break;
+
+    // Retry on 429 or 503
+    if ((res.status === 429 || res.status === 503) && attempts < maxAttempts) {
+      await new Promise((resolve) => setTimeout(resolve, attempts * 1500));
+      continue;
+    }
+
     const errorText = await res.text();
     throw new Error(`Groq API error ${res.status}: ${errorText}`);
+  }
+
+  if (!res || !res.ok) {
+    throw new Error("Groq API request failed after retries.");
   }
 
   const data = (await res.json()) as {
