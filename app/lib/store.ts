@@ -21,6 +21,7 @@ interface ResumesState {
     get: (id: string) => Promise<Resume | null>;
     create: (data: Omit<Resume, 'id' | 'createdAt'>) => Promise<Resume>;
     delete: (id: string) => Promise<void>;
+    togglePublic: (id: string, isPublic: boolean) => Promise<void>;
 }
 
 // ─── Storage ─────────────────────────────────────────────────────────────────
@@ -137,6 +138,14 @@ export const useStore = create<StoreState>((set, get) => ({
                 await supabase.storage.from('resume-images').remove([data.image_path]).catch(() => {});
             }
             const { error } = await supabase.from('resumes').delete().eq('id', id);
+            if (error) throw error;
+        },
+
+        togglePublic: async (id, isPublic) => {
+            const { error } = await supabase
+                .from('resumes')
+                .update({ is_public: isPublic })
+                .eq('id', id);
             if (error) throw error;
         },
     },
