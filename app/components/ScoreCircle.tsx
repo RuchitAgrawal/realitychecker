@@ -1,3 +1,5 @@
+import { getScoreColor, getScoreLevel } from "~/lib/utils";
+
 const ScoreCircle = ({ score = 75 }: { score: number }) => {
     const radius = 38;
     const stroke = 7;
@@ -5,8 +7,9 @@ const ScoreCircle = ({ score = 75 }: { score: number }) => {
     const circumference = 2 * Math.PI * normalizedRadius;
     const strokeDashoffset = circumference * (1 - score / 100);
 
-    const color = score >= 70 ? '#10b981' : score >= 50 ? '#f59e0b' : '#ef4444';
-    const trackColor = score >= 70 ? 'rgba(16,185,129,0.12)' : score >= 50 ? 'rgba(245,158,11,0.12)' : 'rgba(239,68,68,0.12)';
+    const color = getScoreColor(score);
+    const level = getScoreLevel(score);
+    const trackColor = level === 'high' ? 'rgba(16,185,129,0.12)' : level === 'medium' ? 'rgba(245,158,11,0.12)' : 'rgba(239,68,68,0.12)';
 
     return (
         <div style={{ position: 'relative', width: '80px', height: '80px', flexShrink: 0 }}>
