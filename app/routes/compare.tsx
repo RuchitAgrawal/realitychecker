@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router';
 import { useStore } from '~/lib/store';
 import Navbar from '~/components/Navbar';
 import ScoreGauge from '~/components/ScoreGauge';
+import { getScoreColor } from '~/lib/utils';
 
 export const meta = () => ([
     { title: 'RealityChecker | Compare Resumes' },
@@ -25,7 +26,7 @@ const getScore = (resume: Resume | null, key: string): number => {
 };
 
 const ScoreBar = ({ score, win }: { score: number; win: boolean }) => {
-    const color = score >= 70 ? '#10b981' : score >= 50 ? '#f59e0b' : '#ef4444';
+    const color = getScoreColor(score);
     return (
         <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.35rem' }}>

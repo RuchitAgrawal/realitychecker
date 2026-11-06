@@ -4,12 +4,10 @@ import {
   AccordionHeader,
   AccordionItem,
 } from "./Accordion";
-
-const getScoreClass = (score: number) =>
-    score > 69 ? 'score-badge-green' : score > 39 ? 'score-badge-yellow' : 'score-badge-red';
+import { getScoreBadgeClass } from "~/lib/utils";
 
 const ScorePill = ({ score }: { score: number }) => (
-    <div className={`score-badge ${getScoreClass(score)}`} style={{ fontSize: '0.8rem' }}>
+    <div className={`score-badge ${getScoreBadgeClass(score)}`} style={{ fontSize: '0.8rem' }}>
         {score}/100
     </div>
 );
@@ -24,7 +22,7 @@ const CategoryHeader = ({ title, categoryScore }: { title: string; categoryScore
 const CategoryContent = ({
     tips,
 }: {
-    tips: { type: "good" | "improve"; tip: string; explanation: string }[];
+    tips: { type: "good" | "improve"; tip: string; explanation?: string }[];
 }) => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
         {/* Quick summary grid */}
