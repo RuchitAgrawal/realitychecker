@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { getScoreColor } from "~/lib/utils";
 
 const ScoreGauge = ({ score = 75 }: { score: number }) => {
     const [pathLength, setPathLength] = useState(0);
@@ -8,7 +9,7 @@ const ScoreGauge = ({ score = 75 }: { score: number }) => {
         if (pathRef.current) setPathLength(pathRef.current.getTotalLength());
     }, []);
 
-    const color = score >= 70 ? '#10b981' : score >= 50 ? '#f59e0b' : '#ef4444';
+    const color = getScoreColor(score);
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0, gap: '0.25rem' }}>
