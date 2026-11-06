@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router';
 import { useStore } from '~/lib/store';
 import Navbar from '~/components/Navbar';
 import ScoreGauge from '~/components/ScoreGauge';
+import Spinner from '~/components/Spinner';
 import { getScoreColor } from '~/lib/utils';
 
 export const meta = () => ([
@@ -131,11 +132,7 @@ const Compare = () => {
                     <p className="page-subheading">Select two resumes to see a side-by-side score breakdown</p>
                 </div>
 
-                {loading && (
-                    <div style={{ display: 'flex', justifyContent: 'center', padding: '3rem' }}>
-                        <div style={{ width: '36px', height: '36px', border: '3px solid #2a2a45', borderTopColor: '#6366f1', borderRadius: '9999px', animation: 'spin 0.9s linear infinite' }} />
-                    </div>
-                )}
+                {loading && <Spinner label="Loading resumes…" />}
 
                 {!loading && resumes.length < 2 && (
                     <div className="empty-state" style={{ maxWidth: '420px' }}>

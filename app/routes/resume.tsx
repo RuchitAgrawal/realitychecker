@@ -4,23 +4,13 @@ import { useStore } from '~/lib/store';
 import Summary from '~/components/Summary';
 import ATS from '~/components/ATS';
 import Details from '~/components/Details';
+import Spinner from '~/components/Spinner';
 import Toast, { useToast } from '~/components/Toast';
 
 export const meta = () => ([
     { title: 'RealityChecker | Review' },
     { name: 'description', content: 'Detailed AI feedback for your resume' },
 ]);
-
-const Spinner = () => (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', padding: '4rem 1rem' }}>
-        <div style={{
-            width: '40px', height: '40px', borderRadius: '9999px',
-            border: '3px solid #2a2a45', borderTopColor: '#6366f1',
-            animation: 'spin 0.9s linear infinite',
-        }} />
-        <p style={{ color: '#3a3a5c', fontSize: '0.875rem' }}>Loading analysis…</p>
-    </div>
-);
 
 const ResumeDetail = () => {
     const { isLoading, isAuthenticated, storage, resumes: resumeStore } = useStore();

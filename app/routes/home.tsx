@@ -1,6 +1,7 @@
 import type { Route } from "./+types/home";
 import Navbar from "~/components/Navbar";
 import ResumeCard from "~/components/ResumeCard";
+import Spinner from "~/components/Spinner";
 import Toast, { useToast } from "~/components/Toast";
 import { useStore } from "~/lib/store";
 import { Link, useNavigate } from "react-router";
@@ -102,16 +103,7 @@ export default function Home() {
           </div>
         )}
 
-        {loadingResumes && (
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', marginTop: '3rem' }}>
-            <div style={{
-              width: '40px', height: '40px', borderRadius: '9999px',
-              border: '3px solid #2a2a45', borderTopColor: '#6366f1',
-              animation: 'spin 0.9s linear infinite',
-            }} />
-            <p style={{ color: '#3a3a5c', fontSize: '0.875rem' }}>Loading your resumes…</p>
-          </div>
-        )}
+        {loadingResumes && <Spinner label="Loading your resumes…" size={40} />}
 
         {!loadingResumes && sorted.length > 0 && (
           <div className="resumes-section">
