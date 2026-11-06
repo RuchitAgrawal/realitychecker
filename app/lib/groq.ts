@@ -1,4 +1,5 @@
 import { buildSystemPrompt, buildUserPrompt } from "./prompt";
+import { FeedbackSchema, type ValidatedFeedback } from "./schemas";
 
 export interface AnalyzeParams {
   resumeText: string;
@@ -9,7 +10,7 @@ export interface AnalyzeParams {
 export async function runGroqAnalysis(
   params: AnalyzeParams,
   apiKey: string
-): Promise<Feedback> {
+): Promise<ValidatedFeedback> {
   if (!apiKey) {
     throw new Error("GROQ_API_KEY is not configured.");
   }
@@ -53,5 +54,13 @@ export async function runGroqAnalysis(
     .replace(/\s*```$/i, "")
     .trim();
 
-  return JSON.parse(cleaned) as Feedback;
+  const parsed = JSON.parse(cleaned);
+  const validated = FeedbackSchema.safeParse(parsed);
+
+  if (!validated.success) {
+    console.error("Feedback validation failed:", validated.error.format());
+    throw new Error("AI output did not match expected feedback schema.");
+  }
+
+  return validated.data;
 }
