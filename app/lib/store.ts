@@ -178,6 +178,7 @@ function dbToResume(row: any): Resume {
         resumePath: row.resume_path ?? '',
         imagePath: row.image_path ?? '',
         feedback: row.feedback ?? undefined,
+        isPublic: Boolean(row.is_public),
         createdAt: row.created_at ? new Date(row.created_at).getTime() : undefined,
     };
 }

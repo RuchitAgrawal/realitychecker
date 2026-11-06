@@ -26,6 +26,7 @@ interface Resume {
     resumePath?: string;
     imagePath?: string;
     feedback?: Feedback;
+    isPublic?: boolean;
     createdAt?: number;
 }
 
