@@ -33,6 +33,7 @@ const ResumeDetail = () => {
     const [feedback, setFeedback] = useState<Feedback | null>(null);
     const [companyName, setCompanyName] = useState('');
     const [jobTitle, setJobTitle] = useState('');
+    const [isPublic, setIsPublic] = useState(false);
     const [sharing, setSharing] = useState(false);
 
     useEffect(() => {
@@ -48,6 +49,7 @@ const ResumeDetail = () => {
             setCompanyName(resume.companyName ?? '');
             setJobTitle(resume.jobTitle ?? '');
             setFeedback(resume.feedback ?? null);
+            setIsPublic(Boolean(resume.isPublic));
 
             // Load signed URLs for the files
             if (resume.resumePath) {
@@ -69,14 +71,21 @@ const ResumeDetail = () => {
     const handleExportPDF = () => window.print();
 
     const handleShare = async () => {
+        if (!id) return;
         setSharing(true);
         try {
+            const nextState = !isPublic;
+            await resumeStore.togglePublic(id, nextState);
+            setIsPublic(nextState);
             const shareUrl = `${window.location.origin}/resume/${id}`;
-            await navigator.clipboard.writeText(shareUrl);
-            addToast('Link copied to clipboard!', 'success');
+            if (nextState) {
+                await navigator.clipboard.writeText(shareUrl).catch(() => {});
+                addToast('Public link created and copied to clipboard!', 'success');
+            } else {
+                addToast('Sharing revoked. Resume is now private.', 'info');
+            }
         } catch {
-            const shareUrl = `${window.location.origin}/resume/${id}`;
-            window.prompt('Copy this link:', shareUrl);
+            addToast('Failed to update share status', 'error');
         } finally {
             setSharing(false);
         }
@@ -105,12 +114,12 @@ const ResumeDetail = () => {
                 </div>
 
                 <div style={{ display: 'flex', gap: '0.625rem', alignItems: 'center' }}>
-                    <button onClick={handleShare} disabled={sharing} className="back-button" title="Copy shareable link">
+                    <button onClick={handleShare} disabled={sharing} className="back-button" title={isPublic ? "Public link active — click to revoke" : "Make public and copy link"}>
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                             <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
                             <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
                         </svg>
-                        {sharing ? '…' : 'Share'}
+                        {sharing ? '…' : isPublic ? 'Shared (Public)' : 'Share'}
                     </button>
 
                     <button onClick={handleExportPDF} className="back-button" title="Export as PDF" id="export-pdf-btn">
