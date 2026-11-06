@@ -113,13 +113,15 @@ const ResumeDetail = () => {
                 </div>
 
                 <div style={{ display: 'flex', gap: '0.625rem', alignItems: 'center' }}>
-                    <button onClick={handleShare} disabled={sharing} className="back-button" title={isPublic ? "Public link active — click to revoke" : "Make public and copy link"}>
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                            <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
-                            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
-                        </svg>
-                        {sharing ? '…' : isPublic ? 'Shared (Public)' : 'Share'}
-                    </button>
+                    {isAuthenticated && (
+                        <button onClick={handleShare} disabled={sharing} className="back-button" title={isPublic ? "Public link active — click to revoke" : "Make public and copy link"}>
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+                                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+                            </svg>
+                            {sharing ? '…' : isPublic ? 'Shared (Public)' : 'Share'}
+                        </button>
+                    )}
 
                     <button onClick={handleExportPDF} className="back-button" title="Export as PDF" id="export-pdf-btn">
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -141,6 +143,26 @@ const ResumeDetail = () => {
                     )}
                 </div>
             </nav>
+
+            {!isAuthenticated && (
+                <div style={{
+                    background: 'rgba(99, 102, 241, 0.1)',
+                    borderBottom: '1px solid rgba(99, 102, 241, 0.25)',
+                    padding: '0.625rem 1rem',
+                    textAlign: 'center',
+                    fontSize: '0.8125rem',
+                    color: '#c8d0e7',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '0.75rem',
+                }}>
+                    <span>Viewing shared resume. Want your own AI feedback?</span>
+                    <Link to="/auth" style={{ color: '#818cf8', fontWeight: 600, textDecoration: 'underline' }}>
+                        Create a free account →
+                    </Link>
+                </div>
+            )}
 
             {/* Body */}
             <div className="resume-layout">
