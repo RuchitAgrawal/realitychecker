@@ -73,6 +73,16 @@ Create two Storage buckets in Supabase:
 - `resume-files` (private)
 - `resume-images` (private)
 
+#### Migration for existing databases
+
+If you already created the table earlier, add public sharing support:
+
+```sql
+alter table resumes add column if not exists is_public boolean default false;
+create policy if not exists "Public resumes are readable by anyone" on resumes
+  for select using (is_public = true);
+```
+
 ### 4. Development
 
 ```bash
