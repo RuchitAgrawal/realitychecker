@@ -1,7 +1,5 @@
 import ScoreGauge from "~/components/ScoreGauge";
-
-const getScoreClass = (score: number) =>
-    score > 69 ? 'score-badge-green' : score > 49 ? 'score-badge-yellow' : 'score-badge-red';
+import { getScoreBadgeClass, getScoreColor } from "~/lib/utils";
 
 const CategoryRow = ({ title, score }: { title: string; score: number }) => (
     <div className="score-category-row">
@@ -13,11 +11,11 @@ const CategoryRow = ({ title, score }: { title: string; score: number }) => (
                     height: '100%',
                     width: `${score}%`,
                     borderRadius: '9999px',
-                    background: score > 69 ? '#10b981' : score > 49 ? '#f59e0b' : '#ef4444',
+                    background: getScoreColor(score),
                     transition: 'width 0.6s ease',
                 }} />
             </div>
-            <div className={`score-badge ${getScoreClass(score)}`} style={{ minWidth: '60px', justifyContent: 'center' }}>
+            <div className={`score-badge ${getScoreBadgeClass(score)}`} style={{ minWidth: '60px', justifyContent: 'center' }}>
                 {score}/100
             </div>
         </div>
