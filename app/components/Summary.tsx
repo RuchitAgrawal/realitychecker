@@ -28,7 +28,23 @@ const Summary = ({ feedback }: { feedback: Feedback }) => {
             <div className="score-overview-header">
                 <ScoreGauge score={feedback.overallScore} />
                 <div>
-                    <p className="score-overview-label">Overall Rating</p>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <p className="score-overview-label">Overall Rating</p>
+                        {feedback.experienceLevel && (
+                            <span style={{
+                                fontSize: '0.7rem',
+                                textTransform: 'capitalize',
+                                padding: '0.15rem 0.5rem',
+                                borderRadius: '9999px',
+                                background: 'rgba(99, 102, 241, 0.15)',
+                                color: '#a5b4fc',
+                                border: '1px solid rgba(99, 102, 241, 0.3)',
+                                fontWeight: 600,
+                            }}>
+                                {feedback.experienceLevel} Level
+                            </span>
+                        )}
+                    </div>
                     <p className="score-overview-title">Resume Score</p>
                     <p style={{ fontSize: '0.8375rem', color: '#4a5568', marginTop: '0.25rem' }}>
                         Based on content, tone, structure &amp; skills
