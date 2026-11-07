@@ -11,6 +11,7 @@ interface AtsCategory {
 
 interface Feedback {
     overallScore: number;
+    experienceLevel?: 'entry' | 'mid' | 'senior';
     ATS: AtsCategory;
     toneAndStyle: AtsCategory;
     content: AtsCategory;
