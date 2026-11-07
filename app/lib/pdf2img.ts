@@ -26,19 +26,44 @@ export async function convertPdfToImage(file: File): Promise<PdfConversionResult
         const lib = await loadPdfJs();
         const arrayBuffer = await file.arrayBuffer();
         const pdf = await lib.getDocument({ data: arrayBuffer }).promise;
-        const page = await pdf.getPage(1);
-        const viewport = page.getViewport({ scale: 4 });
-        const canvas = document.createElement('canvas');
-        const context = canvas.getContext('2d');
-        canvas.width = viewport.width;
-        canvas.height = viewport.height;
-        if (context) {
-            context.imageSmoothingEnabled = true;
-            context.imageSmoothingQuality = 'high';
+        const totalPages = Math.min(pdf.numPages, 4);
+
+        const pageCanvases: HTMLCanvasElement[] = [];
+        let totalHeight = 0;
+        let maxWidth = 0;
+
+        for (let i = 1; i <= totalPages; i++) {
+            const page = await pdf.getPage(i);
+            const viewport = page.getViewport({ scale: 2 });
+            const pageCanvas = document.createElement('canvas');
+            const pageContext = pageCanvas.getContext('2d');
+            pageCanvas.width = viewport.width;
+            pageCanvas.height = viewport.height;
+            if (pageContext) {
+                pageContext.imageSmoothingEnabled = true;
+                pageContext.imageSmoothingQuality = 'high';
+            }
+            await page.render({ canvasContext: pageContext!, viewport }).promise;
+            pageCanvases.push(pageCanvas);
+            totalHeight += viewport.height;
+            if (viewport.width > maxWidth) maxWidth = viewport.width;
         }
-        await page.render({ canvasContext: context!, viewport }).promise;
+
+        const masterCanvas = document.createElement('canvas');
+        masterCanvas.width = maxWidth;
+        masterCanvas.height = totalHeight;
+        const masterCtx = masterCanvas.getContext('2d');
+
+        if (masterCtx) {
+            let currentY = 0;
+            for (const c of pageCanvases) {
+                masterCtx.drawImage(c, 0, currentY);
+                currentY += c.height;
+            }
+        }
+
         return new Promise((resolve) => {
-            canvas.toBlob(
+            masterCanvas.toBlob(
                 (blob) => {
                     if (blob) {
                         const originalName = file.name.replace(/\.pdf$/i, '');
@@ -49,7 +74,7 @@ export async function convertPdfToImage(file: File): Promise<PdfConversionResult
                     }
                 },
                 'image/png',
-                1.0
+                0.95
             );
         });
     } catch (err) {
