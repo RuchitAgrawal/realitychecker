@@ -28,7 +28,7 @@ export default function Home() {
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) navigate('/auth');
-  }, [isLoading, isAuthenticated]);
+  }, [isLoading, isAuthenticated, navigate]);
 
   const loadResumes = async () => {
     setLoadingResumes(true);

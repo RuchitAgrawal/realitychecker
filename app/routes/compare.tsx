@@ -85,7 +85,7 @@ const Compare = () => {
 
     useEffect(() => {
         if (!isLoading && !isAuthenticated) navigate('/auth');
-    }, [isLoading, isAuthenticated]);
+    }, [isLoading, isAuthenticated, navigate]);
 
     useEffect(() => {
         if (!isAuthenticated) return;
