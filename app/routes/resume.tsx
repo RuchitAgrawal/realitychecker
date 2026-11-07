@@ -157,14 +157,14 @@ const ResumeDetail = () => {
             {/* Body */}
             <div className="resume-layout">
                 {/* Left — resume preview */}
-                <div className="resume-preview-panel" id="resume-preview-panel">
+                <div className="resume-preview-panel" id="resume-preview-panel" style={{ overflowY: 'auto', maxHeight: 'calc(100vh - 4.5rem)' }}>
                     {imageUrl ? (
                         <a href={resumeUrl || '#'} target="_blank" rel="noopener noreferrer"
-                            style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            style={{ width: '100%', display: 'block' }}>
                             <img
                                 src={imageUrl} alt="Resume preview"
                                 className="resume-preview-img"
-                                style={{ animation: 'fadeIn 0.5s ease' }}
+                                style={{ animation: 'fadeIn 0.5s ease', width: '100%', height: 'auto', display: 'block' }}
                             />
                         </a>
                     ) : <Spinner />}
