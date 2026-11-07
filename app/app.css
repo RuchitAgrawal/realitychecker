@@ -1014,6 +1014,35 @@ form {
   animation: spin 0.9s linear infinite;
 }
 
+.btn-delete-card {
+  position: absolute;
+  top: 0.875rem;
+  right: 0.875rem;
+  width: 1.875rem;
+  height: 1.875rem;
+  border-radius: 9999px;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  color: #fca5a5;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  z-index: 10;
+}
+
+.btn-delete-card:hover:not(:disabled) {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.4);
+}
+
+.btn-delete-card:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
 /* ═══════════════════════════════════════════════════════
    ANIMATIONS
    ═══════════════════════════════════════════════════════ */

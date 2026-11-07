@@ -110,14 +110,7 @@ export default function Home() {
                   onClick={e => handleDelete(resume.id, e)}
                   disabled={deletingId === resume.id}
                   title="Delete this resume"
-                  style={{
-                    position: 'absolute', top: '0.875rem', right: '0.875rem',
-                    width: '1.875rem', height: '1.875rem', borderRadius: '9999px',
-                    background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.25)',
-                    color: '#fca5a5', fontSize: '0.8rem', display: 'flex', alignItems: 'center',
-                    justifyContent: 'center', cursor: deletingId === resume.id ? 'not-allowed' : 'pointer',
-                    transition: 'all 0.2s', zIndex: 10, opacity: deletingId === resume.id ? 0.4 : 1,
-                  }}
+                  className="btn-delete-card"
                 >
                   {deletingId === resume.id ? '…' : '✕'}
                 </button>
