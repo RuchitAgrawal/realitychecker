@@ -34,8 +34,13 @@ const FileUploader = ({ file = null, onFileSelect, onError }: FileUploaderProps)
     });
 
     return (
-        <div {...getRootProps()} className={`upload-zone ${isDragActive ? 'drag-active' : ''}`}>
-            <input {...getInputProps()} />
+        <div
+            {...getRootProps()}
+            className={`upload-zone ${isDragActive ? 'drag-active' : ''}`}
+            role="region"
+            aria-label="PDF resume upload dropzone"
+        >
+            <input {...getInputProps()} aria-label="Resume PDF input" />
             {file ? (
                 <div className="selected-file" onClick={e => e.stopPropagation()}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.875rem' }}>
@@ -67,6 +72,7 @@ const FileUploader = ({ file = null, onFileSelect, onError }: FileUploaderProps)
                         }}
                         onClick={e => { e.stopPropagation(); onFileSelect?.(null); }}
                         type="button"
+                        aria-label="Remove selected resume"
                     >
                         ✕
                     </button>
