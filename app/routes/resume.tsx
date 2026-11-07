@@ -1,5 +1,6 @@
 import { Link, useNavigate, useParams } from 'react-router';
 import { useEffect, useState } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useStore } from '~/lib/store';
 import Summary from '~/components/Summary';
 import ATS from '~/components/ATS';
@@ -16,56 +17,58 @@ const ResumeDetail = () => {
     const { isLoading, isAuthenticated, storage, resumes: resumeStore } = useStore();
     const { id } = useParams();
     const navigate = useNavigate();
+    const queryClient = useQueryClient();
     const { toasts, addToast, removeToast } = useToast();
 
     const [imageUrl, setImageUrl] = useState('');
     const [resumeUrl, setResumeUrl] = useState('');
-    const [feedback, setFeedback] = useState<Feedback | null>(null);
-    const [companyName, setCompanyName] = useState('');
-    const [jobTitle, setJobTitle] = useState('');
-    const [isPublic, setIsPublic] = useState(false);
     const [sharing, setSharing] = useState(false);
 
+    const { data: resume, isLoading: loadingResume } = useQuery({
+        queryKey: ['resume', id],
+        queryFn: async () => {
+            if (!id) return null;
+            return await resumeStore.get(id);
+        },
+        enabled: Boolean(id) && !isLoading,
+    });
+
+    const isPublic = Boolean(resume?.isPublic);
+    const companyName = resume?.companyName ?? '';
+    const jobTitle = resume?.jobTitle ?? '';
+    const feedback = resume?.feedback ?? null;
+
     useEffect(() => {
-        if (!id || isLoading) return;
-        const loadResume = async () => {
-            const resume = await resumeStore.get(id);
-            if (!resume) {
-                if (!isAuthenticated) navigate('/auth');
-                else navigate('/');
-                return;
-            }
+        if (!loadingResume && !resume && !isLoading) {
+            if (!isAuthenticated) navigate('/auth');
+            else navigate('/');
+        }
+    }, [resume, loadingResume, isLoading, isAuthenticated, navigate]);
 
-            setCompanyName(resume.companyName ?? '');
-            setJobTitle(resume.jobTitle ?? '');
-            setFeedback(resume.feedback ?? null);
-            setIsPublic(Boolean(resume.isPublic));
+    useEffect(() => {
+        if (!resume) return;
 
-            if (resume.resumePath) {
-                try {
-                    const url = await storage.getSignedUrl('resume-files', resume.resumePath, 3600);
-                    setResumeUrl(url);
-                } catch { /* non-fatal */ }
-            }
-            if (resume.imagePath) {
-                try {
-                    const url = await storage.getSignedUrl('resume-images', resume.imagePath, 3600);
-                    setImageUrl(url);
-                } catch { /* non-fatal */ }
-            }
-        };
-        loadResume();
-    }, [id, isLoading, isAuthenticated, navigate]);
+        if (resume.resumePath) {
+            storage.getSignedUrl('resume-files', resume.resumePath, 3600)
+                .then(url => setResumeUrl(url))
+                .catch(() => {});
+        }
+        if (resume.imagePath) {
+            storage.getSignedUrl('resume-images', resume.imagePath, 3600)
+                .then(url => setImageUrl(url))
+                .catch(() => {});
+        }
+    }, [resume, storage]);
 
     const handleExportPDF = () => window.print();
 
     const handleShare = async () => {
-        if (!id) return;
+        if (!id || !resume) return;
         setSharing(true);
         try {
             const nextState = !isPublic;
             await resumeStore.togglePublic(id, nextState);
-            setIsPublic(nextState);
+            queryClient.setQueryData(['resume', id], { ...resume, isPublic: nextState });
             const shareUrl = `${window.location.origin}/resume/${id}`;
             if (nextState) {
                 await navigator.clipboard.writeText(shareUrl).catch(() => {});
