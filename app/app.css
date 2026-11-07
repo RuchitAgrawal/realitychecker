@@ -988,6 +988,32 @@ form {
   border-radius: 1rem;
 }
 
+.select-dropdown {
+  background: #11111f;
+  border: 1px solid #2a2a45;
+  color: #c8d0e7;
+  border-radius: 9999px;
+  padding: 0.375rem 0.875rem;
+  font-size: 0.8125rem;
+  cursor: pointer;
+  outline: none;
+  font-family: inherit;
+  transition: border-color 0.2s;
+}
+
+.select-dropdown:focus {
+  border-color: #6366f1;
+}
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  border-radius: 9999px;
+  border: 3px solid #2a2a45;
+  border-top-color: #6366f1;
+  animation: spin 0.9s linear infinite;
+}
+
 /* ═══════════════════════════════════════════════════════
    ANIMATIONS
    ═══════════════════════════════════════════════════════ */

@@ -89,11 +89,7 @@ export default function Home() {
             <select
               value={sortBy}
               onChange={e => setSortBy(e.target.value as SortOption)}
-              style={{
-                background: '#11111f', border: '1px solid #2a2a45', color: '#c8d0e7',
-                borderRadius: '9999px', padding: '0.375rem 0.875rem', fontSize: '0.8125rem',
-                cursor: 'pointer', outline: 'none', fontFamily: 'inherit',
-              }}
+              className="select-dropdown"
             >
               <option value="newest">Newest first</option>
               <option value="oldest">Oldest first</option>
