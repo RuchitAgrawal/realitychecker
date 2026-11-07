@@ -21,7 +21,7 @@ const icons: Record<ToastType, string> = {
 
 export const Toast = ({ toasts, onRemove }: ToastProps) => {
     return (
-        <div className="toast-container">
+        <div className="toast-container" role="status" aria-live="polite">
             {toasts.map((toast) => (
                 <ToastItem key={toast.id} toast={toast} onRemove={onRemove} />
             ))}
