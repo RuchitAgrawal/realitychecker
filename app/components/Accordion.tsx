@@ -80,8 +80,8 @@ export const AccordionContent: React.FC<AccordionContentProps> = ({ itemId, chil
 
     return (
         <div
-            className={`accordion-content ${className}`}
-            style={{ maxHeight: isActive ? '9999px' : 0, opacity: isActive ? 1 : 0 }}
+            id={`accordion-content-${itemId}`}
+            className={`accordion-content ${isActive ? 'open' : ''} ${className}`}
         >
             <div className="accordion-content-inner">{children}</div>
         </div>

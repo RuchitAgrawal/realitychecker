@@ -715,12 +715,20 @@ form {
 }
 
 .accordion-content {
-  overflow: hidden;
-  transition: max-height 0.3s ease, opacity 0.25s ease;
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.28s ease, opacity 0.25s ease;
   border-top: 1px solid #1e1e35;
+  opacity: 0;
+}
+
+.accordion-content.open {
+  grid-template-rows: 1fr;
+  opacity: 1;
 }
 
 .accordion-content-inner {
+  overflow: hidden;
   padding: 1rem 1.25rem 1.25rem;
 }
 
