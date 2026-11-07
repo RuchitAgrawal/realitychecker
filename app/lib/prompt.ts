@@ -57,7 +57,7 @@ export function buildSystemPrompt(): string {
 
 export function buildUserPrompt(resumeText: string, jobTitle?: string, jobDescription?: string): string {
     const jobContext = (jobTitle?.trim() && jobDescription?.trim())
-        ? `\nTARGET ROLE: ${jobTitle.trim()}\nJOB DESCRIPTION:\n${jobDescription.trim().substring(0, 1500)}\n\nEvaluate how well this resume is tailored for the above role. Penalise for missing keywords from the job description.`
+        ? `\nTARGET ROLE: ${jobTitle.trim()}\nJOB DESCRIPTION:\n${jobDescription.trim().substring(0, 3000)}\n\nEvaluate how well this resume is tailored for the above role. Penalise for missing keywords from the job description.`
         : `\nNo specific job role provided. Evaluate as a general-purpose resume.`;
 
     return `${jobContext}
