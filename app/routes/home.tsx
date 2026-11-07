@@ -6,6 +6,7 @@ import Toast, { useToast } from "~/components/Toast";
 import { useStore } from "~/lib/store";
 import { Link, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -17,12 +18,11 @@ export function meta({}: Route.MetaArgs) {
 type SortOption = 'newest' | 'oldest' | 'score-high' | 'score-low';
 
 export default function Home() {
-  const { isLoading, isAuthenticated, auth, resumes: resumeStore } = useStore();
+  const { isLoading, isAuthenticated, resumes: resumeStore } = useStore();
   const navigate = useNavigate();
   const { toasts, addToast, removeToast } = useToast();
+  const queryClient = useQueryClient();
 
-  const [resumes, setResumes] = useState<Resume[]>([]);
-  const [loadingResumes, setLoadingResumes] = useState(false);
   const [sortBy, setSortBy] = useState<SortOption>('newest');
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
@@ -30,28 +30,18 @@ export default function Home() {
     if (!isLoading && !isAuthenticated) navigate('/auth');
   }, [isLoading, isAuthenticated, navigate]);
 
-  const loadResumes = async () => {
-    setLoadingResumes(true);
-    try {
-      const items = await resumeStore.list();
-      setResumes(items);
-    } catch {
-      addToast('Failed to load resumes', 'error');
-    } finally {
-      setLoadingResumes(false);
-    }
-  };
-
-  useEffect(() => {
-    if (isAuthenticated) loadResumes();
-  }, [isAuthenticated]);
+  const { data: resumes = [], isLoading: loadingResumes } = useQuery({
+    queryKey: ['resumes'],
+    queryFn: () => resumeStore.list(),
+    enabled: isAuthenticated,
+  });
 
   const handleDelete = async (id: string, e: React.MouseEvent) => {
     e.preventDefault(); e.stopPropagation();
     setDeletingId(id);
     try {
       await resumeStore.delete(id);
-      setResumes(prev => prev.filter(r => r.id !== id));
+      queryClient.setQueryData<Resume[]>(['resumes'], (old = []) => old.filter(r => r.id !== id));
       addToast('Resume deleted', 'success');
     } catch {
       addToast('Failed to delete resume', 'error');
