@@ -63,7 +63,7 @@ export function buildUserPrompt(resumeText: string, jobTitle?: string, jobDescri
     return `${jobContext}
 
 RESUME TEXT:
-${resumeText.substring(0, 7000)}
+${resumeText.substring(0, 10000)}
 
 Respond with ONLY this JSON structure (no other text):
 ${RESPONSE_FORMAT}`;

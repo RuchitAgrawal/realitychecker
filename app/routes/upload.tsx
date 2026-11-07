@@ -113,7 +113,7 @@ const Upload = () => {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        resumeText: resumeText.substring(0, 6000),
+                        resumeText: resumeText.substring(0, 10000),
                         jobTitle: jobTitle.trim() || undefined,
                         jobDescription: jobDescription.trim() || undefined,
                     }),
