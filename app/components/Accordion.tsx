@@ -59,7 +59,13 @@ export const AccordionHeader: React.FC<AccordionHeaderProps> = ({ itemId, childr
     const isActive = isItemActive(itemId);
 
     return (
-        <button onClick={() => toggleItem(itemId)} className={`accordion-trigger ${className}`} type="button">
+        <button
+            onClick={() => toggleItem(itemId)}
+            className={`accordion-trigger ${className}`}
+            type="button"
+            aria-expanded={isActive}
+            aria-controls={`accordion-content-${itemId}`}
+        >
             <div style={{ flex: 1 }}>{children}</div>
             <svg
                 className={`accordion-chevron ${isActive ? 'open' : ''}`}
