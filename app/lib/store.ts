@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { supabase } from './supabase';
 import type { Session, User } from '@supabase/supabase-js';
+import type { ResumeRow } from '../../types/database';
 
 // ─── Auth ────────────────────────────────────────────────────────────────────
 
@@ -178,7 +179,7 @@ export const useStore = create<StoreState>((set, get) => ({
 }));
 
 // ─── Helper: db row → Resume ──────────────────────────────────────────────────
-function dbToResume(row: any): Resume {
+function dbToResume(row: ResumeRow): Resume {
     return {
         id: row.id,
         companyName: row.company_name ?? '',
@@ -186,7 +187,7 @@ function dbToResume(row: any): Resume {
         jobDescription: row.job_description ?? '',
         resumePath: row.resume_path ?? '',
         imagePath: row.image_path ?? '',
-        feedback: row.feedback ?? undefined,
+        feedback: (row.feedback as unknown as Feedback) ?? undefined,
         isPublic: Boolean(row.is_public),
         createdAt: row.created_at ? new Date(row.created_at).getTime() : undefined,
     };
