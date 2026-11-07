@@ -3,6 +3,7 @@
 
 const RESPONSE_FORMAT = `{
   "overallScore": <0-100>,
+  "experienceLevel": "entry"|"mid"|"senior",
   "ATS": {
     "score": <0-100>,
     "tips": [{ "type": "good"|"improve", "tip": "<concise title>" }]
@@ -39,6 +40,7 @@ SCORING CRITERIA:
 
 SCORE EACH CATEGORY:
 - overallScore: Weighted average (ATS 25%, content 30%, structure 20%, toneAndStyle 15%, skills 10%)
+- experienceLevel: Infer experience level from years and roles ("entry" for 0-2 yrs, "mid" for 3-6 yrs, "senior" for 7+ yrs)
 - ATS: Keyword density, formatting compatibility (no tables/columns/images), standard section headings, machine-readable structure
 - toneAndStyle: Active voice, professional tone, consistent tense, quantified achievements, avoidance of clichés
 - content: Relevance of experience, strength of bullet points, measurable impact, clear value proposition
