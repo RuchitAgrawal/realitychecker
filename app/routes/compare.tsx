@@ -99,6 +99,13 @@ const Compare = () => {
         enabled: isAuthenticated,
     });
 
+    useEffect(() => {
+        if (resumes.length >= 2 && !idA && !idB) {
+            setIdA(resumes[0]?.id ?? '');
+            setIdB(resumes[1]?.id ?? '');
+        }
+    }, [resumes, idA, idB]);
+
     // Load preview images from Supabase Storage signed URLs
     useEffect(() => {
         setImgA('');
