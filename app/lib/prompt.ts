@@ -23,6 +23,11 @@ const RESPONSE_FORMAT = `{
   "skills": {
     "score": <0-100>,
     "tips": [{ "type": "good"|"improve", "tip": "<title>", "explanation": "<detailed explanation>" }]
+  },
+  "keywordAnalysis": {
+    "matched": ["<skill1>", "<skill2>"],
+    "missing": ["<missingSkill1>", "<missingSkill2>"],
+    "partialMatch": ["<partialSkill1>"]
   }
 }`;
 
@@ -46,6 +51,7 @@ SCORE EACH CATEGORY:
 - content: Relevance of experience, strength of bullet points, measurable impact, clear value proposition
 - structure: Logical flow, appropriate length (1 page <5yr exp, 2 pages otherwise), section order, white space
 - skills: Technical/soft skill alignment with industry standards, specificity, currency of skills listed
+- keywordAnalysis: Compare resume skills against job description; output lists for 'matched', 'missing', and 'partialMatch' keywords
 
 RULES:
 - Return ONLY valid JSON. No markdown. No code fences. No commentary. No extra text.
