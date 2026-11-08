@@ -3,7 +3,13 @@ import ScoreCircle from "~/components/ScoreCircle";
 import { useEffect, useState } from "react";
 import { useStore } from "~/lib/store";
 
-const ResumeCard = ({ resume: { id, companyName, jobTitle, feedback, imagePath } }: { resume: Resume }) => {
+interface ResumeCardProps {
+    resume: Resume;
+    selected?: boolean;
+    onToggleSelect?: (e: React.MouseEvent) => void;
+}
+
+const ResumeCard = ({ resume: { id, companyName, jobTitle, feedback, imagePath }, selected, onToggleSelect }: ResumeCardProps) => {
     const { storage } = useStore();
     const [resumeUrl, setResumeUrl] = useState('');
 
@@ -12,16 +18,41 @@ const ResumeCard = ({ resume: { id, companyName, jobTitle, feedback, imagePath }
         storage.getSignedUrl('resume-images', imagePath, 3600)
             .then(url => setResumeUrl(url))
             .catch(() => {});
-    }, [imagePath]);
+    }, [imagePath, storage]);
 
     const score = feedback?.overallScore ?? 0;
-    const scoreColor = score >= 70 ? '#10b981' : score >= 50 ? '#f59e0b' : '#ef4444';
     const scoreBgClass = score >= 70 ? 'score-badge-green' : score >= 50 ? 'score-badge-yellow' : 'score-badge-red';
 
     return (
-        <Link to={`/resume/${id}`} className="resume-card">
+        <Link to={`/resume/${id}`} className="resume-card" style={{ outline: selected ? '2px solid #6366f1' : 'none' }}>
+            {onToggleSelect && (
+                <div
+                    onClick={onToggleSelect}
+                    title={selected ? "Deselect" : "Select for comparison"}
+                    style={{
+                        position: 'absolute',
+                        top: '0.875rem',
+                        left: '0.875rem',
+                        width: '1.25rem',
+                        height: '1.25rem',
+                        borderRadius: '0.25rem',
+                        border: selected ? '1px solid #6366f1' : '1px solid #3a3a5c',
+                        background: selected ? '#6366f1' : '#11111f',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: '#fff',
+                        fontSize: '0.75rem',
+                        cursor: 'pointer',
+                        zIndex: 10,
+                    }}
+                >
+                    {selected ? '✓' : ''}
+                </div>
+            )}
+
             {/* Header */}
-            <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1rem' }}>
+            <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1rem', paddingLeft: onToggleSelect ? '1.5rem' : 0 }}>
                 <div style={{ flex: 1, minWidth: 0 }}>
                     <p style={{ fontWeight: 700, fontSize: '1rem', color: '#c8d0e7', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                         {companyName || 'Resume'}

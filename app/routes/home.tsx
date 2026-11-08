@@ -27,6 +27,7 @@ export default function Home() {
   const [sortBy, setSortBy] = useState<SortOption>('newest');
   const [scoreFilter, setScoreFilter] = useState<ScoreFilter>('all');
   const [search, setSearch] = useState('');
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -38,6 +39,18 @@ export default function Home() {
     queryFn: () => resumeStore.list(),
     enabled: isAuthenticated,
   });
+
+  const toggleSelect = (id: string, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setSelectedIds(prev =>
+      prev.includes(id)
+        ? prev.filter(x => x !== id)
+        : prev.length < 2
+          ? [...prev, id]
+          : [prev[1] ?? '', id].filter(Boolean)
+    );
+  };
 
   const handleDelete = async (id: string, e: React.MouseEvent) => {
     e.preventDefault(); e.stopPropagation();
@@ -139,7 +152,11 @@ export default function Home() {
           <div className="resumes-section">
             {filtered.map(resume => (
               <div key={resume.id} style={{ position: 'relative' }}>
-                <ResumeCard resume={resume} />
+                <ResumeCard
+                  resume={resume}
+                  selected={selectedIds.includes(resume.id)}
+                  onToggleSelect={e => toggleSelect(resume.id, e)}
+                />
                 <button
                   onClick={e => handleDelete(resume.id, e)}
                   disabled={deletingId === resume.id}
@@ -179,6 +196,42 @@ export default function Home() {
               </svg>
               Upload Your First Resume
             </Link>
+          </div>
+        )}
+        {selectedIds.length > 0 && (
+          <div style={{
+            position: 'fixed',
+            bottom: '1.5rem',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            background: '#11111f',
+            border: '1px solid #2a2a45',
+            borderRadius: '9999px',
+            padding: '0.625rem 1.25rem',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '1rem',
+            boxShadow: '0 10px 30px rgba(0, 0, 0, 0.7)',
+            zIndex: 100,
+          }}>
+            <span style={{ fontSize: '0.85rem', color: '#c8d0e7' }}>
+              {selectedIds.length} of 2 selected for comparison
+            </span>
+            {selectedIds.length === 2 && (
+              <button
+                onClick={() => navigate(`/compare?a=${selectedIds[0]}&b=${selectedIds[1]}`)}
+                className="primary-button"
+                style={{ padding: '0.35rem 0.875rem', fontSize: '0.8rem' }}
+              >
+                Compare Selected →
+              </button>
+            )}
+            <button
+              onClick={() => setSelectedIds([])}
+              style={{ background: 'none', border: 'none', color: '#64748b', cursor: 'pointer', fontSize: '0.8rem' }}
+            >
+              Clear
+            </button>
           </div>
         )}
       </section>
