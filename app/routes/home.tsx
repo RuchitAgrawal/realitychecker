@@ -2,6 +2,7 @@ import type { Route } from "./+types/home";
 import Navbar from "~/components/Navbar";
 import ResumeCard from "~/components/ResumeCard";
 import Spinner from "~/components/Spinner";
+import ConfirmModal from "~/components/ConfirmModal";
 import Toast, { useToast } from "~/components/Toast";
 import { useStore } from "~/lib/store";
 import { Link, useNavigate } from "react-router";
@@ -28,6 +29,7 @@ export default function Home() {
   const [scoreFilter, setScoreFilter] = useState<ScoreFilter>('all');
   const [search, setSearch] = useState('');
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -52,9 +54,17 @@ export default function Home() {
     );
   };
 
-  const handleDelete = async (id: string, e: React.MouseEvent) => {
-    e.preventDefault(); e.stopPropagation();
+  const handleDeleteClick = (id: string, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setConfirmDeleteId(id);
+  };
+
+  const executeDelete = async () => {
+    if (!confirmDeleteId) return;
+    const id = confirmDeleteId;
     setDeletingId(id);
+    setConfirmDeleteId(null);
     try {
       await resumeStore.delete(id);
       queryClient.setQueryData<Resume[]>(['resumes'], (old = []) => old.filter(r => r.id !== id));
@@ -158,7 +168,7 @@ export default function Home() {
                   onToggleSelect={e => toggleSelect(resume.id, e)}
                 />
                 <button
-                  onClick={e => handleDelete(resume.id, e)}
+                  onClick={e => handleDeleteClick(resume.id, e)}
                   disabled={deletingId === resume.id}
                   title="Delete this resume"
                   className="btn-delete-card"
@@ -233,6 +243,15 @@ export default function Home() {
               Clear
             </button>
           </div>
+        )}
+        {confirmDeleteId && (
+          <ConfirmModal
+            title="Delete Resume"
+            message="Are you sure you want to delete this resume analysis? This action cannot be undone."
+            confirmLabel="Delete Resume"
+            onConfirm={executeDelete}
+            onCancel={() => setConfirmDeleteId(null)}
+          />
         )}
       </section>
     </main>
