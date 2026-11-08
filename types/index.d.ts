@@ -9,6 +9,12 @@ interface AtsCategory {
     tips: Tip[];
 }
 
+interface KeywordAnalysis {
+    matched: string[];
+    missing: string[];
+    partialMatch?: string[];
+}
+
 interface Feedback {
     overallScore: number;
     experienceLevel?: 'entry' | 'mid' | 'senior';
@@ -17,6 +23,7 @@ interface Feedback {
     content: AtsCategory;
     structure: AtsCategory;
     skills: AtsCategory;
+    keywordAnalysis?: KeywordAnalysis;
 }
 
 interface Resume {
