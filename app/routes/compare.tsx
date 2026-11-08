@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router';
+import { Link, useNavigate, useSearchParams } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 import { useStore } from '~/lib/store';
 import Navbar from '~/components/Navbar';
@@ -83,9 +83,13 @@ const ResumeSelector = ({ label, value, onChange, resumes }: {
 const Compare = () => {
     const { isLoading, isAuthenticated, storage, resumes: resumeStore } = useStore();
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
 
-    const [idA, setIdA] = useState('');
-    const [idB, setIdB] = useState('');
+    const paramA = searchParams.get('a') || '';
+    const paramB = searchParams.get('b') || '';
+
+    const [idA, setIdA] = useState(paramA);
+    const [idB, setIdB] = useState(paramB);
     const [imgA, setImgA] = useState('');
     const [imgB, setImgB] = useState('');
 
@@ -100,11 +104,14 @@ const Compare = () => {
     });
 
     useEffect(() => {
-        if (resumes.length >= 2 && !idA && !idB) {
+        if (paramA && paramB && (!idA || !idB)) {
+            setIdA(paramA);
+            setIdB(paramB);
+        } else if (resumes.length >= 2 && !idA && !idB) {
             setIdA(resumes[0]?.id ?? '');
             setIdB(resumes[1]?.id ?? '');
         }
-    }, [resumes, idA, idB]);
+    }, [resumes, idA, idB, paramA, paramB]);
 
     // Load preview images from Supabase Storage signed URLs
     useEffect(() => {
