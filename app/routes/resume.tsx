@@ -107,6 +107,20 @@ const ResumeDetail = () => {
                 </div>
 
                 <div style={{ display: 'flex', gap: '0.625rem', alignItems: 'center' }}>
+                    {isAuthenticated && id && (
+                        <Link
+                            to={`/upload?reanalyze=${id}`}
+                            className="back-button"
+                            title="Re-analyze with updated role or job description"
+                        >
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                <polyline points="23 4 23 10 17 10"/>
+                                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+                            </svg>
+                            Re-analyze
+                        </Link>
+                    )}
+
                     {isAuthenticated && (
                         <button onClick={handleShare} disabled={sharing} className="back-button" title={isPublic ? "Public link active — click to revoke" : "Make public and copy link"}>
                             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
