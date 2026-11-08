@@ -27,6 +27,13 @@ const getScore = (resume: Resume | null, key: string): number => {
     return (resume.feedback as any)[key]?.score ?? 0;
 };
 
+const getTopTip = (resume: Resume | null, key: string): string => {
+    if (!resume?.feedback) return '';
+    const cat = (resume.feedback as any)[key];
+    const tip = cat?.tips?.find((t: any) => t.type === 'improve') || cat?.tips?.[0];
+    return tip?.tip ? `Tip: ${tip.tip}` : '';
+};
+
 const ScoreBar = ({ score, win }: { score: number; win: boolean }) => {
     const color = getScoreColor(score);
     return (
@@ -189,18 +196,33 @@ const Compare = () => {
                                     {CATEGORIES.filter(c => c.key !== 'overallScore').map((cat, i) => {
                                         const sA = getScore(resumeA, cat.key);
                                         const sB = getScore(resumeB, cat.key);
+                                        const tipA = getTopTip(resumeA, cat.key);
+                                        const tipB = getTopTip(resumeB, cat.key);
                                         return (
                                             <div key={cat.key} style={{
-                                                display: 'grid', gridTemplateColumns: '1fr auto 1fr',
-                                                gap: '1rem', alignItems: 'center',
                                                 padding: '0.875rem 1.25rem',
                                                 borderTop: i > 0 ? '1px solid #1e1e35' : 'none',
                                             }}>
-                                                <ScoreBar score={sA} win={sA > sB} />
-                                                <span style={{ fontSize: '0.75rem', fontWeight: 600, color: '#3a3a5c', textAlign: 'center', whiteSpace: 'nowrap', minWidth: '80px' }}>
-                                                    {cat.label}
-                                                </span>
-                                                <ScoreBar score={sB} win={sB > sA} />
+                                                <div style={{
+                                                    display: 'grid', gridTemplateColumns: '1fr auto 1fr',
+                                                    gap: '1rem', alignItems: 'center',
+                                                }}>
+                                                    <ScoreBar score={sA} win={sA > sB} />
+                                                    <span style={{ fontSize: '0.75rem', fontWeight: 600, color: '#3a3a5c', textAlign: 'center', whiteSpace: 'nowrap', minWidth: '80px' }}>
+                                                        {cat.label}
+                                                    </span>
+                                                    <ScoreBar score={sB} win={sB > sA} />
+                                                </div>
+                                                {(tipA || tipB) && (
+                                                    <div style={{
+                                                        display: 'grid', gridTemplateColumns: '1fr auto 1fr',
+                                                        gap: '1rem', marginTop: '0.5rem', fontSize: '0.75rem', color: '#64748b',
+                                                    }}>
+                                                        <span>{tipA}</span>
+                                                        <span style={{ minWidth: '80px' }}></span>
+                                                        <span>{tipB}</span>
+                                                    </div>
+                                                )}
                                             </div>
                                         );
                                     })}
