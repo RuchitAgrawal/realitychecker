@@ -32,3 +32,12 @@ export function getScoreBadgeClass(score: number): string {
     if (level === 'medium') return 'score-badge-yellow';
     return 'score-badge-red';
 }
+
+export function formatDate(timestamp?: number): string {
+    if (!timestamp) return '';
+    return new Date(timestamp).toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+    });
+}

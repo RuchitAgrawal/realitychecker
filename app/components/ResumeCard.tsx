@@ -2,6 +2,7 @@ import { Link } from "react-router";
 import ScoreCircle from "~/components/ScoreCircle";
 import { useEffect, useState } from "react";
 import { useStore } from "~/lib/store";
+import { formatDate } from "~/lib/utils";
 
 interface ResumeCardProps {
     resume: Resume;
@@ -9,7 +10,7 @@ interface ResumeCardProps {
     onToggleSelect?: (e: React.MouseEvent) => void;
 }
 
-const ResumeCard = ({ resume: { id, companyName, jobTitle, feedback, imagePath }, selected, onToggleSelect }: ResumeCardProps) => {
+const ResumeCard = ({ resume: { id, companyName, jobTitle, feedback, imagePath, createdAt }, selected, onToggleSelect }: ResumeCardProps) => {
     const { storage } = useStore();
     const [resumeUrl, setResumeUrl] = useState('');
 
@@ -62,8 +63,15 @@ const ResumeCard = ({ resume: { id, companyName, jobTitle, feedback, imagePath }
                             {jobTitle}
                         </p>
                     )}
-                    <div className={`score-badge ${scoreBgClass}`} style={{ marginTop: '0.625rem' }}>
-                        Score: {score}/100
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.625rem', flexWrap: 'wrap' }}>
+                        <div className={`score-badge ${scoreBgClass}`}>
+                            Score: {score}/100
+                        </div>
+                        {createdAt && (
+                            <span style={{ fontSize: '0.75rem', color: '#4a5568' }}>
+                                {formatDate(createdAt)}
+                            </span>
+                        )}
                     </div>
                 </div>
                 <ScoreCircle score={score} />
