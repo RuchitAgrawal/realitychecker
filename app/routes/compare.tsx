@@ -203,6 +203,7 @@ const Compare = () => {
                                     {CATEGORIES.filter(c => c.key !== 'overallScore').map((cat, i) => {
                                         const sA = getScore(resumeA, cat.key);
                                         const sB = getScore(resumeB, cat.key);
+                                        const delta = sA - sB;
                                         const tipA = getTopTip(resumeA, cat.key);
                                         const tipB = getTopTip(resumeB, cat.key);
                                         return (
@@ -215,9 +216,20 @@ const Compare = () => {
                                                     gap: '1rem', alignItems: 'center',
                                                 }}>
                                                     <ScoreBar score={sA} win={sA > sB} />
-                                                    <span style={{ fontSize: '0.75rem', fontWeight: 600, color: '#3a3a5c', textAlign: 'center', whiteSpace: 'nowrap', minWidth: '80px' }}>
-                                                        {cat.label}
-                                                    </span>
+                                                    <div style={{ textAlign: 'center', minWidth: '90px' }}>
+                                                        <span style={{ fontSize: '0.75rem', fontWeight: 600, color: '#c8d0e7', display: 'block' }}>
+                                                            {cat.label}
+                                                        </span>
+                                                        {delta !== 0 && (
+                                                            <span style={{
+                                                                fontSize: '0.65rem',
+                                                                fontWeight: 700,
+                                                                color: delta > 0 ? '#6ee7b7' : '#fcd34d',
+                                                            }}>
+                                                                {delta > 0 ? `+${delta} on A` : `+${Math.abs(delta)} on B`}
+                                                            </span>
+                                                        )}
+                                                    </div>
                                                     <ScoreBar score={sB} win={sB > sA} />
                                                 </div>
                                                 {(tipA || tipB) && (
