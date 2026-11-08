@@ -1043,6 +1043,56 @@ form {
   opacity: 0.4;
 }
 
+/* ── Keyword Gap Card ────────────────────────────────── */
+.keyword-gap-card {
+  background: #11111f;
+  border: 1px solid #2a2a45;
+  border-radius: 1rem;
+  padding: 1.25rem;
+}
+
+.keyword-column {
+  background: #0e0e1e;
+  border: 1px solid #1e1e35;
+  border-radius: 0.75rem;
+  padding: 0.875rem;
+}
+
+.keyword-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.625rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1px solid;
+  transition: all 0.2s;
+}
+
+.keyword-pill-matched {
+  background: rgba(16, 185, 129, 0.1);
+  border-color: rgba(16, 185, 129, 0.3);
+  color: #6ee7b7;
+}
+
+.keyword-pill-missing {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: #fca5a5;
+}
+
+.keyword-pill-missing:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.5);
+}
+
+.keyword-pill-partial {
+  background: rgba(245, 158, 11, 0.1);
+  border-color: rgba(245, 158, 11, 0.3);
+  color: #fcd34d;
+}
+
 /* ═══════════════════════════════════════════════════════
    ANIMATIONS
    ═══════════════════════════════════════════════════════ */
