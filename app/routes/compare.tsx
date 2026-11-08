@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
+import { useQuery } from '@tanstack/react-query';
 import { useStore } from '~/lib/store';
 import Navbar from '~/components/Navbar';
 import ScoreGauge from '~/components/ScoreGauge';
@@ -76,8 +77,6 @@ const Compare = () => {
     const { isLoading, isAuthenticated, storage, resumes: resumeStore } = useStore();
     const navigate = useNavigate();
 
-    const [resumes, setResumes] = useState<Resume[]>([]);
-    const [loading, setLoading] = useState(false);
     const [idA, setIdA] = useState('');
     const [idB, setIdB] = useState('');
     const [imgA, setImgA] = useState('');
@@ -87,18 +86,11 @@ const Compare = () => {
         if (!isLoading && !isAuthenticated) navigate('/auth');
     }, [isLoading, isAuthenticated, navigate]);
 
-    useEffect(() => {
-        if (!isAuthenticated) return;
-        const load = async () => {
-            setLoading(true);
-            try {
-                const items = await resumeStore.list();
-                setResumes(items);
-            } catch { /* ignore */ }
-            setLoading(false);
-        };
-        load();
-    }, [isAuthenticated]);
+    const { data: resumes = [], isLoading: loading } = useQuery({
+        queryKey: ['resumes'],
+        queryFn: () => resumeStore.list(),
+        enabled: isAuthenticated,
+    });
 
     // Load preview images from Supabase Storage signed URLs
     useEffect(() => {
