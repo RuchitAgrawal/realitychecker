@@ -1,9 +1,9 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import Navbar from '~/components/Navbar';
 import FileUploader from '~/components/FileUploader';
 import Toast, { useToast } from '~/components/Toast';
 import { useStore } from '~/lib/store';
-import { useNavigate } from 'react-router';
+import { useNavigate, useSearchParams } from 'react-router';
 import { convertPdfToImage, extractTextFromPdf } from '~/lib/pdf2img';
 import { generateUUID } from '~/lib/utils';
 
@@ -32,7 +32,10 @@ function withTimeout<T>(promise: Promise<T>, ms: number, label: string): Promise
 const Upload = () => {
     const { storage, resumes: resumeStore } = useStore();
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
     const { toasts, addToast, removeToast } = useToast();
+
+    const reanalyzeId = searchParams.get('reanalyze');
 
     const [status, setStatus] = useState<AnalysisStatus>('idle');
     const [currentStep, setCurrentStep] = useState(0);
@@ -44,6 +47,18 @@ const Upload = () => {
     const [companyName, setCompanyName] = useState('');
     const [jobTitle, setJobTitle] = useState('');
     const [jobDescription, setJobDescription] = useState('');
+
+    useEffect(() => {
+        if (!reanalyzeId) return;
+        resumeStore.get(reanalyzeId).then((existing) => {
+            if (existing) {
+                if (existing.companyName) setCompanyName(existing.companyName);
+                if (existing.jobTitle) setJobTitle(existing.jobTitle);
+                if (existing.jobDescription) setJobDescription(existing.jobDescription);
+                addToast('Pre-filled job details from existing resume.', 'info');
+            }
+        }).catch(() => {});
+    }, [reanalyzeId, resumeStore]);
 
     const handleFileSelect = useCallback((selectedFile: File | null) => {
         setFile(selectedFile);
