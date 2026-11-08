@@ -16,6 +16,7 @@ export function meta({}: Route.MetaArgs) {
 }
 
 type SortOption = 'newest' | 'oldest' | 'score-high' | 'score-low';
+type ScoreFilter = 'all' | 'high' | 'mid' | 'low';
 
 export default function Home() {
   const { isLoading, isAuthenticated, resumes: resumeStore } = useStore();
@@ -24,6 +25,7 @@ export default function Home() {
   const queryClient = useQueryClient();
 
   const [sortBy, setSortBy] = useState<SortOption>('newest');
+  const [scoreFilter, setScoreFilter] = useState<ScoreFilter>('all');
   const [search, setSearch] = useState('');
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
@@ -60,6 +62,11 @@ export default function Home() {
   });
 
   const filtered = sorted.filter(r => {
+    const score = r.feedback?.overallScore ?? 0;
+    if (scoreFilter === 'high' && score < 70) return false;
+    if (scoreFilter === 'mid' && (score < 50 || score >= 70)) return false;
+    if (scoreFilter === 'low' && score >= 50) return false;
+
     if (!search.trim()) return true;
     const term = search.toLowerCase();
     const company = (r.companyName || '').toLowerCase();
@@ -97,12 +104,24 @@ export default function Home() {
               }}
             />
             {resumes.length > 1 && (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                <span style={{ fontSize: '0.8125rem', color: '#4a5568' }}>Sort by</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+                <select
+                  value={scoreFilter}
+                  onChange={e => setScoreFilter(e.target.value as ScoreFilter)}
+                  className="select-dropdown"
+                  title="Filter by score"
+                >
+                  <option value="all">All scores</option>
+                  <option value="high">Score 70+ (Strong)</option>
+                  <option value="mid">Score 50-69 (Average)</option>
+                  <option value="low">Score &lt;50 (Needs Work)</option>
+                </select>
+
                 <select
                   value={sortBy}
                   onChange={e => setSortBy(e.target.value as SortOption)}
                   className="select-dropdown"
+                  title="Sort order"
                 >
                   <option value="newest">Newest first</option>
                   <option value="oldest">Oldest first</option>
