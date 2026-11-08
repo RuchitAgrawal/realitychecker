@@ -4,6 +4,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useStore } from '~/lib/store';
 import Summary from '~/components/Summary';
 import ATS from '~/components/ATS';
+import KeywordGap from '~/components/KeywordGap';
 import Details from '~/components/Details';
 import Spinner from '~/components/Spinner';
 import Toast, { useToast } from '~/components/Toast';
@@ -187,6 +188,7 @@ const ResumeDetail = () => {
                     {feedback ? (
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', animation: 'fadeIn 0.5s ease' }}>
                             <Summary feedback={feedback} />
+                            <KeywordGap analysis={feedback.keywordAnalysis} />
                             <ATS score={feedback.ATS?.score ?? 0} suggestions={feedback.ATS?.tips ?? []} />
                             <Details feedback={feedback} />
                         </div>
