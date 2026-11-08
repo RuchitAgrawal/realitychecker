@@ -24,6 +24,7 @@ export default function Home() {
   const queryClient = useQueryClient();
 
   const [sortBy, setSortBy] = useState<SortOption>('newest');
+  const [search, setSearch] = useState('');
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -58,6 +59,14 @@ export default function Home() {
     return 0;
   });
 
+  const filtered = sorted.filter(r => {
+    if (!search.trim()) return true;
+    const term = search.toLowerCase();
+    const company = (r.companyName || '').toLowerCase();
+    const title = (r.jobTitle || '').toLowerCase();
+    return company.includes(term) || title.includes(term);
+  });
+
   return (
     <main>
       <Navbar />
@@ -73,27 +82,43 @@ export default function Home() {
           </p>
         </div>
 
-        {!loadingResumes && resumes.length > 1 && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', alignSelf: 'flex-end', paddingRight: '0.5rem' }}>
-            <span style={{ fontSize: '0.8125rem', color: '#4a5568' }}>Sort by</span>
-            <select
-              value={sortBy}
-              onChange={e => setSortBy(e.target.value as SortOption)}
-              className="select-dropdown"
-            >
-              <option value="newest">Newest first</option>
-              <option value="oldest">Oldest first</option>
-              <option value="score-high">Highest score</option>
-              <option value="score-low">Lowest score</option>
-            </select>
+        {!loadingResumes && resumes.length > 0 && (
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem', width: '100%', maxWidth: '960px', margin: '0 auto 1.5rem' }}>
+            <input
+              type="text"
+              placeholder="Search by company or role…"
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              style={{
+                maxWidth: '300px',
+                padding: '0.5rem 0.875rem',
+                fontSize: '0.8125rem',
+                borderRadius: '9999px',
+              }}
+            />
+            {resumes.length > 1 && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <span style={{ fontSize: '0.8125rem', color: '#4a5568' }}>Sort by</span>
+                <select
+                  value={sortBy}
+                  onChange={e => setSortBy(e.target.value as SortOption)}
+                  className="select-dropdown"
+                >
+                  <option value="newest">Newest first</option>
+                  <option value="oldest">Oldest first</option>
+                  <option value="score-high">Highest score</option>
+                  <option value="score-low">Lowest score</option>
+                </select>
+              </div>
+            )}
           </div>
         )}
 
         {loadingResumes && <Spinner label="Loading your resumes…" size={40} />}
 
-        {!loadingResumes && sorted.length > 0 && (
+        {!loadingResumes && filtered.length > 0 && (
           <div className="resumes-section">
-            {sorted.map(resume => (
+            {filtered.map(resume => (
               <div key={resume.id} style={{ position: 'relative' }}>
                 <ResumeCard resume={resume} />
                 <button
