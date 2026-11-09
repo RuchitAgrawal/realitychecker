@@ -358,11 +358,7 @@ const ResumeDetail = () => {
       {/* Body */}
       <div className="resume-layout">
         {/* Left — resume preview */}
-        <div
-          className="resume-preview-panel"
-          id="resume-preview-panel"
-          style={{ overflowY: "auto", maxHeight: "calc(100vh - 4.5rem)" }}
-        >
+        <div className="resume-preview-panel" id="resume-preview-panel">
           {imageUrl ? (
             <a
               href={resumeUrl || "#"}
@@ -375,12 +371,6 @@ const ResumeDetail = () => {
                 alt="Resume preview"
                 onError={handleImageError}
                 className="resume-preview-img"
-                style={{
-                  animation: "fadeIn 0.5s ease",
-                  width: "100%",
-                  height: "auto",
-                  display: "block",
-                }}
               />
             </a>
           ) : (
@@ -394,14 +384,15 @@ const ResumeDetail = () => {
             <h2
               style={{
                 fontSize: "1.5rem",
-                fontWeight: 700,
-                color: "#c8d0e7",
+                fontWeight: 400,
+                color: "#26251e",
+                letterSpacing: "-0.02em",
                 marginBottom: "0.25rem",
               }}
             >
               Resume Analysis
             </h2>
-            <p style={{ fontSize: "0.875rem", color: "#4a5568" }}>
+            <p style={{ fontSize: "0.875rem", color: "#5a5852" }}>
               AI-powered feedback across tone, content, structure &amp; ATS compatibility
             </p>
           </div>
