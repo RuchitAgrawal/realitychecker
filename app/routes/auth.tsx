@@ -35,7 +35,7 @@ const authSchema = z.object({
 type AuthFormData = z.infer<typeof authSchema>;
 
 const Auth = () => {
-    const { isLoading, isAuthenticated, auth } = useStore();
+    const { isLoading, isAuthenticated, auth, resumes } = useStore();
     const navigate = useNavigate();
 
     const [mode, setMode] = useState<AuthMode>('signin');
@@ -60,8 +60,26 @@ const Auth = () => {
     const strength = getPasswordStrength(watchedPassword);
 
     useEffect(() => {
-        if (!isLoading && isAuthenticated) navigate('/');
-    }, [isLoading, isAuthenticated, navigate]);
+        let isMounted = true;
+        if (!isLoading && isAuthenticated) {
+            resumes
+                .list()
+                .then(list => {
+                    if (!isMounted) return;
+                    if (list.length === 0) {
+                        navigate('/upload', { replace: true });
+                    } else {
+                        navigate('/', { replace: true });
+                    }
+                })
+                .catch(() => {
+                    if (isMounted) navigate('/', { replace: true });
+                });
+        }
+        return () => {
+            isMounted = false;
+        };
+    }, [isLoading, isAuthenticated, navigate, resumes]);
 
     const onSubmit = async (data: AuthFormData) => {
         setServerError('');
