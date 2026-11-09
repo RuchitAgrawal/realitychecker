@@ -18,11 +18,11 @@ export const meta = () => [
 type AnalysisStatus = "idle" | "processing" | "error";
 
 const STEPS = [
-  { id: 1, label: "Extracting resume content" },
-  { id: 2, label: "Rendering document preview" },
-  { id: 3, label: "Storing documents securely" },
-  { id: 4, label: "Evaluating ATS score & feedback" },
-  { id: 5, label: "Finalizing analysis report" },
+  { id: 1, label: "Extracting resume content", stage: "thinking", pill: "Thinking" },
+  { id: 2, label: "Rendering document preview", stage: "grep", pill: "Grepping" },
+  { id: 3, label: "Storing document assets", stage: "read", pill: "Reading" },
+  { id: 4, label: "Evaluating ATS score & feedback", stage: "edit", pill: "Evaluating" },
+  { id: 5, label: "Finalizing analysis report", stage: "done", pill: "Done" },
 ];
 
 function withTimeout<T>(promise: Promise<T>, ms: number, label: string): Promise<T> {
@@ -250,11 +250,18 @@ const Upload = () => {
                 gap: "1.5rem",
                 marginTop: "1.5rem",
                 width: "100%",
+                maxWidth: "480px",
               }}
             >
-              <p style={{ color: "#64748b", fontSize: "0.9375rem" }}>
-                Analyzing your resume with AI ({elapsedSeconds}s) — please wait…
-              </p>
+              <div style={{ textAlign: "center" }}>
+                <p style={{ color: "#26251e", fontSize: "1rem", fontWeight: 500 }}>
+                  Analyzing your resume
+                </p>
+                <p style={{ color: "#807d72", fontSize: "0.8125rem", marginTop: "0.25rem", fontFamily: "JetBrains Mono, monospace" }}>
+                  Elapsed time: {elapsedSeconds}s
+                </p>
+              </div>
+
               <div className="progress-steps">
                 {STEPS.map((step) => {
                   const isDone = doneSteps.includes(step.id);
@@ -262,21 +269,28 @@ const Upload = () => {
                   const cls = isDone ? "done" : isActive ? "active" : "";
                   return (
                     <div key={step.id} className={`progress-step ${cls}`}>
-                      <div className={`step-icon ${cls}`}>{isDone ? "✓" : step.id}</div>
+                      <span className={`timeline-pill timeline-pill-${step.stage}`}>
+                        {step.pill}
+                      </span>
                       <span className={`step-label ${cls || "idle"}`}>{step.label}</span>
                       {isActive && (
                         <div style={{ marginLeft: "auto", flexShrink: 0 }}>
                           <div
                             style={{
-                              width: "16px",
-                              height: "16px",
-                              border: "2px solid #2a2a45",
-                              borderTopColor: "#6366f1",
+                              width: "14px",
+                              height: "14px",
+                              border: "2px solid #e6e5e0",
+                              borderTopColor: "#f54e00",
                               borderRadius: "9999px",
-                              animation: "spin 0.9s linear infinite",
+                              animation: "spin 0.8s linear infinite",
                             }}
                           />
                         </div>
+                      )}
+                      {isDone && (
+                        <span style={{ marginLeft: "auto", color: "#1f8a65", fontSize: "0.875rem", fontWeight: 600 }}>
+                          ✓
+                        </span>
                       )}
                     </div>
                   );
@@ -284,13 +298,13 @@ const Upload = () => {
               </div>
               <p
                 style={{
-                  color: "#3a3a5c",
-                  fontSize: "0.8rem",
+                  color: "#807d72",
+                  fontSize: "0.75rem",
                   maxWidth: "380px",
                   textAlign: "center",
                 }}
               >
-                AI analysis can take 5–30 seconds. Please keep this tab open.
+                AI analysis evaluates structure, impact, tone, and keyword coverage.
               </p>
             </div>
           )}
@@ -310,42 +324,26 @@ const Upload = () => {
             >
               <div
                 style={{
-                  background: "rgba(239,68,68,0.08)",
-                  border: "1px solid rgba(239,68,68,0.25)",
-                  borderRadius: "1rem",
+                  background: "#ffffff",
+                  border: "1px solid #cf2d56",
+                  borderLeft: "4px solid #cf2d56",
+                  borderRadius: "8px",
                   padding: "1.5rem",
                   width: "100%",
                   textAlign: "center",
                 }}
               >
-                <div
-                  style={{
-                    width: "2.5rem",
-                    height: "2.5rem",
-                    borderRadius: "9999px",
-                    background: "rgba(239,68,68,0.15)",
-                    border: "1px solid rgba(239,68,68,0.3)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    margin: "0 auto 0.875rem",
-                    fontSize: "1rem",
-                    color: "#fca5a5",
-                  }}
-                >
-                  ✕
-                </div>
                 <p
                   style={{
-                    color: "#fca5a5",
-                    fontWeight: 700,
+                    color: "#cf2d56",
+                    fontWeight: 600,
                     fontSize: "0.9375rem",
                     marginBottom: "0.5rem",
                   }}
                 >
                   Analysis Failed
                 </p>
-                <p style={{ color: "#f87171", fontSize: "0.875rem", lineHeight: 1.5 }}>
+                <p style={{ color: "#5a5852", fontSize: "0.875rem", lineHeight: 1.5 }}>
                   {errorMessage}
                 </p>
               </div>
@@ -362,140 +360,148 @@ const Upload = () => {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                gap: "1.25rem",
+                gap: "1.5rem",
                 marginTop: "1rem",
                 width: "100%",
-                maxWidth: "520px",
+                maxWidth: "540px",
               }}
             >
-              <p style={{ color: "#4a5568", fontSize: "1rem", lineHeight: 1.6 }}>
-                Upload your resume and get an instant ATS score with actionable AI
-                feedback
+              <p style={{ color: "#5a5852", fontSize: "1.0625rem", lineHeight: 1.6 }}>
+                Upload your resume and get an instant ATS score with actionable editorial feedback.
               </p>
 
-              <div style={{ width: "100%" }}>
-                <FileUploader
-                  file={file}
-                  onFileSelect={handleFileSelect}
-                  onError={(msg) => setFileError(msg)}
-                />
-                {fileError && (
-                  <p
-                    style={{
-                      color: "#fca5a5",
-                      fontSize: "0.8125rem",
-                      marginTop: "0.5rem",
-                      textAlign: "center",
-                    }}
-                  >
-                    {fileError}
-                  </p>
-                )}
-              </div>
-
-              {/* Job details */}
-              <div style={{ width: "100%" }}>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "0.75rem",
-                    marginBottom: "0.875rem",
-                  }}
-                >
-                  <hr
-                    style={{ flex: 1, border: "none", borderTop: "1px solid #1e1e35" }}
+              <div
+                style={{
+                  width: "100%",
+                  background: "#ffffff",
+                  border: "1px solid #e6e5e0",
+                  borderRadius: "12px",
+                  padding: "1.75rem",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "1.5rem",
+                }}
+              >
+                <div>
+                  <FileUploader
+                    file={file}
+                    onFileSelect={handleFileSelect}
+                    onError={(msg) => setFileError(msg)}
                   />
-                  <span
-                    style={{
-                      fontSize: "0.75rem",
-                      fontWeight: 600,
-                      color: "#3a3a5c",
-                      textTransform: "uppercase",
-                      letterSpacing: "0.06em",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    Job Details <span style={{ color: "#2a2a45" }}>(optional)</span>
-                  </span>
-                  <hr
-                    style={{ flex: 1, border: "none", borderTop: "1px solid #1e1e35" }}
-                  />
-                </div>
-                <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-                  <div style={{ display: "flex", gap: "0.75rem" }}>
-                    <input
-                      type="text"
-                      placeholder="Company name"
-                      value={companyName}
-                      onChange={(e) => setCompanyName(e.target.value)}
-                      style={{ flex: 1 }}
-                    />
-                    <input
-                      type="text"
-                      placeholder="Job title"
-                      value={jobTitle}
-                      onChange={(e) => setJobTitle(e.target.value)}
-                      style={{ flex: 1 }}
-                    />
-                  </div>
-                  <div style={{ position: "relative" }}>
-                    <textarea
-                      placeholder="Paste the job description here for role-specific AI feedback…"
-                      value={jobDescription}
-                      onChange={(e) => setJobDescription(e.target.value)}
-                      maxLength={3000}
-                      rows={4}
-                      style={{ width: "100%", resize: "vertical", lineHeight: 1.55 }}
-                    />
-                    <div
+                  {fileError && (
+                    <p
                       style={{
-                        textAlign: "right",
-                        fontSize: "0.7rem",
-                        color: jobDescription.length > 2700 ? "#f59e0b" : "#4a5568",
-                        marginTop: "0.2rem",
+                        color: "#cf2d56",
+                        fontSize: "0.8125rem",
+                        marginTop: "0.5rem",
+                        textAlign: "center",
                       }}
                     >
-                      {jobDescription.length} / 3000 chars
-                    </div>
-                  </div>
+                      {fileError}
+                    </p>
+                  )}
                 </div>
-                {jobTitle && jobDescription && (
-                  <p
+
+                {/* Job details */}
+                <div>
+                  <div
                     style={{
-                      fontSize: "0.8rem",
-                      color: "#10b981",
-                      marginTop: "0.5rem",
                       display: "flex",
                       alignItems: "center",
-                      gap: "0.375rem",
+                      gap: "0.75rem",
+                      marginBottom: "0.875rem",
                     }}
                   >
-                    <span>✓</span> AI will tailor feedback for the {jobTitle.trim()} role
-                  </p>
-                )}
-              </div>
+                    <hr style={{ flex: 1, border: "none", borderTop: "1px solid #efeee8" }} />
+                    <span
+                      style={{
+                        fontSize: "0.6875rem",
+                        fontWeight: 600,
+                        color: "#807d72",
+                        textTransform: "uppercase",
+                        letterSpacing: "0.08em",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      Target Role Details <span style={{ color: "#a09c92" }}>(optional)</span>
+                    </span>
+                    <hr style={{ flex: 1, border: "none", borderTop: "1px solid #efeee8" }} />
+                  </div>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                    <div style={{ display: "flex", gap: "0.75rem" }}>
+                      <input
+                        type="text"
+                        placeholder="Company name"
+                        value={companyName}
+                        onChange={(e) => setCompanyName(e.target.value)}
+                        style={{ flex: 1 }}
+                      />
+                      <input
+                        type="text"
+                        placeholder="Target job title"
+                        value={jobTitle}
+                        onChange={(e) => setJobTitle(e.target.value)}
+                        style={{ flex: 1 }}
+                      />
+                    </div>
+                    <div style={{ position: "relative" }}>
+                      <textarea
+                        placeholder="Paste the target job description here for keyword matching and role-specific feedback…"
+                        value={jobDescription}
+                        onChange={(e) => setJobDescription(e.target.value)}
+                        maxLength={3000}
+                        rows={4}
+                        style={{ width: "100%", resize: "vertical", lineHeight: 1.55 }}
+                      />
+                      <div
+                        style={{
+                          textAlign: "right",
+                          fontSize: "0.7rem",
+                          fontFamily: "JetBrains Mono, monospace",
+                          color: jobDescription.length > 2700 ? "#c08532" : "#807d72",
+                          marginTop: "0.25rem",
+                        }}
+                      >
+                        {jobDescription.length} / 3000 chars
+                      </div>
+                    </div>
+                  </div>
+                  {jobTitle && jobDescription && (
+                    <p
+                      style={{
+                        fontSize: "0.8125rem",
+                        color: "#1f8a65",
+                        marginTop: "0.625rem",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.375rem",
+                      }}
+                    >
+                      <span>✓</span> Feedback will be targeted for {jobTitle.trim()}
+                    </p>
+                  )}
+                </div>
 
-              <button
-                className="primary-button full"
-                onClick={handleAnalyze}
-                style={{ maxWidth: "520px" }}
-              >
-                <svg
-                  width="15"
-                  height="15"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+                <button
+                  className="primary-button full"
+                  onClick={handleAnalyze}
                 >
-                  <circle cx="11" cy="11" r="8" />
-                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                </svg>
-                Analyze My Resume
-              </button>
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <circle cx="11" cy="11" r="8" />
+                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                  </svg>
+                  Analyze Resume
+                </button>
+              </div>
             </div>
           )}
         </div>

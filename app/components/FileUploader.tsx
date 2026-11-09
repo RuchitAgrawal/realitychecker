@@ -1,19 +1,24 @@
 import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
-import { formatSize } from "../lib/utils";
+import { formatSize } from "~/lib/utils";
 
 interface FileUploaderProps {
-  file?: File | null;
   onFileSelect?: (file: File | null) => void;
-  onError?: (msg: string) => void;
+  file?: File | null;
+  onError?: (err: string) => void;
+  maxFileSize?: number;
 }
 
-const FileUploader = ({ file = null, onFileSelect, onError }: FileUploaderProps) => {
-  const maxFileSize = 20 * 1024 * 1024;
-
+const FileUploader = ({
+  onFileSelect,
+  file,
+  onError,
+  maxFileSize = 20 * 1024 * 1024,
+}: FileUploaderProps) => {
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
-      onFileSelect?.(acceptedFiles[0] ?? null);
+      const selected = acceptedFiles[0];
+      if (selected) onFileSelect?.(selected);
     },
     [onFileSelect]
   );
@@ -55,9 +60,9 @@ const FileUploader = ({ file = null, onFileSelect, onError }: FileUploaderProps)
               style={{
                 width: "2.5rem",
                 height: "2.5rem",
-                borderRadius: "0.5rem",
-                background: "rgba(99,102,241,0.15)",
-                border: "1px solid rgba(99,102,241,0.3)",
+                borderRadius: "6px",
+                background: "#ffffff",
+                border: "1px solid #e6e5e0",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -69,7 +74,7 @@ const FileUploader = ({ file = null, onFileSelect, onError }: FileUploaderProps)
                 height="16"
                 viewBox="0 0 24 24"
                 fill="none"
-                stroke="#818cf8"
+                stroke="#26251e"
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -78,13 +83,13 @@ const FileUploader = ({ file = null, onFileSelect, onError }: FileUploaderProps)
                 <polyline points="14 2 14 8 20 8" />
               </svg>
             </div>
-            <div>
+            <div style={{ textAlign: "left" }}>
               <p
                 style={{
                   fontSize: "0.875rem",
-                  fontWeight: 600,
-                  color: "#c8d0e7",
-                  maxWidth: "240px",
+                  fontWeight: 500,
+                  color: "#26251e",
+                  maxWidth: "260px",
                   overflow: "hidden",
                   textOverflow: "ellipsis",
                   whiteSpace: "nowrap",
@@ -92,19 +97,19 @@ const FileUploader = ({ file = null, onFileSelect, onError }: FileUploaderProps)
               >
                 {file.name}
               </p>
-              <p style={{ fontSize: "0.8rem", color: "#4a5568", marginTop: "0.125rem" }}>
+              <p style={{ fontSize: "0.75rem", color: "#807d72", marginTop: "0.125rem", fontFamily: "JetBrains Mono, monospace" }}>
                 {formatSize(file.size)}
               </p>
             </div>
           </div>
           <button
             style={{
-              width: "1.875rem",
-              height: "1.875rem",
-              borderRadius: "9999px",
-              background: "rgba(239,68,68,0.1)",
-              border: "1px solid rgba(239,68,68,0.25)",
-              color: "#fca5a5",
+              width: "1.75rem",
+              height: "1.75rem",
+              borderRadius: "6px",
+              background: "#ffffff",
+              border: "1px solid #e6e5e0",
+              color: "#807d72",
               cursor: "pointer",
               display: "flex",
               alignItems: "center",
@@ -126,11 +131,11 @@ const FileUploader = ({ file = null, onFileSelect, onError }: FileUploaderProps)
         <div>
           <div className="upload-zone-icon">
             <svg
-              width="22"
-              height="22"
+              width="20"
+              height="20"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="#818cf8"
+              stroke="#26251e"
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -141,9 +146,9 @@ const FileUploader = ({ file = null, onFileSelect, onError }: FileUploaderProps)
             </svg>
           </div>
           <p className="upload-zone-title">
-            {isDragActive ? "Drop your PDF here" : "Click to upload or drag & drop"}
+            {isDragActive ? "Drop your PDF here" : "Click to select or drag and drop your PDF"}
           </p>
-          <p className="upload-zone-subtitle">PDF — max {formatSize(maxFileSize)}</p>
+          <p className="upload-zone-subtitle">PDF document up to {formatSize(maxFileSize)}</p>
         </div>
       )}
     </div>
