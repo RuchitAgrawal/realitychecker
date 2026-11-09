@@ -124,7 +124,13 @@ const ResumeCard = ({
           >
             <div className={`score-badge ${scoreBgClass}`}>Score: {score}/100</div>
             {createdAt && (
-              <span style={{ fontSize: "0.75rem", color: "#807d72", fontFamily: "JetBrains Mono, monospace" }}>
+              <span
+                style={{
+                  fontSize: "0.75rem",
+                  color: "#807d72",
+                  fontFamily: "JetBrains Mono, monospace",
+                }}
+              >
                 {formatDate(createdAt)}
               </span>
             )}

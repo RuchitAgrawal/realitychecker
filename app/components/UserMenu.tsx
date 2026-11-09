@@ -109,9 +109,7 @@ const UserMenu: React.FC = () => {
               fontFamily: "inherit",
               fontWeight: 500,
             }}
-            onMouseOver={(e) =>
-              (e.currentTarget.style.background = "#fafaf7")
-            }
+            onMouseOver={(e) => (e.currentTarget.style.background = "#fafaf7")}
             onMouseOut={(e) => (e.currentTarget.style.background = "transparent")}
           >
             Sign Out

@@ -2,8 +2,11 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-sans:
+    "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  --font-mono:
+    "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
   /* Brand & Accent */
   --color-primary: #f54e00;
@@ -53,7 +56,11 @@ html,
 body {
   background-color: #f7f7f4;
   color: #26251e;
-  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    sans-serif;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
   scroll-behavior: smooth;
@@ -274,7 +281,9 @@ form {
   color: #ffffff;
   background: #f54e00;
   border: 1px solid #f54e00;
-  transition: background 0.15s ease, border-color 0.15s ease;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
   text-decoration: none;
   font-family: inherit;
   white-space: nowrap;
@@ -315,7 +324,9 @@ form {
   border: 1px solid #cfcdc4;
   text-decoration: none;
   font-family: inherit;
-  transition: background 0.15s ease, border-color 0.15s ease;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
 }
 
 .secondary-button:hover,
@@ -339,7 +350,9 @@ form {
   background: #ffffff;
   border: 1px solid #cfcdc4;
   cursor: pointer;
-  transition: background 0.15s ease, border-color 0.15s ease;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
   font-family: inherit;
 }
 
@@ -441,7 +454,9 @@ form {
   text-align: center;
   cursor: pointer;
   background: #ffffff;
-  transition: border-color 0.15s ease, background 0.15s ease;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease;
 }
 
 .upload-zone:hover,
@@ -755,7 +770,9 @@ form {
 .accordion-content {
   display: grid;
   grid-template-rows: 0fr;
-  transition: grid-template-rows 0.25s ease, opacity 0.2s ease;
+  transition:
+    grid-template-rows 0.25s ease,
+    opacity 0.2s ease;
   border-top: 1px solid #efeee8;
   opacity: 0;
 }

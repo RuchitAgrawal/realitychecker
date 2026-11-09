@@ -60,7 +60,13 @@ const ScoreBar = ({ score, win }: { score: number; win: boolean }) => {
             </span>
           )}
         </span>
-        <span style={{ fontSize: "0.75rem", color: "#807d72", fontFamily: "JetBrains Mono, monospace" }}>
+        <span
+          style={{
+            fontSize: "0.75rem",
+            color: "#807d72",
+            fontFamily: "JetBrains Mono, monospace",
+          }}
+        >
           /100
         </span>
       </div>
@@ -280,7 +286,14 @@ const Compare = () => {
             }}
           >
             {/* Selectors */}
-            <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", alignItems: "flex-end" }}>
+            <div
+              style={{
+                display: "flex",
+                gap: "1rem",
+                flexWrap: "wrap",
+                alignItems: "flex-end",
+              }}
+            >
               <ResumeSelector
                 label="Resume A"
                 value={idA}

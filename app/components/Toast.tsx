@@ -49,21 +49,23 @@ const ToastItem = ({
     >
       <span
         style={{
-          width: "1.5rem",
-          height: "1.5rem",
+          width: "1.375rem",
+          height: "1.375rem",
           borderRadius: "9999px",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          fontSize: "0.8rem",
-          fontWeight: 700,
+          fontSize: "0.75rem",
+          fontWeight: 600,
           flexShrink: 0,
-          background:
+          background: "#fafaf7",
+          border: "1px solid #e6e5e0",
+          color:
             toast.type === "success"
-              ? "rgba(16,185,129,0.3)"
+              ? "#1f8a65"
               : toast.type === "error"
-                ? "rgba(239,68,68,0.3)"
-                : "rgba(99,102,241,0.3)",
+                ? "#cf2d56"
+                : "#26251e",
         }}
       >
         {icons[toast.type]}

@@ -22,8 +22,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
       style={{
         position: "fixed",
         inset: 0,
-        background: "rgba(0, 0, 0, 0.75)",
-        backdropFilter: "blur(4px)",
+        background: "rgba(38, 37, 30, 0.45)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -34,21 +33,21 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
     >
       <div
         style={{
-          background: "#11111f",
-          border: "1px solid #2a2a45",
-          borderRadius: "1rem",
+          background: "#ffffff",
+          border: "1px solid #cfcdc4",
+          borderRadius: "12px",
           padding: "1.75rem",
           maxWidth: "400px",
           width: "100%",
-          boxShadow: "0 20px 50px rgba(0, 0, 0, 0.8)",
         }}
         onClick={(e) => e.stopPropagation()}
       >
         <h3
           style={{
             fontSize: "1.125rem",
-            fontWeight: 700,
-            color: "#e2e8f0",
+            fontWeight: 500,
+            color: "#26251e",
+            letterSpacing: "-0.015em",
             marginBottom: "0.5rem",
           }}
         >
@@ -57,7 +56,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
         <p
           style={{
             fontSize: "0.875rem",
-            color: "#94a3b8",
+            color: "#5a5852",
             lineHeight: 1.5,
             marginBottom: "1.5rem",
           }}
@@ -75,7 +74,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
             type="button"
             onClick={onCancel}
             className="back-button"
-            style={{ padding: "0.45rem 1rem", fontSize: "0.8125rem" }}
+            style={{ padding: "0.5rem 1rem", fontSize: "0.8125rem" }}
           >
             {cancelLabel}
           </button>
@@ -83,14 +82,15 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
             type="button"
             onClick={onConfirm}
             style={{
-              background: "#ef4444",
-              color: "#fff",
+              background: "#cf2d56",
+              color: "#ffffff",
               border: "none",
-              borderRadius: "9999px",
-              padding: "0.45rem 1rem",
+              borderRadius: "8px",
+              padding: "0.5rem 1rem",
               fontSize: "0.8125rem",
-              fontWeight: 600,
+              fontWeight: 500,
               cursor: "pointer",
+              transition: "opacity 0.15s",
             }}
           >
             {confirmLabel}

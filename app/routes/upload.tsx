@@ -257,7 +257,14 @@ const Upload = () => {
                 <p style={{ color: "#26251e", fontSize: "1rem", fontWeight: 500 }}>
                   Analyzing your resume
                 </p>
-                <p style={{ color: "#807d72", fontSize: "0.8125rem", marginTop: "0.25rem", fontFamily: "JetBrains Mono, monospace" }}>
+                <p
+                  style={{
+                    color: "#807d72",
+                    fontSize: "0.8125rem",
+                    marginTop: "0.25rem",
+                    fontFamily: "JetBrains Mono, monospace",
+                  }}
+                >
                   Elapsed time: {elapsedSeconds}s
                 </p>
               </div>
@@ -288,7 +295,14 @@ const Upload = () => {
                         </div>
                       )}
                       {isDone && (
-                        <span style={{ marginLeft: "auto", color: "#1f8a65", fontSize: "0.875rem", fontWeight: 600 }}>
+                        <span
+                          style={{
+                            marginLeft: "auto",
+                            color: "#1f8a65",
+                            fontSize: "0.875rem",
+                            fontWeight: 600,
+                          }}
+                        >
                           ✓
                         </span>
                       )}
@@ -367,7 +381,8 @@ const Upload = () => {
               }}
             >
               <p style={{ color: "#5a5852", fontSize: "1.0625rem", lineHeight: 1.6 }}>
-                Upload your resume and get an instant ATS score with actionable editorial feedback.
+                Upload your resume and get an instant ATS score with actionable editorial
+                feedback.
               </p>
 
               <div
@@ -412,7 +427,9 @@ const Upload = () => {
                       marginBottom: "0.875rem",
                     }}
                   >
-                    <hr style={{ flex: 1, border: "none", borderTop: "1px solid #efeee8" }} />
+                    <hr
+                      style={{ flex: 1, border: "none", borderTop: "1px solid #efeee8" }}
+                    />
                     <span
                       style={{
                         fontSize: "0.6875rem",
@@ -423,11 +440,16 @@ const Upload = () => {
                         whiteSpace: "nowrap",
                       }}
                     >
-                      Target Role Details <span style={{ color: "#a09c92" }}>(optional)</span>
+                      Target Role Details{" "}
+                      <span style={{ color: "#a09c92" }}>(optional)</span>
                     </span>
-                    <hr style={{ flex: 1, border: "none", borderTop: "1px solid #efeee8" }} />
+                    <hr
+                      style={{ flex: 1, border: "none", borderTop: "1px solid #efeee8" }}
+                    />
                   </div>
-                  <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                  <div
+                    style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}
+                  >
                     <div style={{ display: "flex", gap: "0.75rem" }}>
                       <input
                         type="text"
@@ -482,10 +504,7 @@ const Upload = () => {
                   )}
                 </div>
 
-                <button
-                  className="primary-button full"
-                  onClick={handleAnalyze}
-                >
+                <button className="primary-button full" onClick={handleAnalyze}>
                   <svg
                     width="14"
                     height="14"

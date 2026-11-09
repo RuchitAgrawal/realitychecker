@@ -97,7 +97,14 @@ const FileUploader = ({
               >
                 {file.name}
               </p>
-              <p style={{ fontSize: "0.75rem", color: "#807d72", marginTop: "0.125rem", fontFamily: "JetBrains Mono, monospace" }}>
+              <p
+                style={{
+                  fontSize: "0.75rem",
+                  color: "#807d72",
+                  marginTop: "0.125rem",
+                  fontFamily: "JetBrains Mono, monospace",
+                }}
+              >
                 {formatSize(file.size)}
               </p>
             </div>
@@ -146,9 +153,13 @@ const FileUploader = ({
             </svg>
           </div>
           <p className="upload-zone-title">
-            {isDragActive ? "Drop your PDF here" : "Click to select or drag and drop your PDF"}
+            {isDragActive
+              ? "Drop your PDF here"
+              : "Click to select or drag and drop your PDF"}
           </p>
-          <p className="upload-zone-subtitle">PDF document up to {formatSize(maxFileSize)}</p>
+          <p className="upload-zone-subtitle">
+            PDF document up to {formatSize(maxFileSize)}
+          </p>
         </div>
       )}
     </div>

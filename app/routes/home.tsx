@@ -233,7 +233,14 @@ export default function Home() {
               </svg>
             </div>
             <div>
-              <p style={{ fontWeight: 500, color: "#26251e", fontSize: "1.05rem", marginBottom: "0.25rem" }}>
+              <p
+                style={{
+                  fontWeight: 500,
+                  color: "#26251e",
+                  fontSize: "1.05rem",
+                  marginBottom: "0.25rem",
+                }}
+              >
                 No resumes analyzed yet
               </p>
               <p style={{ color: "#5a5852", fontSize: "0.875rem" }}>
@@ -276,7 +283,13 @@ export default function Home() {
               zIndex: 100,
             }}
           >
-            <span style={{ fontSize: "0.85rem", color: "#f7f7f4", fontFamily: "JetBrains Mono, monospace" }}>
+            <span
+              style={{
+                fontSize: "0.85rem",
+                color: "#f7f7f4",
+                fontFamily: "JetBrains Mono, monospace",
+              }}
+            >
               {selectedIds.length} of 2 selected
             </span>
             {selectedIds.length === 2 && (
@@ -285,7 +298,11 @@ export default function Home() {
                   navigate(`/compare?a=${selectedIds[0]}&b=${selectedIds[1]}`)
                 }
                 className="primary-button"
-                style={{ padding: "0.35rem 0.875rem", fontSize: "0.8rem", height: "32px" }}
+                style={{
+                  padding: "0.35rem 0.875rem",
+                  fontSize: "0.8rem",
+                  height: "32px",
+                }}
               >
                 Compare Selected →
               </button>

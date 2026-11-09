@@ -1,6 +1,6 @@
-import React from "react";
+import type { FC } from "react";
 
-const SetupBanner: React.FC = () => {
+const SetupBanner: FC = () => {
   return (
     <div
       style={{
@@ -20,10 +20,30 @@ const SetupBanner: React.FC = () => {
       }}
     >
       <div>
-        <strong style={{ color: "#cf2d56" }}>Missing Supabase credentials:</strong> Please set{" "}
-        <code style={{ background: "#fafaf7", padding: "0.15rem 0.35rem", borderRadius: "4px", border: "1px solid #e6e5e0" }}>VITE_SUPABASE_URL</code> and{" "}
-        <code style={{ background: "#fafaf7", padding: "0.15rem 0.35rem", borderRadius: "4px", border: "1px solid #e6e5e0" }}>VITE_SUPABASE_ANON_KEY</code> in{" "}
-        <code>.env.local</code>.
+        <strong style={{ color: "#cf2d56" }}>Missing Supabase credentials:</strong> Please
+        set{" "}
+        <code
+          style={{
+            background: "#fafaf7",
+            padding: "0.15rem 0.35rem",
+            borderRadius: "4px",
+            border: "1px solid #e6e5e0",
+          }}
+        >
+          VITE_SUPABASE_URL
+        </code>{" "}
+        and{" "}
+        <code
+          style={{
+            background: "#fafaf7",
+            padding: "0.15rem 0.35rem",
+            borderRadius: "4px",
+            border: "1px solid #e6e5e0",
+          }}
+        >
+          VITE_SUPABASE_ANON_KEY
+        </code>{" "}
+        in <code>.env.local</code>.
       </div>
       <a
         href="https://supabase.com/docs"

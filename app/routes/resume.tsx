@@ -210,7 +210,13 @@ const ResumeDetail = () => {
             Resume Review
           </span>
           {(companyName || jobTitle) && (
-            <span style={{ fontSize: "0.75rem", color: "#807d72", fontFamily: "JetBrains Mono, monospace" }}>
+            <span
+              style={{
+                fontSize: "0.75rem",
+                color: "#807d72",
+                fontFamily: "JetBrains Mono, monospace",
+              }}
+            >
               {companyName}
               {companyName && jobTitle ? " · " : ""}
               {jobTitle}

@@ -13,7 +13,7 @@ export const meta = () => [
 type AuthMode = "signin" | "signup" | "forgot";
 
 const getPasswordStrength = (password: string) => {
-  if (!password) return { score: 0, label: "", color: "#2a2a45" };
+  if (!password) return { score: 0, label: "", color: "#efeee8" };
   let score = 0;
   if (password.length >= 8) score += 1;
   if (password.length >= 12) score += 1;
@@ -21,10 +21,10 @@ const getPasswordStrength = (password: string) => {
   if (/[0-9]/.test(password)) score += 1;
   if (/[^A-Za-z0-9]/.test(password)) score += 1;
 
-  if (score <= 1) return { score: 1, label: "Weak", color: "#ef4444" };
-  if (score <= 2) return { score: 2, label: "Fair", color: "#f59e0b" };
-  if (score <= 3) return { score: 3, label: "Good", color: "#6366f1" };
-  return { score: 4, label: "Strong", color: "#10b981" };
+  if (score <= 1) return { score: 1, label: "Weak", color: "#cf2d56" };
+  if (score <= 2) return { score: 2, label: "Fair", color: "#c08532" };
+  if (score <= 3) return { score: 3, label: "Good", color: "#9fbbe0" };
+  return { score: 4, label: "Strong", color: "#1f8a65" };
 };
 
 const authSchema = z.object({
@@ -134,23 +134,22 @@ const Auth = () => {
       >
         <div
           style={{
-            background: "#11111f",
-            border: "1px solid #2a2a45",
-            borderRadius: "1.5rem",
-            padding: "2.5rem 2.5rem 2rem",
+            background: "#ffffff",
+            border: "1px solid #e6e5e0",
+            borderRadius: "12px",
+            padding: "2.5rem 2rem",
             maxWidth: "420px",
             width: "100%",
             textAlign: "center",
-            boxShadow: "0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(99,102,241,0.06)",
           }}
         >
           <div
             style={{
-              width: "3.5rem",
-              height: "3.5rem",
-              borderRadius: "1rem",
-              background: "rgba(16,185,129,0.15)",
-              border: "1px solid rgba(16,185,129,0.25)",
+              width: "3rem",
+              height: "3rem",
+              borderRadius: "8px",
+              background: "#fafaf7",
+              border: "1px solid #e6e5e0",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -158,11 +157,11 @@ const Auth = () => {
             }}
           >
             <svg
-              width="24"
-              height="24"
+              width="20"
+              height="20"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="#6ee7b7"
+              stroke="#1f8a65"
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -174,8 +173,9 @@ const Auth = () => {
           <h2
             style={{
               fontSize: "1.25rem",
-              fontWeight: 700,
-              color: "#f1f5f9",
+              fontWeight: 500,
+              color: "#26251e",
+              letterSpacing: "-0.02em",
               marginBottom: "0.5rem",
             }}
           >
@@ -184,20 +184,22 @@ const Auth = () => {
           <p
             style={{
               fontSize: "0.875rem",
-              color: "#94a3b8",
+              color: "#5a5852",
               lineHeight: 1.5,
               marginBottom: "1.5rem",
             }}
           >
             We sent a verification link to{" "}
-            <strong style={{ color: "#e2e8f0" }}>{confirmationEmail}</strong>. Please
-            check your email to activate your account.
+            <strong style={{ color: "#26251e", fontWeight: 600 }}>
+              {confirmationEmail}
+            </strong>
+            . Please check your email to activate your account.
           </p>
           {resendStatus && (
             <p
               style={{
                 fontSize: "0.8125rem",
-                color: resendStatus.startsWith("Failed") ? "#fca5a5" : "#6ee7b7",
+                color: resendStatus.startsWith("Failed") ? "#cf2d56" : "#1f8a65",
                 marginBottom: "1rem",
               }}
             >
@@ -216,7 +218,7 @@ const Auth = () => {
                 else setResendStatus("Verification email resent!");
               }}
               disabled={resending}
-              className="auth-button"
+              className="back-button"
               style={{ width: "100%", justifyContent: "center" }}
             >
               {resending ? "Resending…" : "Resend verification email"}
@@ -249,25 +251,24 @@ const Auth = () => {
     >
       <div
         style={{
-          background: "#11111f",
-          border: "1px solid #2a2a45",
-          borderRadius: "1.5rem",
-          padding: "2.5rem 2.5rem 2rem",
+          background: "#ffffff",
+          border: "1px solid #e6e5e0",
+          borderRadius: "12px",
+          padding: "2.5rem 2.25rem 2rem",
           maxWidth: "420px",
           width: "100%",
           textAlign: "center",
-          boxShadow: "0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(99,102,241,0.06)",
         }}
       >
         {/* Brand */}
-        <div style={{ marginBottom: "2rem" }}>
+        <div style={{ marginBottom: "1.75rem" }}>
           <div
             style={{
-              width: "3rem",
-              height: "3rem",
-              borderRadius: "0.875rem",
-              background: "rgba(99,102,241,0.15)",
-              border: "1px solid rgba(99,102,241,0.25)",
+              width: "2.75rem",
+              height: "2.75rem",
+              borderRadius: "8px",
+              background: "#fafaf7",
+              border: "1px solid #e6e5e0",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -279,7 +280,7 @@ const Auth = () => {
               height="20"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="#818cf8"
+              stroke="#26251e"
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -294,20 +295,19 @@ const Auth = () => {
           <p
             style={{
               fontSize: "1.35rem",
-              fontWeight: 800,
-              background: "linear-gradient(135deg, #dde4ff, #a78bfa)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              marginBottom: "0.5rem",
+              fontWeight: 500,
+              color: "#26251e",
+              letterSpacing: "-0.025em",
+              marginBottom: "0.375rem",
             }}
           >
             RealityChecker
           </p>
-          <p style={{ fontSize: "0.875rem", color: "#4a5568", lineHeight: 1.5 }}>
+          <p style={{ fontSize: "0.875rem", color: "#5a5852", lineHeight: 1.5 }}>
             {mode === "signin"
               ? "Sign in to analyze and track your resumes"
               : mode === "signup"
-                ? "Create a free account to get started"
+                ? "Create an account to get started"
                 : "Enter your email to receive a password reset link"}
           </p>
         </div>
@@ -315,7 +315,7 @@ const Auth = () => {
         <hr
           style={{
             border: "none",
-            borderTop: "1px solid #1e1e35",
+            borderTop: "1px solid #efeee8",
             marginBottom: "1.5rem",
           }}
         />
@@ -332,6 +332,13 @@ const Auth = () => {
                 alignItems: "center",
                 justifyContent: "center",
                 gap: "0.625rem",
+                background: "#ffffff",
+                border: "1px solid #cfcdc4",
+                borderRadius: "8px",
+                height: "40px",
+                color: "#26251e",
+                fontWeight: 500,
+                fontSize: "0.875rem",
               }}
               onClick={() => auth.signInWithGoogle()}
               disabled={isSubmitting}
@@ -371,9 +378,9 @@ const Auth = () => {
                 marginBottom: "1.25rem",
               }}
             >
-              <hr style={{ flex: 1, border: "none", borderTop: "1px solid #1e1e35" }} />
-              <span style={{ fontSize: "0.75rem", color: "#3a3a5c" }}>or</span>
-              <hr style={{ flex: 1, border: "none", borderTop: "1px solid #1e1e35" }} />
+              <hr style={{ flex: 1, border: "none", borderTop: "1px solid #efeee8" }} />
+              <span style={{ fontSize: "0.75rem", color: "#807d72" }}>or</span>
+              <hr style={{ flex: 1, border: "none", borderTop: "1px solid #efeee8" }} />
             </div>
           </>
         )}
@@ -393,13 +400,13 @@ const Auth = () => {
               style={{
                 width: "100%",
                 boxSizing: "border-box",
-                borderColor: errors.email ? "#ef4444" : undefined,
+                borderColor: errors.email ? "#cf2d56" : undefined,
               }}
             />
             {errors.email && (
               <p
                 style={{
-                  color: "#fca5a5",
+                  color: "#cf2d56",
                   fontSize: "0.75rem",
                   textAlign: "left",
                   marginTop: "0.25rem",
@@ -420,7 +427,7 @@ const Auth = () => {
                 style={{
                   width: "100%",
                   boxSizing: "border-box",
-                  borderColor: errors.password ? "#ef4444" : undefined,
+                  borderColor: errors.password ? "#cf2d56" : undefined,
                 }}
               />
               {mode === "signin" && (
@@ -431,7 +438,7 @@ const Auth = () => {
                     style={{
                       background: "none",
                       border: "none",
-                      color: "#818cf8",
+                      color: "#807d72",
                       cursor: "pointer",
                       fontSize: "0.75rem",
                       padding: 0,
@@ -445,7 +452,7 @@ const Auth = () => {
               {errors.password && (
                 <p
                   style={{
-                    color: "#fca5a5",
+                    color: "#cf2d56",
                     fontSize: "0.75rem",
                     textAlign: "left",
                     marginTop: "0.25rem",
@@ -470,7 +477,7 @@ const Auth = () => {
                         style={{
                           flex: 1,
                           borderRadius: "2px",
-                          background: strength.score >= step ? strength.color : "#2a2a45",
+                          background: strength.score >= step ? strength.color : "#efeee8",
                           transition: "background 0.2s ease",
                         }}
                       />
@@ -483,7 +490,7 @@ const Auth = () => {
                       fontSize: "0.7rem",
                     }}
                   >
-                    <span style={{ color: "#64748b" }}>Password strength</span>
+                    <span style={{ color: "#807d72" }}>Password strength</span>
                     <span style={{ color: strength.color, fontWeight: 600 }}>
                       {strength.label}
                     </span>
@@ -494,12 +501,12 @@ const Auth = () => {
           )}
 
           {serverError && (
-            <p style={{ color: "#fca5a5", fontSize: "0.8125rem", textAlign: "left" }}>
+            <p style={{ color: "#cf2d56", fontSize: "0.8125rem", textAlign: "left" }}>
               {serverError}
             </p>
           )}
           {success && (
-            <p style={{ color: "#6ee7b7", fontSize: "0.8125rem", textAlign: "left" }}>
+            <p style={{ color: "#1f8a65", fontSize: "0.8125rem", textAlign: "left" }}>
               {success}
             </p>
           )}
@@ -521,7 +528,7 @@ const Auth = () => {
         </form>
 
         {/* Toggle */}
-        <p style={{ marginTop: "1.25rem", fontSize: "0.8125rem", color: "#4a5568" }}>
+        <p style={{ marginTop: "1.25rem", fontSize: "0.8125rem", color: "#5a5852" }}>
           {mode === "forgot" ? (
             <>
               Remember your password?{" "}
@@ -531,9 +538,9 @@ const Auth = () => {
                 style={{
                   background: "none",
                   border: "none",
-                  color: "#818cf8",
+                  color: "#f54e00",
                   cursor: "pointer",
-                  fontWeight: 600,
+                  fontWeight: 500,
                   padding: 0,
                   fontFamily: "inherit",
                   fontSize: "inherit",
@@ -551,9 +558,9 @@ const Auth = () => {
                 style={{
                   background: "none",
                   border: "none",
-                  color: "#818cf8",
+                  color: "#f54e00",
                   cursor: "pointer",
-                  fontWeight: 600,
+                  fontWeight: 500,
                   padding: 0,
                   fontFamily: "inherit",
                   fontSize: "inherit",
@@ -571,9 +578,9 @@ const Auth = () => {
                 style={{
                   background: "none",
                   border: "none",
-                  color: "#818cf8",
+                  color: "#f54e00",
                   cursor: "pointer",
-                  fontWeight: 600,
+                  fontWeight: 500,
                   padding: 0,
                   fontFamily: "inherit",
                   fontSize: "inherit",
