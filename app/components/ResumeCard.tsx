@@ -13,6 +13,7 @@ interface ResumeCardProps {
 const ResumeCard = ({ resume: { id, companyName, jobTitle, feedback, imagePath, createdAt }, selected, onToggleSelect }: ResumeCardProps) => {
     const { storage } = useStore();
     const [resumeUrl, setResumeUrl] = useState('');
+    const [hasRefetched, setHasRefetched] = useState(false);
 
     useEffect(() => {
         if (!imagePath) return;
@@ -20,6 +21,14 @@ const ResumeCard = ({ resume: { id, companyName, jobTitle, feedback, imagePath, 
             .then(url => setResumeUrl(url))
             .catch(() => {});
     }, [imagePath, storage]);
+
+    const handleImageError = () => {
+        if (hasRefetched || !imagePath) return;
+        setHasRefetched(true);
+        storage.getSignedUrl('resume-images', imagePath, 3600)
+            .then(url => setResumeUrl(url))
+            .catch(() => {});
+    };
 
     const score = feedback?.overallScore ?? 0;
     const scoreBgClass = score >= 70 ? 'score-badge-green' : score >= 50 ? 'score-badge-yellow' : 'score-badge-red';
@@ -89,6 +98,7 @@ const ResumeCard = ({ resume: { id, companyName, jobTitle, feedback, imagePath, 
                     <img
                         src={resumeUrl}
                         alt="resume preview"
+                        onError={handleImageError}
                         style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top', display: 'block' }}
                     />
                 </div>

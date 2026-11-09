@@ -24,6 +24,15 @@ const ResumeDetail = () => {
     const [imageUrl, setImageUrl] = useState('');
     const [resumeUrl, setResumeUrl] = useState('');
     const [sharing, setSharing] = useState(false);
+    const [hasRefetchedImage, setHasRefetchedImage] = useState(false);
+
+    const handleImageError = () => {
+        if (hasRefetchedImage || !resume?.imagePath) return;
+        setHasRefetchedImage(true);
+        storage.getSignedUrl('resume-images', resume.imagePath, 3600)
+            .then(url => setImageUrl(url))
+            .catch(() => {});
+    };
 
     const { data: resume, isLoading: loadingResume } = useQuery({
         queryKey: ['resume', id],
@@ -209,6 +218,7 @@ const ResumeDetail = () => {
                             style={{ width: '100%', display: 'block' }}>
                             <img
                                 src={imageUrl} alt="Resume preview"
+                                onError={handleImageError}
                                 className="resume-preview-img"
                                 style={{ animation: 'fadeIn 0.5s ease', width: '100%', height: 'auto', display: 'block' }}
                             />
