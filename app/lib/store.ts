@@ -11,6 +11,7 @@ interface AuthState {
     isAuthenticated: boolean;
     signInWithEmail: (email: string, password: string) => Promise<string | null>;
     signUpWithEmail: (email: string, password: string) => Promise<string | null>;
+    resetPassword: (email: string) => Promise<string | null>;
     signInWithGoogle: () => Promise<void>;
     signOut: () => Promise<void>;
 }
@@ -75,6 +76,13 @@ export const useStore = create<StoreState>((set, get) => ({
 
         signUpWithEmail: async (email, password) => {
             const { error } = await supabase.auth.signUp({ email, password });
+            return error ? error.message : null;
+        },
+
+        resetPassword: async (email) => {
+            const { error } = await supabase.auth.resetPasswordForEmail(email, {
+                redirectTo: `${window.location.origin}/auth?reset=true`,
+            });
             return error ? error.message : null;
         },
 
