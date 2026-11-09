@@ -83,7 +83,7 @@ const ResumeSelector = ({ label, value, onChange, resumes }: {
 const Compare = () => {
     const { isLoading, isAuthenticated, storage, resumes: resumeStore } = useStore();
     const navigate = useNavigate();
-    const [searchParams] = useSearchParams();
+    const [searchParams, setSearchParams] = useSearchParams();
 
     const paramA = searchParams.get('a') || '';
     const paramB = searchParams.get('b') || '';
@@ -92,6 +92,30 @@ const Compare = () => {
     const [idB, setIdB] = useState(paramB);
     const [imgA, setImgA] = useState('');
     const [imgB, setImgB] = useState('');
+
+    const handleSelectA = (newA: string) => {
+        let nextB = idB;
+        if (newA === idB) {
+            nextB = idA;
+            setIdB(nextB);
+        }
+        setIdA(newA);
+        if (newA && nextB) {
+            setSearchParams({ a: newA, b: nextB }, { replace: true });
+        }
+    };
+
+    const handleSelectB = (newB: string) => {
+        let nextA = idA;
+        if (newB === idA) {
+            nextA = idB;
+            setIdA(nextA);
+        }
+        setIdB(newB);
+        if (nextA && newB) {
+            setSearchParams({ a: nextA, b: newB }, { replace: true });
+        }
+    };
 
     useEffect(() => {
         if (!isLoading && !isAuthenticated) navigate('/auth');
@@ -162,9 +186,9 @@ const Compare = () => {
                     <div style={{ width: '100%', maxWidth: '960px', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
                         {/* Selectors */}
                         <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-                            <ResumeSelector label="Resume A" value={idA} onChange={setIdA} resumes={resumes} />
+                            <ResumeSelector label="Resume A" value={idA} onChange={handleSelectA} resumes={resumes} />
                             <div style={{ display: 'flex', alignItems: 'flex-end', paddingBottom: '0.625rem', color: '#2a2a45', fontWeight: 700, fontSize: '1.1rem' }}>vs</div>
-                            <ResumeSelector label="Resume B" value={idB} onChange={v => { if (v !== idA) setIdB(v); }} resumes={resumes} />
+                            <ResumeSelector label="Resume B" value={idB} onChange={handleSelectB} resumes={resumes} />
                         </div>
 
                         {idA && idB && idA === idB && (
