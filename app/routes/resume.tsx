@@ -40,13 +40,6 @@ const ResumeDetail = () => {
     const feedback = resume?.feedback ?? null;
 
     useEffect(() => {
-        if (!loadingResume && !resume && !isLoading) {
-            if (!isAuthenticated) navigate('/auth');
-            else navigate('/');
-        }
-    }, [resume, loadingResume, isLoading, isAuthenticated, navigate]);
-
-    useEffect(() => {
         if (!resume) return;
 
         if (resume.resumePath) {
@@ -83,6 +76,41 @@ const ResumeDetail = () => {
             setSharing(false);
         }
     };
+
+    if (!loadingResume && !resume && !isLoading) {
+        return (
+            <main style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
+                <div style={{
+                    background: '#11111f', border: '1px solid #2a2a45', borderRadius: '1.25rem',
+                    padding: '2.5rem', maxWidth: '440px', width: '100%', textAlign: 'center',
+                }}>
+                    <div style={{
+                        width: '3.5rem', height: '3.5rem', borderRadius: '1rem',
+                        background: 'rgba(239, 68, 68, 0.12)', border: '1px solid rgba(239, 68, 68, 0.25)',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.25rem',
+                    }}>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fca5a5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <line x1="12" y1="8" x2="12" y2="12" />
+                            <line x1="12" y1="16" x2="12.01" y2="16" />
+                        </svg>
+                    </div>
+                    <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#f1f5f9', marginBottom: '0.5rem' }}>Resume Not Found</h2>
+                    <p style={{ fontSize: '0.875rem', color: '#94a3b8', lineHeight: 1.5, marginBottom: '1.5rem' }}>
+                        This resume may have been deleted, or the link might be private.
+                    </p>
+                    <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center' }}>
+                        <Link to="/" className="auth-button" style={{ textDecoration: 'none' }}>
+                            Dashboard
+                        </Link>
+                        <Link to="/upload" className="primary-button" style={{ textDecoration: 'none' }}>
+                            Upload Resume
+                        </Link>
+                    </div>
+                </div>
+            </main>
+        );
+    }
 
     return (
         <main className="full-layout" style={{ paddingTop: 0 }}>
