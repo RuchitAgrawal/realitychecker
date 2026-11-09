@@ -102,9 +102,9 @@ const ResumeDetail = () => {
       >
         <div
           style={{
-            background: "#11111f",
-            border: "1px solid #2a2a45",
-            borderRadius: "1.25rem",
+            background: "#ffffff",
+            border: "1px solid #e6e5e0",
+            borderRadius: "12px",
             padding: "2.5rem",
             maxWidth: "440px",
             width: "100%",
@@ -113,11 +113,11 @@ const ResumeDetail = () => {
         >
           <div
             style={{
-              width: "3.5rem",
-              height: "3.5rem",
-              borderRadius: "1rem",
-              background: "rgba(239, 68, 68, 0.12)",
-              border: "1px solid rgba(239, 68, 68, 0.25)",
+              width: "3rem",
+              height: "3rem",
+              borderRadius: "8px",
+              background: "#fafaf7",
+              border: "1px solid #e6e5e0",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -125,11 +125,11 @@ const ResumeDetail = () => {
             }}
           >
             <svg
-              width="24"
-              height="24"
+              width="22"
+              height="22"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="#fca5a5"
+              stroke="#cf2d56"
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -142,8 +142,8 @@ const ResumeDetail = () => {
           <h2
             style={{
               fontSize: "1.25rem",
-              fontWeight: 700,
-              color: "#f1f5f9",
+              fontWeight: 500,
+              color: "#26251e",
               marginBottom: "0.5rem",
             }}
           >
@@ -152,7 +152,7 @@ const ResumeDetail = () => {
           <p
             style={{
               fontSize: "0.875rem",
-              color: "#94a3b8",
+              color: "#5a5852",
               lineHeight: 1.5,
               marginBottom: "1.5rem",
             }}
@@ -160,7 +160,7 @@ const ResumeDetail = () => {
             This resume may have been deleted, or the link might be private.
           </p>
           <div style={{ display: "flex", gap: "0.75rem", justifyContent: "center" }}>
-            <Link to="/" className="auth-button" style={{ textDecoration: "none" }}>
+            <Link to="/" className="back-button" style={{ textDecoration: "none" }}>
               Dashboard
             </Link>
             <Link
@@ -202,15 +202,15 @@ const ResumeDetail = () => {
           <span
             style={{
               fontSize: "0.875rem",
-              fontWeight: 600,
-              color: "#5a6585",
+              fontWeight: 500,
+              color: "#26251e",
               display: "block",
             }}
           >
             Resume Review
           </span>
           {(companyName || jobTitle) && (
-            <span style={{ fontSize: "0.75rem", color: "#3a3a5c" }}>
+            <span style={{ fontSize: "0.75rem", color: "#807d72", fontFamily: "JetBrains Mono, monospace" }}>
               {companyName}
               {companyName && jobTitle ? " · " : ""}
               {jobTitle}
@@ -327,12 +327,12 @@ const ResumeDetail = () => {
       {!isAuthenticated && (
         <div
           style={{
-            background: "rgba(99, 102, 241, 0.1)",
-            borderBottom: "1px solid rgba(99, 102, 241, 0.25)",
+            background: "#fafaf7",
+            borderBottom: "1px solid #e6e5e0",
             padding: "0.625rem 1rem",
             textAlign: "center",
             fontSize: "0.8125rem",
-            color: "#c8d0e7",
+            color: "#5a5852",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -342,7 +342,7 @@ const ResumeDetail = () => {
           <span>Viewing shared resume. Want your own AI feedback?</span>
           <Link
             to="/auth"
-            style={{ color: "#818cf8", fontWeight: 600, textDecoration: "underline" }}
+            style={{ color: "#f54e00", fontWeight: 500, textDecoration: "underline" }}
           >
             Create a free account →
           </Link>

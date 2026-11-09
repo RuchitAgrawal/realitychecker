@@ -2,22 +2,16 @@ import { getScoreColor, getScoreLevel } from "~/lib/utils";
 
 const ScoreCircle = ({ score = 75 }: { score: number }) => {
   const radius = 38;
-  const stroke = 7;
+  const stroke = 6;
   const normalizedRadius = radius - stroke / 2;
   const circumference = 2 * Math.PI * normalizedRadius;
   const strokeDashoffset = circumference * (1 - score / 100);
 
   const color = getScoreColor(score);
-  const level = getScoreLevel(score);
-  const trackColor =
-    level === "high"
-      ? "rgba(16,185,129,0.12)"
-      : level === "medium"
-        ? "rgba(245,158,11,0.12)"
-        : "rgba(239,68,68,0.12)";
+  const trackColor = "#efeee8";
 
   return (
-    <div style={{ position: "relative", width: "80px", height: "80px", flexShrink: 0 }}>
+    <div style={{ position: "relative", width: "72px", height: "72px", flexShrink: 0 }}>
       <svg
         height="100%"
         width="100%"
@@ -55,17 +49,18 @@ const ScoreCircle = ({ score = 75 }: { score: number }) => {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
+          fontFamily: "JetBrains Mono, monospace",
         }}
       >
-        <span style={{ fontSize: "0.8rem", fontWeight: 700, color, lineHeight: 1 }}>
+        <span style={{ fontSize: "0.875rem", fontWeight: 600, color, lineHeight: 1 }}>
           {score}
         </span>
         <span
           style={{
-            fontSize: "0.6rem",
-            color: "#4a5568",
+            fontSize: "0.5625rem",
+            color: "#807d72",
             lineHeight: 1,
-            marginTop: "1px",
+            marginTop: "2px",
           }}
         >
           /100

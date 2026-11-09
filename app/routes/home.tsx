@@ -125,7 +125,7 @@ export default function Home() {
               flexWrap: "wrap",
               gap: "1rem",
               width: "100%",
-              maxWidth: "960px",
+              maxWidth: "1200px",
               margin: "0 auto 1.5rem",
             }}
           >
@@ -135,10 +135,10 @@ export default function Home() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               style={{
-                maxWidth: "300px",
+                maxWidth: "280px",
                 padding: "0.5rem 0.875rem",
                 fontSize: "0.8125rem",
-                borderRadius: "9999px",
+                borderRadius: "8px",
               }}
             />
             {resumes.length > 1 && (
@@ -203,25 +203,25 @@ export default function Home() {
         )}
 
         {!loadingResumes && resumes.length === 0 && (
-          <div className="empty-state" style={{ maxWidth: "420px" }}>
+          <div className="empty-state" style={{ maxWidth: "440px" }}>
             <div
               style={{
-                width: "4rem",
-                height: "4rem",
-                borderRadius: "1.25rem",
-                background: "rgba(99,102,241,0.1)",
-                border: "1px solid rgba(99,102,241,0.2)",
+                width: "3.5rem",
+                height: "3.5rem",
+                borderRadius: "8px",
+                background: "#fafaf7",
+                border: "1px solid #e6e5e0",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
               }}
             >
               <svg
-                width="26"
-                height="26"
+                width="22"
+                height="22"
                 viewBox="0 0 24 24"
                 fill="none"
-                stroke="#818cf8"
+                stroke="#26251e"
                 strokeWidth="1.75"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -233,11 +233,11 @@ export default function Home() {
               </svg>
             </div>
             <div>
-              <p style={{ fontWeight: 600, color: "#c8d0e7", marginBottom: "0.375rem" }}>
-                No resumes yet
+              <p style={{ fontWeight: 500, color: "#26251e", fontSize: "1.05rem", marginBottom: "0.25rem" }}>
+                No resumes analyzed yet
               </p>
-              <p style={{ color: "#4a5568", fontSize: "0.875rem" }}>
-                Upload your resume and get instant AI feedback
+              <p style={{ color: "#5a5852", fontSize: "0.875rem" }}>
+                Upload your resume to receive role-tailored feedback and ATS scores.
               </p>
             </div>
             <Link to="/upload" className="primary-button" style={{ marginTop: "0.5rem" }}>
@@ -266,19 +266,18 @@ export default function Home() {
               bottom: "1.5rem",
               left: "50%",
               transform: "translateX(-50%)",
-              background: "#11111f",
-              border: "1px solid #2a2a45",
-              borderRadius: "9999px",
+              background: "#26251e",
+              border: "1px solid #26251e",
+              borderRadius: "8px",
               padding: "0.625rem 1.25rem",
               display: "flex",
               alignItems: "center",
               gap: "1rem",
-              boxShadow: "0 10px 30px rgba(0, 0, 0, 0.7)",
               zIndex: 100,
             }}
           >
-            <span style={{ fontSize: "0.85rem", color: "#c8d0e7" }}>
-              {selectedIds.length} of 2 selected for comparison
+            <span style={{ fontSize: "0.85rem", color: "#f7f7f4", fontFamily: "JetBrains Mono, monospace" }}>
+              {selectedIds.length} of 2 selected
             </span>
             {selectedIds.length === 2 && (
               <button
@@ -286,7 +285,7 @@ export default function Home() {
                   navigate(`/compare?a=${selectedIds[0]}&b=${selectedIds[1]}`)
                 }
                 className="primary-button"
-                style={{ padding: "0.35rem 0.875rem", fontSize: "0.8rem" }}
+                style={{ padding: "0.35rem 0.875rem", fontSize: "0.8rem", height: "32px" }}
               >
                 Compare Selected →
               </button>
@@ -296,7 +295,7 @@ export default function Home() {
               style={{
                 background: "none",
                 border: "none",
-                color: "#64748b",
+                color: "#a09c92",
                 cursor: "pointer",
                 fontSize: "0.8rem",
               }}

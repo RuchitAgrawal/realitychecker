@@ -11,9 +11,9 @@ export const generateUUID = () => crypto.randomUUID();
 export type ScoreLevel = "high" | "medium" | "low";
 
 export const SCORE_COLORS = {
-  high: "#10b981",
-  medium: "#f59e0b",
-  low: "#ef4444",
+  high: "#1f8a65",
+  medium: "#c08532",
+  low: "#cf2d56",
 } as const;
 
 export function getScoreLevel(score: number): ScoreLevel {

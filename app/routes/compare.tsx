@@ -47,24 +47,27 @@ const ScoreBar = ({ score, win }: { score: number; win: boolean }) => {
       >
         <span
           style={{
-            fontSize: "1.05rem",
-            fontWeight: 700,
-            color: win ? "#6ee7b7" : "#c8d0e7",
+            fontSize: "1rem",
+            fontWeight: 600,
+            fontFamily: "JetBrains Mono, monospace",
+            color: win ? "#1f8a65" : "#26251e",
           }}
         >
           {score}
           {win && (
-            <span style={{ fontSize: "0.7rem", marginLeft: "0.3rem", color: "#10b981" }}>
+            <span style={{ fontSize: "0.7rem", marginLeft: "0.3rem", color: "#1f8a65" }}>
               ▲
             </span>
           )}
         </span>
-        <span style={{ fontSize: "0.75rem", color: "#3a3a5c" }}>/100</span>
+        <span style={{ fontSize: "0.75rem", color: "#807d72", fontFamily: "JetBrains Mono, monospace" }}>
+          /100
+        </span>
       </div>
       <div
         style={{
-          height: "6px",
-          background: "#1e1e35",
+          height: "4px",
+          background: "#efeee8",
           borderRadius: "9999px",
           overflow: "hidden",
         }}
@@ -74,7 +77,7 @@ const ScoreBar = ({ score, win }: { score: number; win: boolean }) => {
             height: "100%",
             borderRadius: "9999px",
             width: `${score}%`,
-            background: win ? color : `${color}77`,
+            background: win ? color : `${color}88`,
             transition: "width 0.7s ease",
           }}
         />
@@ -97,11 +100,11 @@ const ResumeSelector = ({
   <div style={{ flex: 1, minWidth: 0 }}>
     <p
       style={{
-        fontSize: "0.75rem",
+        fontSize: "0.6875rem",
         fontWeight: 600,
-        color: "#4a5568",
+        color: "#807d72",
         textTransform: "uppercase",
-        letterSpacing: "0.06em",
+        letterSpacing: "0.08em",
         marginBottom: "0.5rem",
       }}
     >
@@ -112,10 +115,10 @@ const ResumeSelector = ({
       onChange={(e) => onChange(e.target.value)}
       style={{
         width: "100%",
-        background: "#11111f",
-        border: "1px solid #2a2a45",
-        color: "#c8d0e7",
-        borderRadius: "0.75rem",
+        background: "#ffffff",
+        border: "1px solid #e6e5e0",
+        color: "#26251e",
+        borderRadius: "8px",
         padding: "0.625rem 0.875rem",
         fontSize: "0.875rem",
         cursor: "pointer",
@@ -232,17 +235,35 @@ const Compare = () => {
         {loading && <Spinner label="Loading resumes…" />}
 
         {!loading && resumes.length < 2 && (
-          <div className="empty-state" style={{ maxWidth: "420px" }}>
-            <div style={{ fontSize: "2.5rem" }}>📄</div>
+          <div
+            className="empty-state"
+            style={{
+              maxWidth: "440px",
+              background: "#ffffff",
+              border: "1px solid #e6e5e0",
+              borderRadius: "12px",
+              padding: "2.5rem 1.75rem",
+              textAlign: "center",
+            }}
+          >
+            <div style={{ fontSize: "2.5rem", marginBottom: "0.5rem" }}>📄</div>
             <div>
-              <p style={{ fontWeight: 600, color: "#c8d0e7", marginBottom: "0.375rem" }}>
+              <p
+                style={{
+                  fontWeight: 500,
+                  color: "#26251e",
+                  fontSize: "1.125rem",
+                  letterSpacing: "-0.015em",
+                  marginBottom: "0.375rem",
+                }}
+              >
                 Not enough resumes
               </p>
-              <p style={{ color: "#4a5568", fontSize: "0.875rem" }}>
-                You need at least 2 analyzed resumes to compare.
+              <p style={{ color: "#5a5852", fontSize: "0.875rem", lineHeight: 1.5 }}>
+                You need at least 2 analyzed resumes to run a side-by-side comparison.
               </p>
             </div>
-            <Link to="/upload" className="primary-button">
+            <Link to="/upload" className="primary-button" style={{ marginTop: "1rem" }}>
               Analyze a Resume
             </Link>
           </div>
@@ -252,14 +273,14 @@ const Compare = () => {
           <div
             style={{
               width: "100%",
-              maxWidth: "960px",
+              maxWidth: "1040px",
               display: "flex",
               flexDirection: "column",
               gap: "2rem",
             }}
           >
             {/* Selectors */}
-            <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+            <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", alignItems: "flex-end" }}>
               <ResumeSelector
                 label="Resume A"
                 value={idA}
@@ -269,11 +290,15 @@ const Compare = () => {
               <div
                 style={{
                   display: "flex",
-                  alignItems: "flex-end",
-                  paddingBottom: "0.625rem",
-                  color: "#2a2a45",
-                  fontWeight: 700,
-                  fontSize: "1.1rem",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  paddingBottom: "0.75rem",
+                  color: "#807d72",
+                  fontFamily: "var(--font-mono)",
+                  fontWeight: 500,
+                  fontSize: "0.875rem",
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase",
                 }}
               >
                 vs
@@ -287,7 +312,14 @@ const Compare = () => {
             </div>
 
             {idA && idB && idA === idB && (
-              <p style={{ color: "#f59e0b", fontSize: "0.875rem", textAlign: "center" }}>
+              <p
+                style={{
+                  color: "#c08532",
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "0.8125rem",
+                  textAlign: "center",
+                }}
+              >
                 Please select two different resumes.
               </p>
             )}
@@ -297,8 +329,8 @@ const Compare = () => {
                 style={{
                   display: "flex",
                   flexDirection: "column",
-                  gap: "0.75rem",
-                  animation: "fadeIn 0.4s ease",
+                  gap: "1.25rem",
+                  animation: "fadeIn 0.3s ease",
                 }}
               >
                 {/* Thumbnail row */}
@@ -306,25 +338,32 @@ const Compare = () => {
                   style={{
                     display: "grid",
                     gridTemplateColumns: "1fr auto 1fr",
-                    gap: "1rem",
+                    gap: "1.25rem",
                     alignItems: "start",
                   }}
                 >
                   {/* Card A */}
                   <div
                     style={{
-                      background: "#11111f",
-                      border: "1px solid #2a2a45",
-                      borderRadius: "1rem",
+                      background: "#ffffff",
+                      border: "1px solid #e6e5e0",
+                      borderRadius: "12px",
                       overflow: "hidden",
                     }}
                   >
-                    <div style={{ padding: "1rem", borderBottom: "1px solid #1e1e35" }}>
+                    <div
+                      style={{
+                        padding: "1rem 1.25rem",
+                        borderBottom: "1px solid #efeee8",
+                        background: "#fafaf7",
+                      }}
+                    >
                       <p
                         style={{
-                          fontWeight: 700,
-                          color: "#c8d0e7",
+                          fontWeight: 500,
+                          color: "#26251e",
                           fontSize: "0.9375rem",
+                          letterSpacing: "-0.01em",
                         }}
                       >
                         {resumeA.companyName || "Resume A"}
@@ -332,8 +371,8 @@ const Compare = () => {
                       {resumeA.jobTitle && (
                         <p
                           style={{
-                            fontSize: "0.8rem",
-                            color: "#4a5568",
+                            fontSize: "0.8125rem",
+                            color: "#5a5852",
                             marginTop: "0.125rem",
                           }}
                         >
@@ -350,14 +389,16 @@ const Compare = () => {
                           height: "180px",
                           objectFit: "cover",
                           objectPosition: "top",
+                          borderBottom: "1px solid #efeee8",
                         }}
                       />
                     )}
                     <div
                       style={{
-                        padding: "0.875rem",
+                        padding: "1rem",
                         display: "flex",
                         justifyContent: "center",
+                        background: "#ffffff",
                       }}
                     >
                       <ScoreGauge score={resumeA.feedback?.overallScore ?? 0} />
@@ -369,13 +410,19 @@ const Compare = () => {
                     style={{
                       display: "flex",
                       alignItems: "center",
+                      justifyContent: "center",
                       height: "100%",
-                      padding: "1rem 0",
                       paddingTop: "5rem",
                     }}
                   >
                     <span
-                      style={{ color: "#2a2a45", fontWeight: 800, fontSize: "1.25rem" }}
+                      style={{
+                        color: "#807d72",
+                        fontFamily: "var(--font-mono)",
+                        fontWeight: 600,
+                        fontSize: "0.875rem",
+                        letterSpacing: "0.1em",
+                      }}
                     >
                       VS
                     </span>
@@ -384,18 +431,25 @@ const Compare = () => {
                   {/* Card B */}
                   <div
                     style={{
-                      background: "#11111f",
-                      border: "1px solid #2a2a45",
-                      borderRadius: "1rem",
+                      background: "#ffffff",
+                      border: "1px solid #e6e5e0",
+                      borderRadius: "12px",
                       overflow: "hidden",
                     }}
                   >
-                    <div style={{ padding: "1rem", borderBottom: "1px solid #1e1e35" }}>
+                    <div
+                      style={{
+                        padding: "1rem 1.25rem",
+                        borderBottom: "1px solid #efeee8",
+                        background: "#fafaf7",
+                      }}
+                    >
                       <p
                         style={{
-                          fontWeight: 700,
-                          color: "#c8d0e7",
+                          fontWeight: 500,
+                          color: "#26251e",
                           fontSize: "0.9375rem",
+                          letterSpacing: "-0.01em",
                         }}
                       >
                         {resumeB.companyName || "Resume B"}
@@ -403,8 +457,8 @@ const Compare = () => {
                       {resumeB.jobTitle && (
                         <p
                           style={{
-                            fontSize: "0.8rem",
-                            color: "#4a5568",
+                            fontSize: "0.8125rem",
+                            color: "#5a5852",
                             marginTop: "0.125rem",
                           }}
                         >
@@ -421,14 +475,16 @@ const Compare = () => {
                           height: "180px",
                           objectFit: "cover",
                           objectPosition: "top",
+                          borderBottom: "1px solid #efeee8",
                         }}
                       />
                     )}
                     <div
                       style={{
-                        padding: "0.875rem",
+                        padding: "1rem",
                         display: "flex",
                         justifyContent: "center",
+                        background: "#ffffff",
                       }}
                     >
                       <ScoreGauge score={resumeB.feedback?.overallScore ?? 0} />
@@ -439,9 +495,9 @@ const Compare = () => {
                 {/* Score rows */}
                 <div
                   style={{
-                    background: "#11111f",
-                    border: "1px solid #2a2a45",
-                    borderRadius: "1rem",
+                    background: "#ffffff",
+                    border: "1px solid #e6e5e0",
+                    borderRadius: "12px",
                     overflow: "hidden",
                   }}
                 >
@@ -455,25 +511,25 @@ const Compare = () => {
                       <div
                         key={cat.key}
                         style={{
-                          padding: "0.875rem 1.25rem",
-                          borderTop: i > 0 ? "1px solid #1e1e35" : "none",
+                          padding: "1rem 1.25rem",
+                          borderTop: i > 0 ? "1px solid #efeee8" : "none",
                         }}
                       >
                         <div
                           style={{
                             display: "grid",
                             gridTemplateColumns: "1fr auto 1fr",
-                            gap: "1rem",
+                            gap: "1.25rem",
                             alignItems: "center",
                           }}
                         >
                           <ScoreBar score={sA} win={sA > sB} />
-                          <div style={{ textAlign: "center", minWidth: "90px" }}>
+                          <div style={{ textAlign: "center", minWidth: "110px" }}>
                             <span
                               style={{
-                                fontSize: "0.75rem",
-                                fontWeight: 600,
-                                color: "#c8d0e7",
+                                fontSize: "0.8125rem",
+                                fontWeight: 500,
+                                color: "#26251e",
                                 display: "block",
                               }}
                             >
@@ -482,9 +538,10 @@ const Compare = () => {
                             {delta !== 0 && (
                               <span
                                 style={{
-                                  fontSize: "0.65rem",
-                                  fontWeight: 700,
-                                  color: delta > 0 ? "#6ee7b7" : "#fcd34d",
+                                  fontSize: "0.6875rem",
+                                  fontFamily: "var(--font-mono)",
+                                  fontWeight: 500,
+                                  color: delta > 0 ? "#1f8a65" : "#c08532",
                                 }}
                               >
                                 {delta > 0
@@ -500,14 +557,15 @@ const Compare = () => {
                             style={{
                               display: "grid",
                               gridTemplateColumns: "1fr auto 1fr",
-                              gap: "1rem",
-                              marginTop: "0.5rem",
+                              gap: "1.25rem",
+                              marginTop: "0.625rem",
                               fontSize: "0.75rem",
-                              color: "#64748b",
+                              color: "#5a5852",
+                              lineHeight: 1.45,
                             }}
                           >
                             <span>{tipA}</span>
-                            <span style={{ minWidth: "80px" }}></span>
+                            <span style={{ minWidth: "110px" }}></span>
                             <span>{tipB}</span>
                           </div>
                         )}
@@ -525,22 +583,39 @@ const Compare = () => {
                   return (
                     <div
                       style={{
-                        background: "rgba(16,185,129,0.07)",
-                        border: "1px solid rgba(16,185,129,0.25)",
-                        borderRadius: "0.875rem",
+                        background: "#fafaf7",
+                        border: "1px solid #e6e5e0",
+                        borderRadius: "8px",
                         padding: "0.875rem 1.25rem",
                         display: "flex",
                         alignItems: "center",
                         gap: "0.75rem",
                       }}
                     >
-                      <span style={{ fontSize: "1.25rem" }}>🏆</span>
-                      <p style={{ fontSize: "0.9rem", color: "#6ee7b7" }}>
-                        <strong>
+                      <span
+                        style={{
+                          width: "8px",
+                          height: "8px",
+                          borderRadius: "9999px",
+                          background: "#1f8a65",
+                          flexShrink: 0,
+                        }}
+                      />
+                      <p style={{ fontSize: "0.875rem", color: "#26251e" }}>
+                        <strong style={{ fontWeight: 600 }}>
                           {winner.companyName || (sA > sB ? "Resume A" : "Resume B")}
                         </strong>
                         {winner.jobTitle ? ` (${winner.jobTitle})` : ""} has the stronger
-                        overall score — <strong>{Math.max(sA, sB)}/100</strong>
+                        overall score —{" "}
+                        <span
+                          style={{
+                            fontFamily: "var(--font-mono)",
+                            fontWeight: 600,
+                            color: "#1f8a65",
+                          }}
+                        >
+                          {Math.max(sA, sB)}/100
+                        </span>
                       </p>
                     </div>
                   );

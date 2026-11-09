@@ -29,19 +29,19 @@ const KeywordGap: React.FC<KeywordGapProps> = ({ analysis }) => {
 
   return (
     <div className="keyword-gap-card">
-      <div style={{ marginBottom: "1rem" }}>
+      <div style={{ marginBottom: "1.25rem" }}>
         <h3
           style={{
             fontSize: "1.05rem",
-            fontWeight: 700,
-            color: "#c8d0e7",
+            fontWeight: 500,
+            color: "#26251e",
             marginBottom: "0.25rem",
           }}
         >
           Target Role Keyword Match
         </h3>
-        <p style={{ fontSize: "0.8125rem", color: "#5a6585" }}>
-          Comparison against key requirements found in the target job description
+        <p style={{ fontSize: "0.8125rem", color: "#807d72" }}>
+          Comparison against key requirements extracted from the target job description
         </p>
       </div>
 
@@ -56,10 +56,12 @@ const KeywordGap: React.FC<KeywordGapProps> = ({ analysis }) => {
         <div className="keyword-column">
           <div
             style={{
-              fontSize: "0.8rem",
-              fontWeight: 700,
-              color: "#6ee7b7",
-              marginBottom: "0.5rem",
+              fontSize: "0.75rem",
+              fontWeight: 600,
+              color: "#1f8a65",
+              textTransform: "uppercase",
+              letterSpacing: "0.06em",
+              marginBottom: "0.625rem",
               display: "flex",
               alignItems: "center",
               gap: "0.35rem",
@@ -74,7 +76,7 @@ const KeywordGap: React.FC<KeywordGapProps> = ({ analysis }) => {
               </span>
             ))}
             {matched.length === 0 && (
-              <span style={{ fontSize: "0.75rem", color: "#4a5568" }}>None detected</span>
+              <span style={{ fontSize: "0.75rem", color: "#807d72" }}>None detected</span>
             )}
           </div>
         </div>
@@ -83,10 +85,12 @@ const KeywordGap: React.FC<KeywordGapProps> = ({ analysis }) => {
         <div className="keyword-column">
           <div
             style={{
-              fontSize: "0.8rem",
-              fontWeight: 700,
-              color: "#fca5a5",
-              marginBottom: "0.5rem",
+              fontSize: "0.75rem",
+              fontWeight: 600,
+              color: "#cf2d56",
+              textTransform: "uppercase",
+              letterSpacing: "0.06em",
+              marginBottom: "0.625rem",
               display: "flex",
               alignItems: "center",
               gap: "0.35rem",
@@ -111,7 +115,7 @@ const KeywordGap: React.FC<KeywordGapProps> = ({ analysis }) => {
               </button>
             ))}
             {missing.length === 0 && (
-              <span style={{ fontSize: "0.75rem", color: "#4a5568" }}>
+              <span style={{ fontSize: "0.75rem", color: "#807d72" }}>
                 All keywords present
               </span>
             )}
@@ -123,16 +127,18 @@ const KeywordGap: React.FC<KeywordGapProps> = ({ analysis }) => {
           <div className="keyword-column">
             <div
               style={{
-                fontSize: "0.8rem",
-                fontWeight: 700,
-                color: "#fcd34d",
-                marginBottom: "0.5rem",
+                fontSize: "0.75rem",
+                fontWeight: 600,
+                color: "#c08532",
+                textTransform: "uppercase",
+                letterSpacing: "0.06em",
+                marginBottom: "0.625rem",
                 display: "flex",
                 alignItems: "center",
                 gap: "0.35rem",
               }}
             >
-              <span>◈</span> Partial Match ({partial.length})
+              <span>◈</span> Partial ({partial.length})
             </div>
             <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}>
               {partial.map((kw, i) => (

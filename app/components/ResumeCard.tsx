@@ -48,7 +48,7 @@ const ResumeCard = ({
     <Link
       to={`/resume/${id}`}
       className="resume-card"
-      style={{ outline: selected ? "2px solid #6366f1" : "none" }}
+      style={{ outline: selected ? "2px solid #f54e00" : "none" }}
     >
       {onToggleSelect && (
         <div
@@ -60,9 +60,9 @@ const ResumeCard = ({
             left: "0.875rem",
             width: "1.25rem",
             height: "1.25rem",
-            borderRadius: "0.25rem",
-            border: selected ? "1px solid #6366f1" : "1px solid #3a3a5c",
-            background: selected ? "#6366f1" : "#11111f",
+            borderRadius: "4px",
+            border: selected ? "1px solid #f54e00" : "1px solid #cfcdc4",
+            background: selected ? "#f54e00" : "#ffffff",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -89,9 +89,9 @@ const ResumeCard = ({
         <div style={{ flex: 1, minWidth: 0 }}>
           <p
             style={{
-              fontWeight: 700,
-              fontSize: "1rem",
-              color: "#c8d0e7",
+              fontWeight: 500,
+              fontSize: "1.05rem",
+              color: "#26251e",
               overflow: "hidden",
               textOverflow: "ellipsis",
               whiteSpace: "nowrap",
@@ -102,8 +102,8 @@ const ResumeCard = ({
           {jobTitle && (
             <p
               style={{
-                fontSize: "0.8375rem",
-                color: "#4a5568",
+                fontSize: "0.875rem",
+                color: "#5a5852",
                 marginTop: "0.2rem",
                 overflow: "hidden",
                 textOverflow: "ellipsis",
@@ -124,7 +124,7 @@ const ResumeCard = ({
           >
             <div className={`score-badge ${scoreBgClass}`}>Score: {score}/100</div>
             {createdAt && (
-              <span style={{ fontSize: "0.75rem", color: "#4a5568" }}>
+              <span style={{ fontSize: "0.75rem", color: "#807d72", fontFamily: "JetBrains Mono, monospace" }}>
                 {formatDate(createdAt)}
               </span>
             )}
@@ -141,10 +141,10 @@ const ResumeCard = ({
         <div
           style={{
             flex: 1,
-            borderRadius: "0.75rem",
+            borderRadius: "8px",
             overflow: "hidden",
-            border: "1px solid #1e1e35",
-            background: "#0e0e1e",
+            border: "1px solid #e6e5e0",
+            background: "#fafaf7",
           }}
         >
           <img
@@ -164,9 +164,9 @@ const ResumeCard = ({
         <div
           style={{
             flex: 1,
-            borderRadius: "0.75rem",
-            background: "#0e0e1e",
-            border: "1.5px dashed #2a2a45",
+            borderRadius: "8px",
+            background: "#fafaf7",
+            border: "1px dashed #cfcdc4",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -175,11 +175,11 @@ const ResumeCard = ({
           }}
         >
           <svg
-            width="28"
-            height="28"
+            width="24"
+            height="24"
             viewBox="0 0 24 24"
             fill="none"
-            stroke="#2a2a45"
+            stroke="#cfcdc4"
             strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -187,7 +187,7 @@ const ResumeCard = ({
             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
             <polyline points="14 2 14 8 20 8" />
           </svg>
-          <span style={{ fontSize: "0.8rem", color: "#3a3a5c" }}>Loading preview…</span>
+          <span style={{ fontSize: "0.8rem", color: "#807d72" }}>Loading preview…</span>
         </div>
       )}
     </Link>

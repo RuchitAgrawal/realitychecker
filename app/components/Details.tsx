@@ -19,7 +19,7 @@ const CategoryHeader = ({
   categoryScore: number;
 }) => (
   <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-    <span style={{ fontSize: "0.9375rem", fontWeight: 600, color: "#c8d0e7" }}>
+    <span style={{ fontSize: "0.9375rem", fontWeight: 500, color: "#26251e" }}>
       {title}
     </span>
     <ScorePill score={categoryScore} />
@@ -52,7 +52,7 @@ const CategoryContent = ({
             <span
               style={{
                 fontSize: "0.75rem",
-                color: tip.type === "good" ? "#10b981" : "#f59e0b",
+                color: tip.type === "good" ? "#1f8a65" : "#f54e00",
                 flexShrink: 0,
               }}
             >
@@ -79,7 +79,13 @@ const CategoryContent = ({
               }}
             >
               <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                <span style={{ fontSize: "0.8rem" }}>
+                <span
+                  style={{
+                    fontSize: "0.8rem",
+                    color: tip.type === "good" ? "#1f8a65" : "#f54e00",
+                    fontWeight: 600,
+                  }}
+                >
                   {tip.type === "good" ? "✓" : "▲"}
                 </span>
                 <p className="tip-title">{tip.tip}</p>
@@ -89,13 +95,14 @@ const CategoryContent = ({
                 title="Copy tip"
                 onClick={() => handleCopyTip(i, `${tip.tip}: ${tip.explanation || ""}`)}
                 style={{
-                  background: "transparent",
-                  border: "none",
-                  color: copiedIndex === i ? "#6ee7b7" : "#64748b",
+                  background: "#ffffff",
+                  border: "1px solid #e6e5e0",
+                  color: copiedIndex === i ? "#1f8a65" : "#807d72",
                   cursor: "pointer",
                   fontSize: "0.75rem",
-                  padding: "0.2rem 0.4rem",
-                  borderRadius: "0.25rem",
+                  padding: "0.2rem 0.5rem",
+                  borderRadius: "4px",
+                  fontFamily: "JetBrains Mono, monospace",
                 }}
               >
                 {copiedIndex === i ? "Copied ✓" : "Copy"}

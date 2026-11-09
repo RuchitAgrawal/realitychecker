@@ -27,8 +27,8 @@ const ScoreGauge = ({ score = 75 }: { score: number }) => {
         <path
           d="M10,54 A44,44 0 0,1 90,54"
           fill="none"
-          stroke="#1e1e35"
-          strokeWidth="10"
+          stroke="#efeee8"
+          strokeWidth="8"
           strokeLinecap="round"
         />
         {/* Filled arc */}
@@ -37,7 +37,7 @@ const ScoreGauge = ({ score = 75 }: { score: number }) => {
           d="M10,54 A44,44 0 0,1 90,54"
           fill="none"
           stroke={color}
-          strokeWidth="10"
+          strokeWidth="8"
           strokeLinecap="round"
           strokeDasharray={pathLength || 138}
           strokeDashoffset={(pathLength || 138) * (1 - score / 100)}
@@ -47,10 +47,26 @@ const ScoreGauge = ({ score = 75 }: { score: number }) => {
 
       {/* Score number — below the arc, always visible */}
       <div style={{ textAlign: "center", lineHeight: 1, marginTop: "-0.5rem" }}>
-        <span style={{ fontSize: "1.25rem", fontWeight: 800, color, display: "block" }}>
+        <span
+          style={{
+            fontSize: "1.25rem",
+            fontWeight: 600,
+            fontFamily: "JetBrains Mono, monospace",
+            color,
+            display: "block",
+          }}
+        >
           {score}
         </span>
-        <span style={{ fontSize: "0.65rem", color: "#4a5568", display: "block" }}>
+        <span
+          style={{
+            fontSize: "0.625rem",
+            color: "#807d72",
+            fontFamily: "JetBrains Mono, monospace",
+            display: "block",
+            marginTop: "0.2rem",
+          }}
+        >
           /100
         </span>
       </div>

@@ -9,9 +9,9 @@ const CategoryRow = ({ title, score }: { title: string; score: number }) => (
       <div
         style={{
           width: "90px",
-          height: "5px",
+          height: "4px",
           borderRadius: "9999px",
-          background: "#1e1e35",
+          background: "#efeee8",
           overflow: "hidden",
         }}
       >
@@ -46,14 +46,15 @@ const Summary = ({ feedback }: { feedback: Feedback }) => {
             {feedback.experienceLevel && (
               <span
                 style={{
-                  fontSize: "0.7rem",
+                  fontSize: "0.6875rem",
                   textTransform: "capitalize",
                   padding: "0.15rem 0.5rem",
-                  borderRadius: "9999px",
-                  background: "rgba(99, 102, 241, 0.15)",
-                  color: "#a5b4fc",
-                  border: "1px solid rgba(99, 102, 241, 0.3)",
-                  fontWeight: 600,
+                  borderRadius: "4px",
+                  background: "#fafaf7",
+                  color: "#26251e",
+                  border: "1px solid #e6e5e0",
+                  fontWeight: 500,
+                  fontFamily: "JetBrains Mono, monospace",
                 }}
               >
                 {feedback.experienceLevel} Level
@@ -61,8 +62,8 @@ const Summary = ({ feedback }: { feedback: Feedback }) => {
             )}
           </div>
           <p className="score-overview-title">Resume Score</p>
-          <p style={{ fontSize: "0.8375rem", color: "#4a5568", marginTop: "0.25rem" }}>
-            Based on content, tone, structure &amp; skills
+          <p style={{ fontSize: "0.8375rem", color: "#807d72", marginTop: "0.25rem" }}>
+            Evaluated across content, tone, structure, and skills
           </p>
         </div>
       </div>
