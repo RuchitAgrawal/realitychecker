@@ -47,6 +47,18 @@ const Upload = () => {
     const [companyName, setCompanyName] = useState('');
     const [jobTitle, setJobTitle] = useState('');
     const [jobDescription, setJobDescription] = useState('');
+    const [elapsedSeconds, setElapsedSeconds] = useState(0);
+
+    useEffect(() => {
+        let interval: NodeJS.Timeout | undefined;
+        if (status === 'processing') {
+            setElapsedSeconds(0);
+            interval = setInterval(() => setElapsedSeconds(s => s + 1), 1000);
+        }
+        return () => {
+            if (interval) clearInterval(interval);
+        };
+    }, [status]);
 
     useEffect(() => {
         if (!reanalyzeId) return;
@@ -181,7 +193,7 @@ const Upload = () => {
                     {status === 'processing' && (
                         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5rem', marginTop: '1.5rem', width: '100%' }}>
                             <p style={{ color: '#64748b', fontSize: '0.9375rem' }}>
-                                Analyzing your resume with AI — please wait…
+                                Analyzing your resume with AI ({elapsedSeconds}s) — please wait…
                             </p>
                             <div className="progress-steps">
                                 {STEPS.map(step => {
