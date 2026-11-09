@@ -29,6 +29,7 @@ cp .env.example .env.local
 ```
 
 Required keys:
+
 - `VITE_SUPABASE_URL`: Your Supabase project URL
 - `VITE_SUPABASE_ANON_KEY`: Supabase anon/public key
 - `GROQ_API_KEY`: Groq API key (console.groq.com)
@@ -70,6 +71,7 @@ create policy "Users manage own files" on storage.objects
 ```
 
 Create two Storage buckets in Supabase:
+
 - `resume-files` (private)
 - `resume-images` (private)
 

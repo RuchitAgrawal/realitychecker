@@ -37,7 +37,9 @@ export default defineConfig(({ mode }) => {
 
                   if (!groqKey) {
                     res.writeHead(500, { "Content-Type": "application/json" });
-                    res.end(JSON.stringify({ error: "GROQ_API_KEY not set in .env.local" }));
+                    res.end(
+                      JSON.stringify({ error: "GROQ_API_KEY not set in .env.local" })
+                    );
                     return;
                   }
 

@@ -60,15 +60,20 @@ RULES:
 - Never give generic advice like "improve your formatting" — always say what exactly to change`;
 
 export function buildSystemPrompt(): string {
-    return SYSTEM_PROMPT;
+  return SYSTEM_PROMPT;
 }
 
-export function buildUserPrompt(resumeText: string, jobTitle?: string, jobDescription?: string): string {
-    const jobContext = (jobTitle?.trim() && jobDescription?.trim())
-        ? `\nTARGET ROLE: ${jobTitle.trim()}\nJOB DESCRIPTION:\n${jobDescription.trim().substring(0, 3000)}\n\nEvaluate how well this resume is tailored for the above role. Penalise for missing keywords from the job description.`
-        : `\nNo specific job role provided. Evaluate as a general-purpose resume.`;
+export function buildUserPrompt(
+  resumeText: string,
+  jobTitle?: string,
+  jobDescription?: string
+): string {
+  const jobContext =
+    jobTitle?.trim() && jobDescription?.trim()
+      ? `\nTARGET ROLE: ${jobTitle.trim()}\nJOB DESCRIPTION:\n${jobDescription.trim().substring(0, 3000)}\n\nEvaluate how well this resume is tailored for the above role. Penalise for missing keywords from the job description.`
+      : `\nNo specific job role provided. Evaluate as a general-purpose resume.`;
 
-    return `${jobContext}
+  return `${jobContext}
 
 RESUME TEXT:
 ${resumeText.substring(0, 10000)}

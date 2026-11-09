@@ -7,13 +7,16 @@ Thank you for your interest in contributing to RealityChecker. This document out
 ## 1. Getting Started
 
 ### Prerequisites
+
 - Node.js 20.0 or higher
 - npm 10.0 or higher
 - A Supabase project (PostgreSQL + Auth + Storage)
 - Groq API key and Google Gemini API key
 
 ### Local Setup
+
 1. Clone the repository and install dependencies:
+
    ```bash
    git clone https://github.com/rragrawal16/realitychecker.git
    cd realitychecker
@@ -21,6 +24,7 @@ Thank you for your interest in contributing to RealityChecker. This document out
    ```
 
 2. Copy the environment configuration template:
+
    ```bash
    cp .env.example .env.local
    ```
@@ -64,13 +68,16 @@ realitychecker/
 ## 3. Branching & Git Conventions
 
 ### Branch Naming
+
 Keep branch names short, descriptive, and prefixed by category:
+
 - `feature/<name>` for new capabilities (e.g. `feature/keyword-gap-analysis`)
 - `fix/<name>` for bug fixes (e.g. `fix/expired-signed-urls`)
 - `refactor/<name>` for code restructuring without behavioral change
 - `docs/<name>` for documentation updates
 
 ### Commit Messages
+
 - Use the imperative mood in the subject line (e.g., `fix expired signed url by refetching on image load error`, not `fixed...`).
 - Keep commit titles concise, single-line, and descriptive.
 - Focus each commit on a single logical change.
@@ -82,12 +89,15 @@ Keep branch names short, descriptive, and prefixed by category:
 Before opening a pull request, ensure all verification checks pass:
 
 1. **TypeScript Verification**:
+
    ```bash
    npm run typecheck
    ```
+
    All code must compile under strict TypeScript mode with zero errors.
 
 2. **Linting**:
+
    ```bash
    npm run lint
    ```

@@ -5,9 +5,9 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || "";
 
 export const isSupabaseConfigured = Boolean(
   supabaseUrl &&
-    supabaseAnonKey &&
-    supabaseUrl.startsWith("http") &&
-    supabaseAnonKey.length > 20
+  supabaseAnonKey &&
+  supabaseUrl.startsWith("http") &&
+  supabaseAnonKey.length > 20
 );
 
 // Fallback to placeholder client to prevent module initialization crashes

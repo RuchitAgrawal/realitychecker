@@ -67,18 +67,14 @@ const KeywordGap: React.FC<KeywordGapProps> = ({ analysis }) => {
           >
             <span>✓</span> Matched ({matched.length})
           </div>
-          <div
-            style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}
-          >
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}>
             {matched.map((kw, i) => (
               <span key={i} className="keyword-pill keyword-pill-matched">
                 {kw}
               </span>
             ))}
             {matched.length === 0 && (
-              <span style={{ fontSize: "0.75rem", color: "#4a5568" }}>
-                None detected
-              </span>
+              <span style={{ fontSize: "0.75rem", color: "#4a5568" }}>None detected</span>
             )}
           </div>
         </div>
@@ -98,9 +94,7 @@ const KeywordGap: React.FC<KeywordGapProps> = ({ analysis }) => {
           >
             <span>✕</span> Missing ({missing.length})
           </div>
-          <div
-            style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}
-          >
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}>
             {missing.map((kw, i) => (
               <button
                 key={i}
@@ -140,9 +134,7 @@ const KeywordGap: React.FC<KeywordGapProps> = ({ analysis }) => {
             >
               <span>◈</span> Partial Match ({partial.length})
             </div>
-            <div
-              style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}
-            >
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}>
               {partial.map((kw, i) => (
                 <span key={i} className="keyword-pill keyword-pill-partial">
                   {kw}

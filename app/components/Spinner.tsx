@@ -27,9 +27,7 @@ const Spinner: React.FC<SpinnerProps> = ({ label = "Loading…", size = 36 }) =>
           animation: "spin 0.9s linear infinite",
         }}
       />
-      {label && (
-        <p style={{ color: "#5a6585", fontSize: "0.875rem" }}>{label}</p>
-      )}
+      {label && <p style={{ color: "#5a6585", fontSize: "0.875rem" }}>{label}</p>}
     </div>
   );
 };

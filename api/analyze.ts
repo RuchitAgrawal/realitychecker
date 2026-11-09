@@ -10,14 +10,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const { resumeText, imageBase64, mimeType, jobTitle, jobDescription } =
-      req.body as {
-        resumeText?: string;
-        imageBase64?: string;
-        mimeType?: string;
-        jobTitle?: string;
-        jobDescription?: string;
-      };
+    const { resumeText, imageBase64, mimeType, jobTitle, jobDescription } = req.body as {
+      resumeText?: string;
+      imageBase64?: string;
+      mimeType?: string;
+      jobTitle?: string;
+      jobDescription?: string;
+    };
 
     const hasText = Boolean(resumeText && resumeText.trim().length >= 50);
     const hasImage = Boolean(imageBase64 && imageBase64.length > 100);
@@ -29,9 +28,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     // Cache key based on text or image signature
-    const inputSignature = hasText
-      ? resumeText!
-      : imageBase64!.slice(0, 500);
+    const inputSignature = hasText ? resumeText! : imageBase64!.slice(0, 500);
 
     const hash = crypto
       .createHash("sha256")
@@ -50,9 +47,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (hasText) {
       const groqKey = process.env.GROQ_API_KEY;
       if (!groqKey) {
-        return res
-          .status(500)
-          .json({ error: "GROQ_API_KEY not configured on server" });
+        return res.status(500).json({ error: "GROQ_API_KEY not configured on server" });
       }
       feedback = await runGroqAnalysis(
         { resumeText: resumeText!, jobTitle, jobDescription },

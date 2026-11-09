@@ -110,9 +110,7 @@ const UserMenu: React.FC = () => {
             onMouseOver={(e) =>
               (e.currentTarget.style.background = "rgba(239, 68, 68, 0.1)")
             }
-            onMouseOut={(e) =>
-              (e.currentTarget.style.background = "transparent")
-            }
+            onMouseOut={(e) => (e.currentTarget.style.background = "transparent")}
           >
             Sign Out
           </button>
