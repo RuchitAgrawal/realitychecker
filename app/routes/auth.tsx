@@ -12,6 +12,21 @@ export const meta = () => ([
 
 type AuthMode = 'signin' | 'signup';
 
+const getPasswordStrength = (password: string) => {
+    if (!password) return { score: 0, label: '', color: '#2a2a45' };
+    let score = 0;
+    if (password.length >= 8) score += 1;
+    if (password.length >= 12) score += 1;
+    if (/[A-Z]/.test(password) && /[a-z]/.test(password)) score += 1;
+    if (/[0-9]/.test(password)) score += 1;
+    if (/[^A-Za-z0-9]/.test(password)) score += 1;
+
+    if (score <= 1) return { score: 1, label: 'Weak', color: '#ef4444' };
+    if (score <= 2) return { score: 2, label: 'Fair', color: '#f59e0b' };
+    if (score <= 3) return { score: 3, label: 'Good', color: '#6366f1' };
+    return { score: 4, label: 'Strong', color: '#10b981' };
+};
+
 const authSchema = z.object({
     email: z.string().trim().email('Please enter a valid email address'),
     password: z.string().min(6, 'Password must be at least 6 characters'),
@@ -32,10 +47,14 @@ const Auth = () => {
         handleSubmit,
         formState: { errors, isSubmitting },
         reset,
+        watch,
     } = useForm<AuthFormData>({
         resolver: zodResolver(authSchema),
         defaultValues: { email: '', password: '' },
     });
+
+    const watchedPassword = watch('password') || '';
+    const strength = getPasswordStrength(watchedPassword);
 
     useEffect(() => {
         if (!isLoading && isAuthenticated) navigate('/');
@@ -158,6 +177,27 @@ const Auth = () => {
                             <p style={{ color: '#fca5a5', fontSize: '0.75rem', textAlign: 'left', marginTop: '0.25rem' }}>
                                 {errors.password.message}
                             </p>
+                        )}
+                        {mode === 'signup' && watchedPassword.length > 0 && (
+                            <div style={{ marginTop: '0.5rem', textAlign: 'left' }}>
+                                <div style={{ display: 'flex', gap: '4px', height: '4px', marginBottom: '0.35rem' }}>
+                                    {[1, 2, 3, 4].map(step => (
+                                        <div
+                                            key={step}
+                                            style={{
+                                                flex: 1,
+                                                borderRadius: '2px',
+                                                background: strength.score >= step ? strength.color : '#2a2a45',
+                                                transition: 'background 0.2s ease',
+                                            }}
+                                        />
+                                    ))}
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.7rem' }}>
+                                    <span style={{ color: '#64748b' }}>Password strength</span>
+                                    <span style={{ color: strength.color, fontWeight: 600 }}>{strength.label}</span>
+                                </div>
+                            </div>
                         )}
                     </div>
 
