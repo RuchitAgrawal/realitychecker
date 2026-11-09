@@ -4,11 +4,12 @@ const SetupBanner: React.FC = () => {
   return (
     <div
       style={{
-        background: "rgba(239, 68, 68, 0.12)",
-        border: "1px solid rgba(239, 68, 68, 0.35)",
-        color: "#fca5a5",
+        background: "#ffffff",
+        border: "1px solid #cf2d56",
+        borderLeft: "4px solid #cf2d56",
+        color: "#26251e",
         padding: "0.875rem 1.25rem",
-        borderRadius: "0.75rem",
+        borderRadius: "8px",
         margin: "1rem auto",
         maxWidth: "960px",
         display: "flex",
@@ -19,8 +20,9 @@ const SetupBanner: React.FC = () => {
       }}
     >
       <div>
-        <strong>Supabase environment variables missing:</strong> Please set{" "}
-        <code>VITE_SUPABASE_URL</code> and <code>VITE_SUPABASE_ANON_KEY</code> in{" "}
+        <strong style={{ color: "#cf2d56" }}>Missing Supabase credentials:</strong> Please set{" "}
+        <code style={{ background: "#fafaf7", padding: "0.15rem 0.35rem", borderRadius: "4px", border: "1px solid #e6e5e0" }}>VITE_SUPABASE_URL</code> and{" "}
+        <code style={{ background: "#fafaf7", padding: "0.15rem 0.35rem", borderRadius: "4px", border: "1px solid #e6e5e0" }}>VITE_SUPABASE_ANON_KEY</code> in{" "}
         <code>.env.local</code>.
       </div>
       <a
@@ -28,13 +30,13 @@ const SetupBanner: React.FC = () => {
         target="_blank"
         rel="noreferrer"
         style={{
-          color: "#fff",
+          color: "#f54e00",
           textDecoration: "underline",
           whiteSpace: "nowrap",
-          fontWeight: 600,
+          fontWeight: 500,
         }}
       >
-        Setup Guide
+        Documentation →
       </a>
     </div>
   );

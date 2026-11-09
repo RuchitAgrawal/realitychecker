@@ -44,11 +44,11 @@ const UserMenu: React.FC = () => {
           width: "2.125rem",
           height: "2.125rem",
           borderRadius: "9999px",
-          background: "linear-gradient(135deg, #6366f1, #a855f7)",
-          color: "#ffffff",
-          fontWeight: 700,
-          fontSize: "0.875rem",
-          border: "1px solid rgba(255, 255, 255, 0.2)",
+          background: "#26251e",
+          color: "#f7f7f4",
+          fontWeight: 600,
+          fontSize: "0.8125rem",
+          border: "1px solid #26251e",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -64,20 +64,20 @@ const UserMenu: React.FC = () => {
             position: "absolute",
             top: "calc(100% + 0.5rem)",
             right: 0,
-            background: "#11111f",
-            border: "1px solid #2a2a45",
-            borderRadius: "0.75rem",
-            padding: "0.75rem",
-            minWidth: "180px",
-            boxShadow: "0 10px 25px rgba(0, 0, 0, 0.5)",
+            background: "#ffffff",
+            border: "1px solid #e6e5e0",
+            borderRadius: "8px",
+            padding: "0.875rem",
+            minWidth: "200px",
             zIndex: 100,
           }}
         >
           <div
             style={{
               fontSize: "0.75rem",
-              color: "#94a3b8",
+              color: "#807d72",
               marginBottom: "0.5rem",
+              fontFamily: "JetBrains Mono, monospace",
               overflow: "hidden",
               textOverflow: "ellipsis",
               whiteSpace: "nowrap",
@@ -88,7 +88,7 @@ const UserMenu: React.FC = () => {
           <hr
             style={{
               border: "none",
-              borderTop: "1px solid #1e1e35",
+              borderTop: "1px solid #efeee8",
               marginBottom: "0.5rem",
             }}
           />
@@ -99,16 +99,18 @@ const UserMenu: React.FC = () => {
               width: "100%",
               background: "transparent",
               border: "none",
-              color: "#fca5a5",
+              color: "#cf2d56",
               textAlign: "left",
               padding: "0.375rem 0.5rem",
-              borderRadius: "0.375rem",
+              borderRadius: "6px",
               fontSize: "0.8125rem",
               cursor: "pointer",
-              transition: "background 0.2s",
+              transition: "background 0.15s",
+              fontFamily: "inherit",
+              fontWeight: 500,
             }}
             onMouseOver={(e) =>
-              (e.currentTarget.style.background = "rgba(239, 68, 68, 0.1)")
+              (e.currentTarget.style.background = "#fafaf7")
             }
             onMouseOut={(e) => (e.currentTarget.style.background = "transparent")}
           >
