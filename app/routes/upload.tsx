@@ -15,11 +15,11 @@ export const meta = () => ([
 type AnalysisStatus = 'idle' | 'processing' | 'error';
 
 const STEPS = [
-    { id: 1, label: 'Reading resume text' },
-    { id: 2, label: 'Generating preview' },
-    { id: 3, label: 'Uploading files' },
-    { id: 4, label: 'AI analysis' },
-    { id: 5, label: 'Saving results' },
+    { id: 1, label: 'Extracting resume content' },
+    { id: 2, label: 'Rendering document preview' },
+    { id: 3, label: 'Storing documents securely' },
+    { id: 4, label: 'Evaluating ATS score & feedback' },
+    { id: 5, label: 'Finalizing analysis report' },
 ];
 
 function withTimeout<T>(promise: Promise<T>, ms: number, label: string): Promise<T> {
