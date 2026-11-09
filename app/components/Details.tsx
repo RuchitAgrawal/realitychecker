@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -23,34 +24,68 @@ const CategoryContent = ({
     tips,
 }: {
     tips: { type: "good" | "improve"; tip: string; explanation?: string }[];
-}) => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-        {/* Quick summary grid */}
-        <div className="tips-grid">
-            {tips.map((tip, i) => (
-                <div key={i} className="tip-quick">
-                    <span style={{ fontSize: '0.75rem', color: tip.type === 'good' ? '#10b981' : '#f59e0b', flexShrink: 0 }}>
-                        {tip.type === 'good' ? '✓' : '▲'}
-                    </span>
-                    <span>{tip.tip}</span>
-                </div>
-            ))}
-        </div>
+}) => {
+    const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
 
-        {/* Detailed cards */}
-        <div className="tips-detail-list">
-            {tips.map((tip, i) => (
-                <div key={i + tip.tip} className={`tip-detail-card ${tip.type === 'good' ? 'tip-good' : 'tip-improve'}`}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <span style={{ fontSize: '0.8rem' }}>{tip.type === 'good' ? '✓' : '▲'}</span>
-                        <p className="tip-title">{tip.tip}</p>
+    const handleCopyTip = async (index: number, text: string) => {
+        try {
+            await navigator.clipboard.writeText(text);
+            setCopiedIndex(index);
+            setTimeout(() => setCopiedIndex(null), 1500);
+        } catch {
+            // ignore
+        }
+    };
+
+    return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            {/* Quick summary grid */}
+            <div className="tips-grid">
+                {tips.map((tip, i) => (
+                    <div key={i} className="tip-quick">
+                        <span style={{ fontSize: '0.75rem', color: tip.type === 'good' ? '#10b981' : '#f59e0b', flexShrink: 0 }}>
+                            {tip.type === 'good' ? '✓' : '▲'}
+                        </span>
+                        <span>{tip.tip}</span>
                     </div>
-                    <p className="tip-body" style={{ fontSize: '0.875rem', paddingLeft: '1.375rem' }}>{tip.explanation}</p>
-                </div>
-            ))}
+                ))}
+            </div>
+
+            {/* Detailed cards */}
+            <div className="tips-detail-list">
+                {tips.map((tip, i) => (
+                    <div key={i + tip.tip} className={`tip-detail-card ${tip.type === 'good' ? 'tip-good' : 'tip-improve'}`}>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.5rem' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                <span style={{ fontSize: '0.8rem' }}>{tip.type === 'good' ? '✓' : '▲'}</span>
+                                <p className="tip-title">{tip.tip}</p>
+                            </div>
+                            <button
+                                type="button"
+                                title="Copy tip"
+                                onClick={() => handleCopyTip(i, `${tip.tip}: ${tip.explanation || ''}`)}
+                                style={{
+                                    background: 'transparent',
+                                    border: 'none',
+                                    color: copiedIndex === i ? '#6ee7b7' : '#64748b',
+                                    cursor: 'pointer',
+                                    fontSize: '0.75rem',
+                                    padding: '0.2rem 0.4rem',
+                                    borderRadius: '0.25rem',
+                                }}
+                            >
+                                {copiedIndex === i ? 'Copied ✓' : 'Copy'}
+                            </button>
+                        </div>
+                        {tip.explanation && (
+                            <p className="tip-body" style={{ fontSize: '0.875rem', paddingLeft: '1.375rem' }}>{tip.explanation}</p>
+                        )}
+                    </div>
+                ))}
+            </div>
         </div>
-    </div>
-);
+    );
+};
 
 const Details = ({ feedback }: { feedback: Feedback }) => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
