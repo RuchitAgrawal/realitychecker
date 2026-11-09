@@ -94,7 +94,13 @@ export async function runGroqAnalysis(
     .trim();
 
   const parsed = JSON.parse(cleaned);
-  const validated = FeedbackSchema.safeParse(parsed);
+  const target = Array.isArray(parsed)
+    ? parsed[0]
+    : parsed && typeof parsed === "object" && "feedback" in parsed
+      ? parsed.feedback
+      : parsed;
+
+  const validated = FeedbackSchema.safeParse(target);
 
   if (!validated.success) {
     console.error("Feedback validation failed:", validated.error.format());
