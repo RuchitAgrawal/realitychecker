@@ -267,11 +267,22 @@ const Upload = () => {
                                         <input type="text" placeholder="Job title" value={jobTitle}
                                             onChange={e => setJobTitle(e.target.value)} style={{ flex: 1 }} />
                                     </div>
-                                    <textarea
-                                        placeholder="Paste the job description here for role-specific AI feedback…"
-                                        value={jobDescription} onChange={e => setJobDescription(e.target.value)}
-                                        rows={4} style={{ width: '100%', resize: 'vertical', lineHeight: 1.55 }}
-                                    />
+                                    <div style={{ position: 'relative' }}>
+                                        <textarea
+                                            placeholder="Paste the job description here for role-specific AI feedback…"
+                                            value={jobDescription} onChange={e => setJobDescription(e.target.value)}
+                                            maxLength={3000}
+                                            rows={4} style={{ width: '100%', resize: 'vertical', lineHeight: 1.55 }}
+                                        />
+                                        <div style={{
+                                            textAlign: 'right',
+                                            fontSize: '0.7rem',
+                                            color: jobDescription.length > 2700 ? '#f59e0b' : '#4a5568',
+                                            marginTop: '0.2rem',
+                                        }}>
+                                            {jobDescription.length} / 3000 chars
+                                        </div>
+                                    </div>
                                 </div>
                                 {jobTitle && jobDescription && (
                                     <p style={{ fontSize: '0.8rem', color: '#10b981', marginTop: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
