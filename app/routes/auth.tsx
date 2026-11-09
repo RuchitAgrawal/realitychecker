@@ -41,6 +41,9 @@ const Auth = () => {
     const [mode, setMode] = useState<AuthMode>('signin');
     const [serverError, setServerError] = useState('');
     const [success, setSuccess] = useState('');
+    const [confirmationEmail, setConfirmationEmail] = useState<string | null>(null);
+    const [resending, setResending] = useState(false);
+    const [resendStatus, setResendStatus] = useState('');
 
     const {
         register,
@@ -88,7 +91,7 @@ const Auth = () => {
             if (err) {
                 setServerError(err);
             } else {
-                setSuccess('Account created! Check your email to confirm, then sign in.');
+                setConfirmationEmail(data.email);
                 reset();
             }
         }
@@ -99,6 +102,66 @@ const Auth = () => {
         setServerError('');
         setSuccess('');
     };
+
+    if (confirmationEmail) {
+        return (
+            <main style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
+                <div style={{
+                    background: '#11111f', border: '1px solid #2a2a45', borderRadius: '1.5rem',
+                    padding: '2.5rem 2.5rem 2rem', maxWidth: '420px', width: '100%', textAlign: 'center',
+                    boxShadow: '0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(99,102,241,0.06)',
+                }}>
+                    <div style={{
+                        width: '3.5rem', height: '3.5rem', borderRadius: '1rem',
+                        background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.25)',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.25rem',
+                    }}>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6ee7b7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                            <polyline points="22,6 12,13 2,6"/>
+                        </svg>
+                    </div>
+                    <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#f1f5f9', marginBottom: '0.5rem' }}>Check your inbox</h2>
+                    <p style={{ fontSize: '0.875rem', color: '#94a3b8', lineHeight: 1.5, marginBottom: '1.5rem' }}>
+                        We sent a verification link to <strong style={{ color: '#e2e8f0' }}>{confirmationEmail}</strong>. Please check your email to activate your account.
+                    </p>
+                    {resendStatus && (
+                        <p style={{ fontSize: '0.8125rem', color: resendStatus.startsWith('Failed') ? '#fca5a5' : '#6ee7b7', marginBottom: '1rem' }}>
+                            {resendStatus}
+                        </p>
+                    )}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                        <button
+                            type="button"
+                            onClick={async () => {
+                                setResending(true);
+                                setResendStatus('');
+                                const err = await auth.resendVerificationEmail(confirmationEmail);
+                                setResending(false);
+                                if (err) setResendStatus(`Failed: ${err}`);
+                                else setResendStatus('Verification email resent!');
+                            }}
+                            disabled={resending}
+                            className="auth-button"
+                            style={{ width: '100%', justifyContent: 'center' }}
+                        >
+                            {resending ? 'Resending…' : 'Resend verification email'}
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => {
+                                setConfirmationEmail(null);
+                                switchMode('signin');
+                            }}
+                            className="primary-button full"
+                        >
+                            Back to Sign In
+                        </button>
+                    </div>
+                </div>
+            </main>
+        );
+    }
 
     return (
         <main style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
