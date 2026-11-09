@@ -23,7 +23,7 @@ const FileUploader = ({ file = null, onFileSelect, onError }: FileUploaderProps)
         onDropRejected: (rejections) => {
             const first = rejections[0];
             const code = first?.errors[0]?.code;
-            if (code === 'file-too-large') {
+            if (first && code === 'file-too-large') {
                 onError?.(`File size exceeds the 20MB limit (${formatSize(first.file.size)}). Please upload a smaller file.`);
             } else if (code === 'file-invalid-type') {
                 onError?.('Only PDF files are supported. Please select a .pdf file.');

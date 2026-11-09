@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import { useStore } from '~/lib/store';
 
 export const meta = () => ([
@@ -9,36 +12,56 @@ export const meta = () => ([
 
 type AuthMode = 'signin' | 'signup';
 
+const authSchema = z.object({
+    email: z.string().trim().email('Please enter a valid email address'),
+    password: z.string().min(6, 'Password must be at least 6 characters'),
+});
+
+type AuthFormData = z.infer<typeof authSchema>;
+
 const Auth = () => {
     const { isLoading, isAuthenticated, auth } = useStore();
     const navigate = useNavigate();
 
     const [mode, setMode] = useState<AuthMode>('signin');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
-    const [submitting, setSubmitting] = useState(false);
+    const [serverError, setServerError] = useState('');
     const [success, setSuccess] = useState('');
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors, isSubmitting },
+        reset,
+    } = useForm<AuthFormData>({
+        resolver: zodResolver(authSchema),
+        defaultValues: { email: '', password: '' },
+    });
 
     useEffect(() => {
         if (!isLoading && isAuthenticated) navigate('/');
-    }, [isLoading, isAuthenticated]);
+    }, [isLoading, isAuthenticated, navigate]);
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setError(''); setSuccess(''); setSubmitting(true);
-        try {
-            if (mode === 'signin') {
-                const err = await auth.signInWithEmail(email, password);
-                if (err) setError(err);
+    const onSubmit = async (data: AuthFormData) => {
+        setServerError('');
+        setSuccess('');
+        if (mode === 'signin') {
+            const err = await auth.signInWithEmail(data.email, data.password);
+            if (err) setServerError(err);
+        } else {
+            const err = await auth.signUpWithEmail(data.email, data.password);
+            if (err) {
+                setServerError(err);
             } else {
-                const err = await auth.signUpWithEmail(email, password);
-                if (err) setError(err);
-                else setSuccess('Account created! Check your email to confirm, then sign in.');
+                setSuccess('Account created! Check your email to confirm, then sign in.');
+                reset();
             }
-        } finally {
-            setSubmitting(false);
         }
+    };
+
+    const toggleMode = () => {
+        setMode(prev => prev === 'signin' ? 'signup' : 'signin');
+        setServerError('');
+        setSuccess('');
     };
 
     return (
@@ -80,7 +103,7 @@ const Auth = () => {
                     className="auth-button"
                     style={{ width: '100%', marginBottom: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.625rem' }}
                     onClick={() => auth.signInWithGoogle()}
-                    disabled={submitting}
+                    disabled={isSubmitting}
                 >
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -99,23 +122,50 @@ const Auth = () => {
                 </div>
 
                 {/* Email form */}
-                <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                    <input
-                        type="email" placeholder="Email address" value={email} required
-                        onChange={e => setEmail(e.target.value)}
-                        style={{ width: '100%', boxSizing: 'border-box' }}
-                    />
-                    <input
-                        type="password" placeholder="Password" value={password} required minLength={6}
-                        onChange={e => setPassword(e.target.value)}
-                        style={{ width: '100%', boxSizing: 'border-box' }}
-                    />
+                <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }} noValidate>
+                    <div>
+                        <input
+                            type="email"
+                            placeholder="Email address"
+                            autoComplete="email"
+                            {...register('email')}
+                            style={{
+                                width: '100%',
+                                boxSizing: 'border-box',
+                                borderColor: errors.email ? '#ef4444' : undefined,
+                            }}
+                        />
+                        {errors.email && (
+                            <p style={{ color: '#fca5a5', fontSize: '0.75rem', textAlign: 'left', marginTop: '0.25rem' }}>
+                                {errors.email.message}
+                            </p>
+                        )}
+                    </div>
 
-                    {error && <p style={{ color: '#fca5a5', fontSize: '0.8125rem', textAlign: 'left' }}>{error}</p>}
+                    <div>
+                        <input
+                            type="password"
+                            placeholder="Password"
+                            autoComplete={mode === 'signin' ? 'current-password' : 'new-password'}
+                            {...register('password')}
+                            style={{
+                                width: '100%',
+                                boxSizing: 'border-box',
+                                borderColor: errors.password ? '#ef4444' : undefined,
+                            }}
+                        />
+                        {errors.password && (
+                            <p style={{ color: '#fca5a5', fontSize: '0.75rem', textAlign: 'left', marginTop: '0.25rem' }}>
+                                {errors.password.message}
+                            </p>
+                        )}
+                    </div>
+
+                    {serverError && <p style={{ color: '#fca5a5', fontSize: '0.8125rem', textAlign: 'left' }}>{serverError}</p>}
                     {success && <p style={{ color: '#6ee7b7', fontSize: '0.8125rem', textAlign: 'left' }}>{success}</p>}
 
-                    <button type="submit" className="primary-button full" disabled={submitting} style={{ marginTop: '0.25rem' }}>
-                        {submitting ? 'Please wait…' : mode === 'signin' ? 'Sign In' : 'Create Account'}
+                    <button type="submit" className="primary-button full" disabled={isSubmitting} style={{ marginTop: '0.25rem' }}>
+                        {isSubmitting ? 'Please wait…' : mode === 'signin' ? 'Sign In' : 'Create Account'}
                     </button>
                 </form>
 
@@ -123,7 +173,8 @@ const Auth = () => {
                 <p style={{ marginTop: '1.25rem', fontSize: '0.8125rem', color: '#4a5568' }}>
                     {mode === 'signin' ? "Don't have an account? " : 'Already have an account? '}
                     <button
-                        onClick={() => { setMode(mode === 'signin' ? 'signup' : 'signin'); setError(''); setSuccess(''); }}
+                        type="button"
+                        onClick={toggleMode}
                         style={{ background: 'none', border: 'none', color: '#818cf8', cursor: 'pointer', fontWeight: 600, padding: 0, fontFamily: 'inherit', fontSize: 'inherit' }}
                     >
                         {mode === 'signin' ? 'Sign Up' : 'Sign In'}
