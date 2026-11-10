@@ -9,6 +9,7 @@ import Details from "~/components/Details";
 import Spinner from "~/components/Spinner";
 import Toast, { useToast } from "~/components/Toast";
 import AtsXRayViewer from "~/components/AtsXRayViewer";
+import BulletDiffRewriter from "~/components/BulletDiffRewriter";
 import { extractTextFromPdf } from "~/lib/pdf2img";
 
 export const meta = () => [
@@ -494,6 +495,7 @@ const ResumeDetail = () => {
             >
               <Summary feedback={feedback} />
               <KeywordGap analysis={feedback.keywordAnalysis} />
+              <BulletDiffRewriter jobTitle={jobTitle} />
               <ATS
                 score={feedback.ATS?.score ?? 0}
                 suggestions={feedback.ATS?.tips ?? []}
