@@ -20,7 +20,7 @@ type SortOption = "newest" | "oldest" | "score-high" | "score-low";
 type ScoreFilter = "all" | "high" | "mid" | "low";
 
 export default function Home() {
-  const { isLoading, isAuthenticated, resumes: resumeStore } = useStore();
+  const { isLoading, isAuthenticated, resumes: resumeStore, user } = useStore();
   const navigate = useNavigate();
   const { toasts, addToast, removeToast } = useToast();
   const queryClient = useQueryClient();
@@ -154,10 +154,14 @@ export default function Home() {
               marginBottom: "0.25rem",
             }}
           >
-            Candidate Evaluations
+            {user?.user_metadata?.full_name
+              ? `${user.user_metadata.full_name}'s Evaluator Workbench`
+              : "Candidate Evaluations"}
           </h1>
           <p style={{ fontSize: "0.8125rem", color: "#807d72", margin: 0 }}>
-            Precision ATS scoring, gap detection, and Google XYZ bullet rewriter
+            {user?.user_metadata?.target_role
+              ? `Targeting ${user.user_metadata.target_role} · Precision ATS scoring & Google XYZ bullet rewriter`
+              : "Precision ATS scoring, gap detection, and Google XYZ bullet rewriter"}
           </p>
         </div>
 

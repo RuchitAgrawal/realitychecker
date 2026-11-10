@@ -5,6 +5,14 @@ import type { ResumeRow } from "../../types/database";
 
 // ─── Auth ────────────────────────────────────────────────────────────────────
 
+export interface ProfileData {
+  fullName?: string;
+  targetRole?: string;
+  seniority?: string;
+  skills?: string;
+  targetCompanies?: string;
+}
+
 interface AuthState {
   session: Session | null;
   user: User | null;
@@ -15,6 +23,7 @@ interface AuthState {
   resendVerificationEmail: (email: string) => Promise<string | null>;
   signInWithGoogle: () => Promise<void>;
   signOut: () => Promise<void>;
+  updateProfile: (data: ProfileData) => Promise<string | null>;
 }
 
 // ─── Resumes ─────────────────────────────────────────────────────────────────
@@ -106,6 +115,23 @@ export const useStore = create<StoreState>((set, get) => ({
     signOut: async () => {
       await supabase.auth.signOut();
       set({ session: null, user: null, isAuthenticated: false });
+    },
+
+    updateProfile: async (data: ProfileData) => {
+      const { data: updated, error } = await supabase.auth.updateUser({
+        data: {
+          full_name: data.fullName,
+          target_role: data.targetRole,
+          seniority: data.seniority,
+          skills: data.skills,
+          target_companies: data.targetCompanies,
+        },
+      });
+      if (error) return error.message;
+      if (updated?.user) {
+        set({ user: updated.user });
+      }
+      return null;
     },
   },
 

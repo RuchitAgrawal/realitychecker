@@ -45,7 +45,7 @@ function withTimeout<T>(promise: Promise<T>, ms: number, label: string): Promise
 }
 
 const Upload = () => {
-  const { storage, resumes: resumeStore } = useStore();
+  const { storage, resumes: resumeStore, user } = useStore();
   const navigate = useNavigate();
   const location = useLocation();
   const [searchParams] = useSearchParams();
@@ -72,6 +72,13 @@ const Upload = () => {
       setFileError("");
     }
   }, [location.state]);
+
+  // Pre-fill target role from user profile preferences if set
+  useEffect(() => {
+    if (!reanalyzeId && user?.user_metadata?.target_role && !jobTitle) {
+      setJobTitle(user.user_metadata.target_role as string);
+    }
+  }, [reanalyzeId, user, jobTitle]);
 
   useEffect(() => {
     let interval: NodeJS.Timeout | undefined;
