@@ -84,9 +84,12 @@ export async function convertPdfToImage(file: File): Promise<PdfConversionResult
   }
 }
 
-export async function extractTextFromPdf(file: File): Promise<string> {
+export async function extractTextFromPdf(fileOrBuffer: File | ArrayBuffer): Promise<string> {
   const lib = await loadPdfJs();
-  const arrayBuffer = await file.arrayBuffer();
+  const arrayBuffer =
+    fileOrBuffer instanceof ArrayBuffer
+      ? fileOrBuffer
+      : await fileOrBuffer.arrayBuffer();
   const pdf = await lib.getDocument({ data: arrayBuffer }).promise;
   let fullText = "";
   for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {

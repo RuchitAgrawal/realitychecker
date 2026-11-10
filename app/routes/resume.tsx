@@ -8,6 +8,8 @@ import KeywordGap from "~/components/KeywordGap";
 import Details from "~/components/Details";
 import Spinner from "~/components/Spinner";
 import Toast, { useToast } from "~/components/Toast";
+import AtsXRayViewer from "~/components/AtsXRayViewer";
+import { extractTextFromPdf } from "~/lib/pdf2img";
 
 export const meta = () => [
   { title: "RealityChecker | Review" },
@@ -25,6 +27,21 @@ const ResumeDetail = () => {
   const [resumeUrl, setResumeUrl] = useState("");
   const [sharing, setSharing] = useState(false);
   const [hasRefetchedImage, setHasRefetchedImage] = useState(false);
+  const [inspectorView, setInspectorView] = useState<"visual" | "xray">("visual");
+  const [rawText, setRawText] = useState<string>("");
+  const [extractingText, setExtractingText] = useState(false);
+
+  useEffect(() => {
+    if (inspectorView === "xray" && !rawText && resumeUrl) {
+      setExtractingText(true);
+      fetch(resumeUrl)
+        .then((res) => res.arrayBuffer())
+        .then((buffer) => extractTextFromPdf(buffer))
+        .then((text) => setRawText(text))
+        .catch((err) => console.warn("Failed to extract raw text for X-Ray view:", err))
+        .finally(() => setExtractingText(false));
+    }
+  }, [inspectorView, rawText, resumeUrl]);
 
   const handleImageError = () => {
     if (hasRefetchedImage || !resume?.imagePath) return;
@@ -357,24 +374,93 @@ const ResumeDetail = () => {
 
       {/* Body */}
       <div className="resume-layout">
-        {/* Left — resume preview */}
+        {/* Left — resume preview & ATS X-Ray */}
         <div className="resume-preview-panel" id="resume-preview-panel">
-          {imageUrl ? (
-            <a
-              href={resumeUrl || "#"}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ width: "100%", display: "block" }}
-            >
-              <img
-                src={imageUrl}
-                alt="Resume preview"
-                onError={handleImageError}
-                className="resume-preview-img"
-              />
-            </a>
+          {/* Sub-toolbar */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              marginBottom: "1rem",
+              background: "#ffffff",
+              padding: "4px",
+              borderRadius: "8px",
+              border: "1px solid #e6e5e0",
+            }}
+          >
+            <div style={{ display: "flex", gap: "4px", width: "100%" }}>
+              <button
+                type="button"
+                onClick={() => setInspectorView("visual")}
+                style={{
+                  flex: 1,
+                  padding: "6px 12px",
+                  fontSize: "0.75rem",
+                  fontWeight: inspectorView === "visual" ? 600 : 400,
+                  borderRadius: "6px",
+                  border: "none",
+                  cursor: "pointer",
+                  background: inspectorView === "visual" ? "#fafaf7" : "transparent",
+                  color: inspectorView === "visual" ? "#26251e" : "#807d72",
+                  boxShadow:
+                    inspectorView === "visual" ? "0 1px 2px rgba(0,0,0,0.05)" : "none",
+                  transition: "all 0.15s ease",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "0.375rem",
+                }}
+              >
+                <span>👁️</span> Visual PDF
+              </button>
+              <button
+                type="button"
+                onClick={() => setInspectorView("xray")}
+                style={{
+                  flex: 1,
+                  padding: "6px 12px",
+                  fontSize: "0.75rem",
+                  fontWeight: inspectorView === "xray" ? 600 : 400,
+                  borderRadius: "6px",
+                  border: "none",
+                  cursor: "pointer",
+                  background: inspectorView === "xray" ? "#fafaf7" : "transparent",
+                  color: inspectorView === "xray" ? "#26251e" : "#807d72",
+                  boxShadow:
+                    inspectorView === "xray" ? "0 1px 2px rgba(0,0,0,0.05)" : "none",
+                  transition: "all 0.15s ease",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "0.375rem",
+                }}
+              >
+                <span>⚡</span> ATS X-Ray Stream
+              </button>
+            </div>
+          </div>
+
+          {inspectorView === "visual" ? (
+            imageUrl ? (
+              <a
+                href={resumeUrl || "#"}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ width: "100%", display: "block" }}
+              >
+                <img
+                  src={imageUrl}
+                  alt="Resume preview"
+                  onError={handleImageError}
+                  className="resume-preview-img"
+                />
+              </a>
+            ) : (
+              <Spinner />
+            )
           ) : (
-            <Spinner />
+            <AtsXRayViewer rawText={rawText} loading={extractingText} />
           )}
         </div>
 
