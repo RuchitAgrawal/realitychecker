@@ -75,10 +75,13 @@ export const BulletDiffRewriter = ({ jobTitle }: BulletDiffRewriterProps) => {
   const [customInput, setCustomInput] = useState("");
   const [copied, setCopied] = useState(false);
 
-  const sample = DEFAULT_SAMPLES[selectedSampleIndex];
-  const activeRewrite = sample.rewrites.find((r) => r.formula === activeFormula) || sample.rewrites[0];
+  const fallbackSample = DEFAULT_SAMPLES[0]!;
+  const sample = DEFAULT_SAMPLES[selectedSampleIndex] ?? fallbackSample;
+  const activeRewrite =
+    sample.rewrites.find((r) => r.formula === activeFormula) ?? sample.rewrites[0] ?? fallbackSample.rewrites[0]!;
 
   const handleCopy = async () => {
+    if (!activeRewrite?.text) return;
     await navigator.clipboard.writeText(activeRewrite.text).catch(() => {});
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -144,7 +147,7 @@ export const BulletDiffRewriter = ({ jobTitle }: BulletDiffRewriterProps) => {
                 transition: "all 0.15s ease",
               }}
             >
-              {s.category.split("/")[0].trim()}
+              {(s.category.split("/")[0] || s.category).trim()}
             </button>
           ))}
         </div>
@@ -161,7 +164,7 @@ export const BulletDiffRewriter = ({ jobTitle }: BulletDiffRewriterProps) => {
           border: "1px solid #e6e5e0",
         }}
       >
-        {sample.rewrites.map((r) => {
+        {sample?.rewrites.map((r) => {
           const isActive = activeFormula === r.formula;
           return (
             <button
@@ -224,7 +227,7 @@ export const BulletDiffRewriter = ({ jobTitle }: BulletDiffRewriterProps) => {
             ORIGINAL
           </span>
           <p style={{ color: "#7f1d1d", margin: 0, textDecoration: "line-through", opacity: 0.85 }}>
-            {sample.original}
+            {sample?.original}
           </p>
         </div>
 
@@ -254,7 +257,7 @@ export const BulletDiffRewriter = ({ jobTitle }: BulletDiffRewriterProps) => {
           </span>
           <div style={{ flex: 1 }}>
             <p style={{ color: "#14532d", margin: 0, fontWeight: 500 }}>
-              {activeRewrite.text}
+              {activeRewrite?.text}
             </p>
             <span
               style={{
@@ -265,7 +268,7 @@ export const BulletDiffRewriter = ({ jobTitle }: BulletDiffRewriterProps) => {
                 fontFamily: "var(--font-mono)",
               }}
             >
-              Formula: {activeRewrite.description}
+              Formula: {activeRewrite?.description}
             </span>
           </div>
         </div>

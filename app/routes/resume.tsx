@@ -12,6 +12,7 @@ import AtsXRayViewer from "~/components/AtsXRayViewer";
 import BulletDiffRewriter from "~/components/BulletDiffRewriter";
 import JobMatchDrawer from "~/components/JobMatchDrawer";
 import CommandPalette from "~/components/CommandPalette";
+import InterviewPrep from "~/components/InterviewPrep";
 import { extractTextFromPdf } from "~/lib/pdf2img";
 
 export const meta = () => [
@@ -532,6 +533,11 @@ const ResumeDetail = () => {
               <ATS
                 score={feedback.ATS?.score ?? 0}
                 suggestions={feedback.ATS?.tips ?? []}
+              />
+              <InterviewPrep
+                feedback={feedback}
+                jobTitle={jobTitle}
+                companyName={companyName}
               />
               <Details feedback={feedback} />
             </div>
