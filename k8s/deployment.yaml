@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: realitychecker-deployment
+  labels:
+    app: realitychecker
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: realitychecker
+  template:
+    metadata:
+      labels:
+        app: realitychecker
+    spec:
+      containers:
+        - name: realitychecker
+          image: ghcr.io/ruchitagrawal/realitychecker:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+              name: http
+          resources:
+            requests:
+              cpu: "150m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          envFrom:
+            - secretRef:
+                name: realitychecker-secrets

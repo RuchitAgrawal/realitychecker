@@ -4,6 +4,7 @@
 > Built with React Router v7, Vite, Supabase, Groq LPUs, Gemini Vision, and Upstash Redis.
 
 [![Live Demo](https://img.shields.io/badge/demo-realitychecker.vercel.app-f54e00?style=flat-square)](https://realitychecker.vercel.app)
+[![CI](https://github.com/RuchitAgrawal/realitychecker/actions/workflows/ci.yml/badge.svg)](https://github.com/RuchitAgrawal/realitychecker/actions)
 [![React Router 7](https://img.shields.io/badge/React_Router-v7.12-26251e?style=flat-square&logo=reactrouter)](https://reactrouter.com/)
 [![Groq LPU](https://img.shields.io/badge/AI_Engine-Groq_LPU_%2B_Gemini-f54e00?style=flat-square)](https://groq.com)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178c6?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
@@ -139,6 +140,24 @@ npm run dev
 ```
 
 Open [http://localhost:5173](http://localhost:5173).
+
+---
+
+## Containerization & Kubernetes
+
+RealityChecker includes a multi-stage `Dockerfile` and production-grade Kubernetes manifests located in [`k8s/`](./k8s):
+
+```bash
+# Build multi-stage Node 20 Alpine container
+docker build -t realitychecker:latest .
+
+# Deploy to Kubernetes cluster
+kubectl apply -f k8s/
+```
+
+* **`k8s/deployment.yaml`:** 2 replicas, zero-downtime rolling updates, liveness & readiness health probes, and strict CPU/Memory resource requests & limits.
+* **`k8s/service.yaml`:** High-performance internal cluster load balancing.
+* **`k8s/hpa.yaml`:** Horizontal Pod Autoscaler dynamically scaling pods from 2 to 6 based on 75% CPU and 80% Memory utilization.
 
 ---
 
