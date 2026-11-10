@@ -11,6 +11,7 @@ import Toast, { useToast } from "~/components/Toast";
 import AtsXRayViewer from "~/components/AtsXRayViewer";
 import BulletDiffRewriter from "~/components/BulletDiffRewriter";
 import JobMatchDrawer from "~/components/JobMatchDrawer";
+import CommandPalette from "~/components/CommandPalette";
 import { extractTextFromPdf } from "~/lib/pdf2img";
 
 export const meta = () => [
@@ -252,6 +253,12 @@ const ResumeDetail = () => {
         </div>
 
         <div style={{ display: "flex", gap: "0.625rem", alignItems: "center" }}>
+          <CommandPalette
+            onToggleXRay={() => setInspectorView((prev) => (prev === "visual" ? "xray" : "visual"))}
+            onOpenJobMatch={() => setIsJobMatchOpen(true)}
+            onExportPDF={handleExportPDF}
+          />
+
           <button
             type="button"
             onClick={() => setIsJobMatchOpen(true)}

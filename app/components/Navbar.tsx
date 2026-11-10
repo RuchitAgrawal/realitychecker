@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router";
 import UserMenu from "./UserMenu";
+import CommandPalette from "./CommandPalette";
 
 interface NavbarProps {
   showBack?: boolean;
@@ -107,6 +108,7 @@ const Navbar = ({ showBack = false }: NavbarProps) => {
             </Link>
           )}
 
+          <CommandPalette />
           <UserMenu />
         </div>
       </nav>
