@@ -10,6 +10,7 @@ import Spinner from "~/components/Spinner";
 import Toast, { useToast } from "~/components/Toast";
 import AtsXRayViewer from "~/components/AtsXRayViewer";
 import BulletDiffRewriter from "~/components/BulletDiffRewriter";
+import JobMatchDrawer from "~/components/JobMatchDrawer";
 import { extractTextFromPdf } from "~/lib/pdf2img";
 
 export const meta = () => [
@@ -31,18 +32,19 @@ const ResumeDetail = () => {
   const [inspectorView, setInspectorView] = useState<"visual" | "xray">("visual");
   const [rawText, setRawText] = useState<string>("");
   const [extractingText, setExtractingText] = useState(false);
+  const [isJobMatchOpen, setIsJobMatchOpen] = useState(false);
 
   useEffect(() => {
-    if (inspectorView === "xray" && !rawText && resumeUrl) {
+    if ((inspectorView === "xray" || isJobMatchOpen) && !rawText && resumeUrl) {
       setExtractingText(true);
       fetch(resumeUrl)
         .then((res) => res.arrayBuffer())
         .then((buffer) => extractTextFromPdf(buffer))
         .then((text) => setRawText(text))
-        .catch((err) => console.warn("Failed to extract raw text for X-Ray view:", err))
+        .catch((err) => console.warn("Failed to extract raw text:", err))
         .finally(() => setExtractingText(false));
     }
-  }, [inspectorView, rawText, resumeUrl]);
+  }, [inspectorView, isJobMatchOpen, rawText, resumeUrl]);
 
   const handleImageError = () => {
     if (hasRefetchedImage || !resume?.imagePath) return;
@@ -198,6 +200,13 @@ const ResumeDetail = () => {
     <main className="full-layout" style={{ paddingTop: 0 }}>
       <Toast toasts={toasts} onRemove={removeToast} />
 
+      <JobMatchDrawer
+        isOpen={isJobMatchOpen}
+        onClose={() => setIsJobMatchOpen(false)}
+        resumeText={rawText}
+        existingKeywords={feedback?.keywordAnalysis}
+      />
+
       {/* Sticky top nav */}
       <nav className="resume-nav" id="resume-nav-bar">
         <Link to="/" className="back-button">
@@ -243,6 +252,23 @@ const ResumeDetail = () => {
         </div>
 
         <div style={{ display: "flex", gap: "0.625rem", alignItems: "center" }}>
+          <button
+            type="button"
+            onClick={() => setIsJobMatchOpen(true)}
+            className="back-button"
+            title="Compare your resume against a specific target job posting"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "0.375rem",
+              background: isJobMatchOpen ? "#26251e" : undefined,
+              color: isJobMatchOpen ? "#ffffff" : undefined,
+            }}
+          >
+            <span>🎯</span>
+            <span>Match Job</span>
+          </button>
+
           {isAuthenticated && id && (
             <Link
               to={`/upload?reanalyze=${id}`}
