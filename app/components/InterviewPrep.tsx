@@ -158,7 +158,21 @@ export const InterviewPrep = ({ feedback, jobTitle = "Software Engineer", compan
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "0.75rem" }}>
         <div>
           <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.25rem" }}>
-            <span style={{ fontSize: "1.125rem" }}>🎙️</span>
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#f54e00"
+              strokeWidth="2.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+              <line x1="12" y1="19" x2="12" y2="23" />
+              <line x1="8" y1="23" x2="16" y2="23" />
+            </svg>
             <h3 style={{ margin: 0, fontSize: "1.0625rem", fontWeight: 500, color: "#26251e" }}>
               AI Interview Preparation Simulator
             </h3>
@@ -310,8 +324,13 @@ export const InterviewPrep = ({ feedback, jobTitle = "Software Engineer", compan
                       fontSize: "0.8125rem",
                     }}
                   >
-                    <span style={{ fontWeight: 600, color: "#26251e", display: "block", marginBottom: "0.25rem" }}>
-                      💡 Interviewer&apos;s Hidden Evaluation Objective:
+                    <span style={{ fontWeight: 600, color: "#26251e", display: "flex", alignItems: "center", gap: "0.4rem", marginBottom: "0.25rem" }}>
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#f54e00" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="12" y1="16" x2="12" y2="12" />
+                        <line x1="12" y1="8" x2="12.01" y2="8" />
+                      </svg>
+                      Interviewer&apos;s Evaluation Objective:
                     </span>
                     <span style={{ color: "#5a5852", lineHeight: 1.45 }}>{q.interviewerIntent}</span>
                   </div>
@@ -411,7 +430,34 @@ export const InterviewPrep = ({ feedback, jobTitle = "Software Engineer", compan
                         color: isCopied ? "#2e7d32" : "#26251e",
                       }}
                     >
-                      <span>{isCopied ? "✓" : "📋"}</span>
+                      {isCopied ? (
+                        <svg
+                          width="12"
+                          height="12"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <polyline points="20 6 9 17 4 12" />
+                        </svg>
+                      ) : (
+                        <svg
+                          width="12"
+                          height="12"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                        </svg>
+                      )}
                       <span>{isCopied ? "Copied Talking Point" : "Copy Outline"}</span>
                     </button>
                   </div>
@@ -426,3 +472,4 @@ export const InterviewPrep = ({ feedback, jobTitle = "Software Engineer", compan
 };
 
 export default InterviewPrep;
+

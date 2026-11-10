@@ -8,7 +8,7 @@ interface CommandItem {
   label: string;
   detail?: string;
   shortcut?: string;
-  icon: string;
+  icon: React.ReactNode;
   perform: () => void;
 }
 
@@ -71,7 +71,14 @@ export const CommandPalette = ({
         label: "Go to Dashboard",
         detail: "View all candidate resume evaluations",
         shortcut: "G D",
-        icon: "⊞",
+        icon: (
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="3" y="3" width="7" height="7" />
+            <rect x="14" y="3" width="7" height="7" />
+            <rect x="14" y="14" width="7" height="7" />
+            <rect x="3" y="14" width="7" height="7" />
+          </svg>
+        ),
         perform: () => {
           navigate("/");
           setIsOpen(false);
@@ -83,7 +90,13 @@ export const CommandPalette = ({
         label: "Upload & Analyze New Resume",
         detail: "Run ATS parsing & keyword evaluation on a PDF",
         shortcut: "G U",
-        icon: "↑",
+        icon: (
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="17 8 12 3 7 8" />
+            <line x1="12" y1="3" x2="12" y2="15" />
+          </svg>
+        ),
         perform: () => {
           navigate("/upload");
           setIsOpen(false);
@@ -95,7 +108,12 @@ export const CommandPalette = ({
         label: "Compare Resumes Side-by-Side",
         detail: "Category score delta and tip comparison",
         shortcut: "G C",
-        icon: "⇄",
+        icon: (
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="3" y="3" width="7" height="18" />
+            <rect x="14" y="3" width="7" height="18" />
+          </svg>
+        ),
         perform: () => {
           navigate("/compare");
           setIsOpen(false);
@@ -110,7 +128,12 @@ export const CommandPalette = ({
         label: "Toggle ATS X-Ray View",
         detail: "Inspect raw terminal token stream vs visual PDF",
         shortcut: "X",
-        icon: "⚡",
+        icon: (
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="4 17 10 11 4 5" />
+            <line x1="12" y1="19" x2="20" y2="19" />
+          </svg>
+        ),
         perform: () => {
           onToggleXRay();
           setIsOpen(false);
@@ -125,7 +148,13 @@ export const CommandPalette = ({
         label: "Open Target Job Matcher",
         detail: "Paste job description to calculate role fitness",
         shortcut: "J",
-        icon: "🎯",
+        icon: (
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="12" cy="12" r="10" />
+            <circle cx="12" cy="12" r="6" />
+            <circle cx="12" cy="12" r="2" />
+          </svg>
+        ),
         perform: () => {
           onOpenJobMatch();
           setIsOpen(false);
@@ -140,7 +169,13 @@ export const CommandPalette = ({
         label: "Export Candidate Audit Report",
         detail: "Print or download executive PDF scorecard",
         shortcut: "⌘P",
-        icon: "↓",
+        icon: (
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+        ),
         perform: () => {
           onExportPDF();
           setIsOpen(false);
@@ -155,7 +190,12 @@ export const CommandPalette = ({
         category: "Resumes",
         label: r.companyName ? `${r.companyName} (${r.jobTitle || "Resume"})` : r.jobTitle || "Analyzed Resume",
         detail: `Overall Score: ${r.feedback?.overallScore ?? 0}/100`,
-        icon: "📄",
+        icon: (
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+          </svg>
+        ),
         perform: () => {
           navigate(`/resume/${r.id}`);
           setIsOpen(false);
@@ -199,27 +239,33 @@ export const CommandPalette = ({
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        className="back-button"
+        className="navbar-action-btn"
         title="Open Command Palette (⌘K)"
         style={{
-          display: "inline-flex",
-          alignItems: "center",
-          gap: "0.5rem",
-          padding: "0.35rem 0.65rem",
+          padding: "0.3rem 0.65rem",
           fontSize: "0.75rem",
-          background: "#fafaf7",
-          border: "1px solid #e6e5e0",
-          borderRadius: "6px",
           color: "#807d72",
-          cursor: "pointer",
         }}
       >
+        <svg
+          width="12"
+          height="12"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <circle cx="11" cy="11" r="8" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        </svg>
         <span>Search</span>
         <kbd
           style={{
             fontFamily: "var(--font-mono)",
             fontSize: "0.6875rem",
-            background: "#ffffff",
+            background: "#fafaf7",
             border: "1px solid #cfcdc4",
             borderRadius: "4px",
             padding: "0.1rem 0.35rem",
@@ -274,7 +320,19 @@ export const CommandPalette = ({
             gap: "0.75rem",
           }}
         >
-          <span style={{ color: "#807d72", fontSize: "0.9375rem" }}>🔍</span>
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#807d72"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
           <input
             type="text"
             autoFocus
@@ -415,3 +473,4 @@ export const CommandPalette = ({
 };
 
 export default CommandPalette;
+

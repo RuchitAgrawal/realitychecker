@@ -3,7 +3,7 @@ import Navbar from "~/components/Navbar";
 import FileUploader from "~/components/FileUploader";
 import Toast, { useToast } from "~/components/Toast";
 import { useStore } from "~/lib/store";
-import { useNavigate, useSearchParams } from "react-router";
+import { useLocation, useNavigate, useSearchParams } from "react-router";
 import { convertPdfToImage, extractTextFromPdf } from "~/lib/pdf2img";
 import { generateUUID } from "~/lib/utils";
 
@@ -47,6 +47,7 @@ function withTimeout<T>(promise: Promise<T>, ms: number, label: string): Promise
 const Upload = () => {
   const { storage, resumes: resumeStore } = useStore();
   const navigate = useNavigate();
+  const location = useLocation();
   const [searchParams] = useSearchParams();
   const { toasts, addToast, removeToast } = useToast();
 
@@ -63,6 +64,14 @@ const Upload = () => {
   const [jobTitle, setJobTitle] = useState("");
   const [jobDescription, setJobDescription] = useState("");
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
+
+  useEffect(() => {
+    const locState = location.state as { initialFile?: File } | null;
+    if (locState?.initialFile && locState.initialFile instanceof File) {
+      setFile(locState.initialFile);
+      setFileError("");
+    }
+  }, [location.state]);
 
   useEffect(() => {
     let interval: NodeJS.Timeout | undefined;

@@ -6,7 +6,7 @@ import ConfirmModal from "~/components/ConfirmModal";
 import Toast, { useToast } from "~/components/Toast";
 import { useStore } from "~/lib/store";
 import { Link, useNavigate } from "react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 export function meta({}: Route.MetaArgs) {
@@ -31,6 +31,7 @@ export default function Home() {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) navigate("/auth");
@@ -41,6 +42,41 @@ export default function Home() {
     queryFn: () => resumeStore.list(),
     enabled: isAuthenticated,
   });
+
+  const avgScore = useMemo(() => {
+    if (!resumes.length) return 0;
+    const total = resumes.reduce((acc, r) => acc + (r.feedback?.overallScore ?? 0), 0);
+    return Math.round(total / resumes.length);
+  }, [resumes]);
+
+  const topGap = useMemo(() => {
+    if (!resumes.length) return "None detected";
+    const map = new Map<string, number>();
+    for (const r of resumes) {
+      const missing = r.feedback?.keywordAnalysis?.missing || [];
+      for (const m of missing) {
+        map.set(m, (map.get(m) || 0) + 1);
+      }
+    }
+    let topKey = "";
+    let maxCount = 0;
+    for (const [k, count] of map.entries()) {
+      if (count > maxCount) {
+        maxCount = count;
+        topKey = k;
+      }
+    }
+    return topKey || "System Metrics";
+  }, [resumes]);
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const droppedFile = e.dataTransfer.files?.[0];
+    if (droppedFile && droppedFile.type === "application/pdf") {
+      navigate("/upload", { state: { initialFile: droppedFile } });
+    }
+  };
 
   const toggleSelect = (id: string, e: React.MouseEvent) => {
     e.preventDefault();
@@ -107,13 +143,137 @@ export default function Home() {
       <Toast toasts={toasts} onRemove={removeToast} />
 
       <section className="main-section">
-        <div className="page-heading">
-          <h1>Your Resume Dashboard</h1>
-          <p className="page-subheading">
-            {!loadingResumes && resumes.length === 0
-              ? "No analyses yet — upload your first resume to get started"
-              : "Review your AI-powered feedback and track improvement"}
+        {/* Editorial Heading */}
+        <div style={{ maxWidth: "1200px", width: "100%", margin: "0 auto 1.5rem" }}>
+          <h1
+            style={{
+              fontSize: "1.375rem",
+              fontWeight: 500,
+              color: "#26251e",
+              letterSpacing: "-0.02em",
+              marginBottom: "0.25rem",
+            }}
+          >
+            Candidate Evaluations
+          </h1>
+          <p style={{ fontSize: "0.8125rem", color: "#807d72", margin: 0 }}>
+            Precision ATS scoring, gap detection, and Google XYZ bullet rewriter
           </p>
+        </div>
+
+        {/* Hero Dropzone & Metrics Strip */}
+        <div className="home-hero-container">
+          <div
+            className={`home-dropzone ${isDragging ? "dragging" : ""}`}
+            onDragOver={(e) => {
+              e.preventDefault();
+              setIsDragging(true);
+            }}
+            onDragLeave={() => setIsDragging(false)}
+            onDrop={handleDrop}
+            onClick={() => navigate("/upload")}
+            title="Drop PDF or click to analyze a new resume"
+          >
+            <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+              <div
+                style={{
+                  width: "2.5rem",
+                  height: "2.5rem",
+                  borderRadius: "8px",
+                  background: "#fafaf7",
+                  border: "1px solid #e6e5e0",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: "#f54e00",
+                  flexShrink: 0,
+                }}
+              >
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="17 8 12 3 7 8" />
+                  <line x1="12" y1="3" x2="12" y2="15" />
+                </svg>
+              </div>
+              <div>
+                <span
+                  style={{
+                    fontSize: "0.9375rem",
+                    fontWeight: 600,
+                    color: "#26251e",
+                    display: "block",
+                  }}
+                >
+                  Drop candidate PDF for instant ATS &amp; keyword audit
+                </span>
+                <span style={{ fontSize: "0.8125rem", color: "#807d72" }}>
+                  Full token stream parsing, STAR formula diffs, and interview questions in &lt; 5s
+                </span>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              className="navbar-action-primary"
+              style={{ padding: "0.45rem 1rem", fontSize: "0.8125rem" }}
+            >
+              Select PDF File →
+            </button>
+          </div>
+
+          {resumes.length > 0 && (
+            <div className="home-stats-strip">
+              <div className="home-stat-card">
+                <span className="home-stat-label">Evaluated Candidates</span>
+                <div className="home-stat-value">
+                  {resumes.length}
+                  <span style={{ fontSize: "0.8125rem", fontWeight: 400, color: "#807d72" }}>
+                    {resumes.length === 1 ? "document" : "documents"}
+                  </span>
+                </div>
+                <span className="home-stat-sub">Active in current workspace</span>
+              </div>
+
+              <div className="home-stat-card">
+                <span className="home-stat-label">Average ATS Readiness</span>
+                <div className="home-stat-value">
+                  <span
+                    style={{
+                      color:
+                        avgScore >= 70 ? "#008542" : avgScore >= 50 ? "#c97d00" : "#cf2d56",
+                    }}
+                  >
+                    {avgScore}
+                  </span>
+                  <span style={{ fontSize: "0.8125rem", fontWeight: 400, color: "#807d72" }}>
+                    / 100
+                  </span>
+                </div>
+                <span className="home-stat-sub">
+                  {avgScore >= 70
+                    ? "Strong ATS candidate match"
+                    : "Keyword & metric optimization recommended"}
+                </span>
+              </div>
+
+              <div className="home-stat-card">
+                <span className="home-stat-label">Top Recurring Skill Gap</span>
+                <div className="home-stat-value" style={{ fontSize: "1.125rem" }}>
+                  {topGap}
+                </div>
+                <span className="home-stat-sub">Most frequent missing technical keyword</span>
+              </div>
+            </div>
+          )}
         </div>
 
         {!loadingResumes && resumes.length > 0 && (
@@ -126,27 +286,54 @@ export default function Home() {
               gap: "1rem",
               width: "100%",
               maxWidth: "1200px",
-              margin: "0 auto 1.5rem",
+              margin: "0 auto 1.25rem",
             }}
           >
-            <input
-              type="text"
-              placeholder="Search by company or role…"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
+            <div
               style={{
-                maxWidth: "280px",
-                padding: "0.5rem 0.875rem",
-                fontSize: "0.8125rem",
-                borderRadius: "8px",
+                position: "relative",
+                display: "inline-flex",
+                alignItems: "center",
+                width: "100%",
+                maxWidth: "300px",
               }}
-            />
+            >
+              <svg
+                width="13"
+                height="13"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#807d72"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                style={{ position: "absolute", left: "0.75rem", pointerEvents: "none" }}
+              >
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              <input
+                type="text"
+                placeholder="Search candidates or roles…"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                style={{
+                  width: "100%",
+                  padding: "0.45rem 0.75rem 0.45rem 2rem",
+                  fontSize: "0.8125rem",
+                  borderRadius: "6px",
+                  border: "1px solid #e6e5e0",
+                  background: "#ffffff",
+                }}
+              />
+            </div>
+
             {resumes.length > 1 && (
               <div
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  gap: "0.75rem",
+                  gap: "0.625rem",
                   flexWrap: "wrap",
                 }}
               >
@@ -178,7 +365,7 @@ export default function Home() {
           </div>
         )}
 
-        {loadingResumes && <Spinner label="Loading your resumes…" size={40} />}
+        {loadingResumes && <Spinner label="Loading evaluations…" size={40} />}
 
         {!loadingResumes && filtered.length > 0 && (
           <div className="resumes-section">
@@ -199,6 +386,59 @@ export default function Home() {
                 </button>
               </div>
             ))}
+
+            {/* Embedded New Resume Action Card in grid */}
+            <Link to="/upload" className="home-new-card">
+              <div
+                style={{
+                  width: "2.75rem",
+                  height: "2.75rem",
+                  borderRadius: "8px",
+                  background: "#fafaf7",
+                  border: "1px solid #e6e5e0",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: "#f54e00",
+                }}
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <line x1="12" y1="5" x2="12" y2="19" />
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+              </div>
+              <div>
+                <span
+                  style={{
+                    fontSize: "0.9375rem",
+                    fontWeight: 600,
+                    color: "#26251e",
+                    display: "block",
+                  }}
+                >
+                  Analyze New Resume
+                </span>
+                <span
+                  style={{
+                    fontSize: "0.75rem",
+                    color: "#807d72",
+                    marginTop: "0.25rem",
+                    display: "block",
+                  }}
+                >
+                  Upload and evaluate another candidate PDF
+                </span>
+              </div>
+            </Link>
           </div>
         )}
 

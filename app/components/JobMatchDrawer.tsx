@@ -351,8 +351,13 @@ export const JobMatchDrawer = ({
                 color: "#5a5852",
               }}
             >
-              <strong style={{ color: "#26251e", display: "block", marginBottom: "0.25rem" }}>
-                💡 Actionable Recommendation:
+              <strong style={{ color: "#26251e", display: "flex", alignItems: "center", gap: "0.4rem", marginBottom: "0.25rem" }}>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#f54e00" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="12" y1="16" x2="12" y2="12" />
+                  <line x1="12" y1="8" x2="12.01" y2="8" />
+                </svg>
+                Actionable Recommendation:
               </strong>
               Inject {matchResults.missing.slice(0, 3).join(", ") || "the missing skills"} into your recent work experience bullets to boost your automated ATS screening match rate past 80%.
             </div>
@@ -364,3 +369,4 @@ export const JobMatchDrawer = ({
 };
 
 export default JobMatchDrawer;
+
